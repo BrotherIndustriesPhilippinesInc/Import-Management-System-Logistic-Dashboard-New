@@ -1,0 +1,75 @@
+﻿@using LogisticDashboard.Web.Views.Components
+@using LogisticDashboard.Web.Views.Components.ComponentModels
+
+@{
+    ViewData["Title"] = "Logistic Dashboard";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Logistic Dashboard</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LogisticDashboard.Web.styles.css" asp-append-version="true" />
+</head>
+<body class="m-3">
+    <header>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav" aria-controls="offcanvasNav" aria-label="Toggle navigation">
+            <img src="~/resources/icons/bars-solid.svg" width="30" height="30" alt="">
+        </button>
+
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNav" aria-labelledby="offcanvasNavLabel">
+        <div class="offcanvas-header">
+            <div class="w-100 d-flex justify-content-center">
+                <div>
+                    <img src="~/resources/logo/temporary-logo.png" width="80" height="80" alt="logo">
+                </div>
+            </div>
+            
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <div class="d-flex flex-column gap-2">
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Import", ASPController = "Import", Icon = "/resources/icons/imports.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Dashboard", ASPController = "Dashboard", Icon = "/resources/icons/dashboard.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Sea Freight Delivery Info", ASPController = "Dashboard", Icon = "/resources/icons/sea-freight.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Air Freight Delivery Info", ASPController = "Dashboard", Icon = "/resources/icons/air-freight.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Information", ASPController = "Dashboard", Icon = "/resources/icons/logistic-information.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Cost", ASPController = "Dashboard", Icon = "/resources/icons/dollar.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Others", ASPController = "Dashboard", Icon = "/resources/icons/others.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Administrator", ASPController = "Dashboard", Icon = "/resources/icons/administrator.svg" })
+
+            </div>
+            
+
+        </div>
+
+        <div class="offcanvas-footer">
+            <span>Name</span>
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - LogisticDashboard.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/libraries/less.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
