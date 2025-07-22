@@ -40,6 +40,10 @@ body {
     text-align: left;
 }
 
+.btn:hover {
+    color: var(--light-backbround);
+}
+
 .offcanvas-start{
     width: auto !important;
 }

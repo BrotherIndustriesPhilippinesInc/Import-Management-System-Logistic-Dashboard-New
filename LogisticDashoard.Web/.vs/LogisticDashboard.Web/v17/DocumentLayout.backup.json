@@ -1,0 +1,69 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|c:\\users\\ghost\\documents\\projects\\logisticdashboard\\logisticdashoard.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|c:\\users\\ghost\\documents\\projects\\logisticdashboard\\logisticdashoard.web\\controllers\\administrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|solutionrelative:controllers\\administrator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|c:\\users\\ghost\\documents\\projects\\logisticdashboard\\logisticdashoard.web\\views\\components\\navlinks.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|solutionrelative:views\\components\\navlinks.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NavLinks.cshtml",
+              "DocumentMoniker": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\Views\\Components\\NavLinks.cshtml",
+              "RelativeDocumentMoniker": "Views\\Components\\NavLinks.cshtml",
+              "ToolTip": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\Views\\Components\\NavLinks.cshtml",
+              "RelativeToolTip": "Views\\Components\\NavLinks.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAACjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-22T00:50:16.389Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Administrator.cs",
+              "DocumentMoniker": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\Controllers\\Administrator.cs",
+              "RelativeDocumentMoniker": "Controllers\\Administrator.cs",
+              "ToolTip": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\Controllers\\Administrator.cs",
+              "RelativeToolTip": "Controllers\\Administrator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-22T00:24:17.42Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAADwAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-22T00:23:19.906Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

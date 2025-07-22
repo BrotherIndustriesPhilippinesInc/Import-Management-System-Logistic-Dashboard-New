@@ -44,13 +44,12 @@
             <div class="d-flex flex-column gap-2">
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Import", ASPController = "Import", Icon = "/resources/icons/imports.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Dashboard", ASPController = "Dashboard", Icon = "/resources/icons/dashboard.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Sea Freight Delivery Info", ASPController = "Dashboard", Icon = "/resources/icons/sea-freight.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Air Freight Delivery Info", ASPController = "Dashboard", Icon = "/resources/icons/air-freight.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Information", ASPController = "Dashboard", Icon = "/resources/icons/logistic-information.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Cost", ASPController = "Dashboard", Icon = "/resources/icons/dollar.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Others", ASPController = "Dashboard", Icon = "/resources/icons/others.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Administrator", ASPController = "Dashboard", Icon = "/resources/icons/administrator.svg" })
-
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Sea Freight Delivery Info", ASPController = "SeaFreightDeliveryInfo", Icon = "/resources/icons/sea-freight.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Air Freight Delivery Info", ASPController = "AirFreightDeliveryInfo", Icon = "/resources/icons/air-freight.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Information", ASPController = "LogisticInformation", Icon = "/resources/icons/logistic-information.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Cost", ASPController = "LogisticCost", Icon = "/resources/icons/dollar.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Others", ASPController = "Others", Icon = "/resources/icons/others.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Administrator", ASPController = "Administrator", Icon = "/resources/icons/administrator.svg" })
             </div>
             
 
