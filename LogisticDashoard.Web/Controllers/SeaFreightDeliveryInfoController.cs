@@ -2,7 +2,7 @@
 
 namespace LogisticDashboard.Web.Controllers
 {
-    public class SeaFreightDeliveryInfo : Controller
+    public class SeaFreightDeliveryInfoController : Controller
     {
         public IActionResult Index()
         {

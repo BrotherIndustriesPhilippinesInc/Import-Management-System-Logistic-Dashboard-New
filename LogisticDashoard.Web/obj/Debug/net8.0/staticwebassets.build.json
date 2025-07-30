@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "R5dzZdyIQfjWeRbA6F6hO2ABOXcm1cdWl/nOsFCFajQ=",
+  "Hash": "Kb/vqZRu3OO1lPf2VMoVoom6LdW3ordopa70B8Im+kA=",
   "Source": "LogisticDashboard.Web",
   "BasePath": "_content/LogisticDashboard.Web",
   "Mode": "Default",
@@ -73,8 +73,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "9n46rbgx7k",
-      "Integrity": "+1uk12lGbtannf7BbVK6lkta52z01agquCa1td82xNI=",
+      "Fingerprint": "hoaemaqaua",
+      "Integrity": "kYt0h97FV1AhDaWyzSDBYPqQyFHiGjmn69Y7xJQ7iWg=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -1396,11 +1396,32 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
+      "Fingerprint": "pxdzu5gj3e",
+      "Integrity": "s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\resources\\icons\\bars-solid.svg"
+    },
+    {
+      "Identity": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\bars-solid_black.svg",
+      "SourceId": "LogisticDashboard.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\",
+      "BasePath": "_content/LogisticDashboard.Web",
+      "RelativePath": "resources/icons/bars-solid_black#[.{fingerprint}]?.svg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
       "Fingerprint": "jmzdlt1ahe",
       "Integrity": "ZbEQfr4AoNHa3cwtrtFQEu9uBz6Ns8Ayvsbj9lZ31d8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\resources\\icons\\bars-solid.svg"
+      "OriginalItemSpec": "wwwroot\\resources\\icons\\bars-solid_black.svg"
     },
     {
       "Identity": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\dashboard.svg",
@@ -1552,51 +1573,6 @@
   ],
   "Endpoints": [
     {
-      "Route": "css/site.9n46rbgx7k.css",
-      "AssetFile": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\css\\site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "789"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"+1uk12lGbtannf7BbVK6lkta52z01agquCa1td82xNI=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 22 Jul 2025 00:19:57 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "9n46rbgx7k"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-+1uk12lGbtannf7BbVK6lkta52z01agquCa1td82xNI="
-        }
-      ]
-    },
-    {
       "Route": "css/site.css",
       "AssetFile": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\css\\site.css",
       "Selectors": [],
@@ -1607,7 +1583,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "789"
+          "Value": "1008"
         },
         {
           "Name": "Content-Type",
@@ -1615,11 +1591,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"+1uk12lGbtannf7BbVK6lkta52z01agquCa1td82xNI=\""
+          "Value": "\"kYt0h97FV1AhDaWyzSDBYPqQyFHiGjmn69Y7xJQ7iWg=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 22 Jul 2025 00:19:57 GMT"
+          "Value": "Wed, 30 Jul 2025 08:56:15 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1629,7 +1605,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-+1uk12lGbtannf7BbVK6lkta52z01agquCa1td82xNI="
+          "Value": "sha256-kYt0h97FV1AhDaWyzSDBYPqQyFHiGjmn69Y7xJQ7iWg="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.hoaemaqaua.css",
+      "AssetFile": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1008"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kYt0h97FV1AhDaWyzSDBYPqQyFHiGjmn69Y7xJQ7iWg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 30 Jul 2025 08:56:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "hoaemaqaua"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-kYt0h97FV1AhDaWyzSDBYPqQyFHiGjmn69Y7xJQ7iWg="
         }
       ]
     },
@@ -6882,8 +6903,90 @@
       ]
     },
     {
-      "Route": "resources/icons/bars-solid.jmzdlt1ahe.svg",
+      "Route": "resources/icons/bars-solid.pxdzu5gj3e.svg",
       "AssetFile": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\bars-solid.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "646"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 30 Jul 2025 08:45:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pxdzu5gj3e"
+        },
+        {
+          "Name": "label",
+          "Value": "resources/icons/bars-solid.svg"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs="
+        }
+      ]
+    },
+    {
+      "Route": "resources/icons/bars-solid.svg",
+      "AssetFile": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\bars-solid.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "646"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 30 Jul 2025 08:45:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs="
+        }
+      ]
+    },
+    {
+      "Route": "resources/icons/bars-solid_black.jmzdlt1ahe.svg",
+      "AssetFile": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\bars-solid_black.svg",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -6918,7 +7021,7 @@
         },
         {
           "Name": "label",
-          "Value": "resources/icons/bars-solid.svg"
+          "Value": "resources/icons/bars-solid_black.svg"
         },
         {
           "Name": "integrity",
@@ -6927,8 +7030,8 @@
       ]
     },
     {
-      "Route": "resources/icons/bars-solid.svg",
-      "AssetFile": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\bars-solid.svg",
+      "Route": "resources/icons/bars-solid_black.svg",
+      "AssetFile": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\bars-solid_black.svg",
       "Selectors": [],
       "ResponseHeaders": [
         {

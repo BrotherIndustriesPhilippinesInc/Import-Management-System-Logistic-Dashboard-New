@@ -2,7 +2,126 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <div class="d-flex">
+        <table class="w-100">
+        <tr>
+            <th>
+                VESSEL UPDATE
+            </th>
+            <th>
+                IMPORT DELIVERY
+            </th>
+            <th colspan="2">
+                PHIL. PORT UPDATE <br /> (PORT UTILIZATION)
+            </th>
+            <th colspan="2">
+                PHIL. PORT UPDATE <br /> (BERTHING STATUS)
+            </th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Manila North</td>
+            <td>Batangas</td>
+            <td>Manila North</td>
+            <td>Batangas</td>
+        </tr>
+        <tr>
+            <td class="filter-inputs"><input type="checkbox" />Normal</td>
+            <td class="filter-inputs"><input type="checkbox" />Normal</td>
+            <td class="filter-inputs"><input type="checkbox" />Normal</td>
+            <td class="filter-inputs"><input type="checkbox" />Normal</td>
+            <td class="filter-inputs"><input type="checkbox" />Normal</td>
+            <td class="filter-inputs"><input type="checkbox" />Normal</td>
+        </tr>
+        <tr>
+            <td class="filter-inputs"><input type="checkbox" />Critical</td>
+            <td class="filter-inputs"><input type="checkbox" />Critical</td>
+            <td class="filter-inputs"><input type="checkbox" />Critical</td>
+            <td class="filter-inputs"><input type="checkbox" />Critical</td>
+            <td class="filter-inputs"><input type="checkbox" />Critical</td>
+            <td class="filter-inputs"><input type="checkbox" />Critical</td>
+        </tr>
+        <tr>
+            <td class="filter-inputs"><input type="checkbox" />Serious</td>
+            <td class="filter-inputs"><input type="checkbox" />Serious</td>
+            <td class="filter-inputs"><input type="checkbox" />Serious</td>
+            <td class="filter-inputs"><input type="checkbox" />Serious</td>
+            <td class="filter-inputs"><input type="checkbox" />Serious</td>
+            <td class="filter-inputs"><input type="checkbox" />Serious</td>
+        </tr>
+    </table>
+        <div>
+            <h5>Announcement</h5>
+            <div id="announcement-container">
+                TEST
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <p><h5>Note:</h5> For full details, please see SF delivery info</p>
+</div>
+
+<div>
+    <table class="table table-bordered">
+        <tr>
+            <th colspan="7">Vessel Status</th>
+        </tr>
+        <tr>
+            <th>BIL No.</th>
+            <th>Shipper</th>
+            <th>Original ETA Port</th>
+            <th>Revised ETA Port</th>
+            <th>Reasons</th>
+            <th>BIPH Action</th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <td>253845740</td>
+            <td>BIHK</td>
+            <td>23-May</td>
+            <td>29-May</td>
+            <td>Happy Luck 520S will omit her Batangas port call for schedule recovery</td>
+            <td>Please check critical parts</td>
+            <td>
+                <div class="d-flex gap-2">
+                    <input type="button" value="Edit" />
+                    <input type="button" value="Delete" />
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <table class="table table-bordered">
+        <tr>
+            <th colspan="7">Import Delivery</th>
+        </tr>
+        <tr>
+            <th>BIL No.</th>
+            <th>Shipper</th>
+            <th>Original ETA Port</th>
+            <th>Revised ETA Port</th>
+            <th>Reasons</th>
+            <th>BIPH Action</th>
+            <th>Actions</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="d-flex gap-2">
+                    <input type="button" value="Edit" />
+                    <input type="button" value="Delete" />
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
