@@ -261,6 +261,10 @@
       "PackagePath": "staticwebassets\\resources\\icons\\bars-solid.svg"
     },
     {
+      "Id": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\bars-solid_black.svg",
+      "PackagePath": "staticwebassets\\resources\\icons\\bars-solid_black.svg"
+    },
+    {
       "Id": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\resources\\icons\\dashboard.svg",
       "PackagePath": "staticwebassets\\resources\\icons\\dashboard.svg"
     },
