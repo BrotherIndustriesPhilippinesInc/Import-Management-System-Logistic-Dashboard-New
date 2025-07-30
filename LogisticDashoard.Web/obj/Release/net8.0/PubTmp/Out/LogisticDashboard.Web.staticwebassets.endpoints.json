@@ -85,51 +85,6 @@
       ]
     },
     {
-      "Route": "css/site.afp25qs57q.css",
-      "AssetFile": "css/site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "680"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"NrpyBg8Al4VuVVL7yuKtliGa/KRip1bBqJP8dLeehWQ=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Mon, 21 Jul 2025 07:55:08 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "afp25qs57q"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-NrpyBg8Al4VuVVL7yuKtliGa/KRip1bBqJP8dLeehWQ="
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        }
-      ]
-    },
-    {
       "Route": "css/site.css",
       "AssetFile": "css/site.css",
       "Selectors": [],
@@ -144,7 +99,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "680"
+          "Value": "1334"
         },
         {
           "Name": "Content-Type",
@@ -152,17 +107,62 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"NrpyBg8Al4VuVVL7yuKtliGa/KRip1bBqJP8dLeehWQ=\""
+          "Value": "\"dYNTvq39esm0dWJ6wP3xefYvLbzX/fMVt2IhpA93qaI=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 21 Jul 2025 07:55:08 GMT"
+          "Value": "Wed, 30 Jul 2025 23:10:35 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-NrpyBg8Al4VuVVL7yuKtliGa/KRip1bBqJP8dLeehWQ="
+          "Value": "sha256-dYNTvq39esm0dWJ6wP3xefYvLbzX/fMVt2IhpA93qaI="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.ff2h6o7j7q.css",
+      "AssetFile": "css/site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1334"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dYNTvq39esm0dWJ6wP3xefYvLbzX/fMVt2IhpA93qaI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 30 Jul 2025 23:10:35 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ff2h6o7j7q"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-dYNTvq39esm0dWJ6wP3xefYvLbzX/fMVt2IhpA93qaI="
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
         }
       ]
     },
@@ -5251,8 +5251,90 @@
       ]
     },
     {
-      "Route": "resources/icons/bars-solid.jmzdlt1ahe.svg",
+      "Route": "resources/icons/bars-solid.pxdzu5gj3e.svg",
       "AssetFile": "resources/icons/bars-solid.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "646"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 30 Jul 2025 23:10:35 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pxdzu5gj3e"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs="
+        },
+        {
+          "Name": "label",
+          "Value": "resources/icons/bars-solid.svg"
+        }
+      ]
+    },
+    {
+      "Route": "resources/icons/bars-solid.svg",
+      "AssetFile": "resources/icons/bars-solid.svg",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "646"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/svg+xml"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 30 Jul 2025 23:10:35 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs="
+        }
+      ]
+    },
+    {
+      "Route": "resources/icons/bars-solid_black.jmzdlt1ahe.svg",
+      "AssetFile": "resources/icons/bars-solid_black.svg",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5277,7 +5359,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 21 Jul 2025 04:03:11 GMT"
+          "Value": "Wed, 30 Jul 2025 23:10:35 GMT"
         }
       ],
       "EndpointProperties": [
@@ -5291,13 +5373,13 @@
         },
         {
           "Name": "label",
-          "Value": "resources/icons/bars-solid.svg"
+          "Value": "resources/icons/bars-solid_black.svg"
         }
       ]
     },
     {
-      "Route": "resources/icons/bars-solid.svg",
-      "AssetFile": "resources/icons/bars-solid.svg",
+      "Route": "resources/icons/bars-solid_black.svg",
+      "AssetFile": "resources/icons/bars-solid_black.svg",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -5322,7 +5404,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 21 Jul 2025 04:03:11 GMT"
+          "Value": "Wed, 30 Jul 2025 23:10:35 GMT"
         }
       ],
       "EndpointProperties": [

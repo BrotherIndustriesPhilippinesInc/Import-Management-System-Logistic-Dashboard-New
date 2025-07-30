@@ -62,6 +62,7 @@ wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
 wwwroot\resources\icons\administrator.svg
 wwwroot\resources\icons\air-freight.svg
 wwwroot\resources\icons\bars-solid.svg
+wwwroot\resources\icons\bars-solid_black.svg
 wwwroot\resources\icons\dashboard.svg
 wwwroot\resources\icons\dollar.svg
 wwwroot\resources\icons\imports.svg

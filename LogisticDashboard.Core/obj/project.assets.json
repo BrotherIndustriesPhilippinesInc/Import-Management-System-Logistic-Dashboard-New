@@ -716,23 +716,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ghost\\.nuget\\packages\\": {},
+    "C:\\Users\\arengama\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashboard.Core\\LogisticDashboard.Core.csproj",
+      "projectUniqueName": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashboard.Core\\LogisticDashboard.Core.csproj",
       "projectName": "LogisticDashboard.Core",
-      "projectPath": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashboard.Core\\LogisticDashboard.Core.csproj",
-      "packagesPath": "C:\\Users\\ghost\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashboard.Core\\obj\\",
+      "projectPath": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashboard.Core\\LogisticDashboard.Core.csproj",
+      "packagesPath": "C:\\Users\\arengama\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashboard.Core\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ghost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\arengama\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -741,6 +741,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
