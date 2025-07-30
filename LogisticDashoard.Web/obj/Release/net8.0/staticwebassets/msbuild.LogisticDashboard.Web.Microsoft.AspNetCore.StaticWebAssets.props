@@ -12,8 +12,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>afp25qs57q</Fingerprint>
-      <Integrity>NrpyBg8Al4VuVVL7yuKtliGa/KRip1bBqJP8dLeehWQ=</Integrity>
+      <Fingerprint>ff2h6o7j7q</Fingerprint>
+      <Integrity>dYNTvq39esm0dWJ6wP3xefYvLbzX/fMVt2IhpA93qaI=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</OriginalItemSpec>
@@ -1164,11 +1164,29 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>pxdzu5gj3e</Fingerprint>
+      <Integrity>s/w1J0mUDc3i1JoCnHRpoehjGSeHTzaDGWLXkDUSofs=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\resources\icons\bars-solid.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\resources\icons\bars-solid_black.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>LogisticDashboard.Web</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/LogisticDashboard.Web</BasePath>
+      <RelativePath>resources/icons/bars-solid_black.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
       <Fingerprint>jmzdlt1ahe</Fingerprint>
       <Integrity>ZbEQfr4AoNHa3cwtrtFQEu9uBz6Ns8Ayvsbj9lZ31d8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\resources\icons\bars-solid.svg'))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\resources\icons\bars-solid_black.svg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\resources\icons\dashboard.svg'))">
       <SourceType>Package</SourceType>

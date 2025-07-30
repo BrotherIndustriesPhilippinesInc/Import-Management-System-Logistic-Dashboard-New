@@ -3,6 +3,7 @@
   "WorkspaceRootPath": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashoard.Web\\",
   "Documents": [
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|c:\\users\\arengama\\documents\\repos\\logisticdashboardgit\\logisticdashoard.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -13,6 +14,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|c:\\users\\arengama\\documents\\repos\\logisticdashboardgit\\logisticdashoard.web\\views\\components\\navlinks.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|solutionrelative:views\\components\\navlinks.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+=======
+      "AbsoluteMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|c:\\users\\ghost\\documents\\projects\\logisticdashboard\\logisticdashoard.web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|c:\\users\\ghost\\documents\\projects\\logisticdashboard\\logisticdashoard.web\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|c:\\users\\ghost\\documents\\projects\\logisticdashboard\\logisticdashoard.web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{DD933F56-F9FE-90AC-A08B-DDD635A00865}|LogisticDashboard.Web.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+>>>>>>> HomeBranch
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +35,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< HEAD
           "SelectedChildIndex": 3,
+=======
+          "SelectedChildIndex": 0,
+>>>>>>> HomeBranch
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,6 +47,7 @@
             },
             {
               "$type": "Document",
+<<<<<<< HEAD
               "DocumentIndex": 2,
               "Title": "NavLinks.cshtml",
               "DocumentMoniker": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashoard.Web\\Views\\Components\\NavLinks.cshtml",
@@ -54,15 +72,45 @@
             },
             {
               "$type": "Document",
+=======
+>>>>>>> HomeBranch
               "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAFUAAAAAAAAAAAAAAHAAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-30T09:10:13.068Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashoard.Web\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashoard.Web\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACIAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAADQAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-07-22T00:23:19.906Z",
+              "WhenOpened": "2025-07-30T09:22:36.867Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Users\\ghost\\Documents\\Projects\\LogisticDashboard\\LogisticDashoard.Web\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\css\\site.css",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAAFIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-07-30T08:40:20.695Z",
               "EditorCaption": ""
             }
           ]
