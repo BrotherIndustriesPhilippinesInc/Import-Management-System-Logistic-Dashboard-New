@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboard\\LogisticDashboard.API\\LogisticDashboard.API.csproj": {}
+    "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashboard.API\\LogisticDashboard.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboard\\LogisticDashboard.API\\LogisticDashboard.API.csproj": {
+    "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashboard.API\\LogisticDashboard.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboard\\LogisticDashboard.API\\LogisticDashboard.API.csproj",
+        "projectUniqueName": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashboard.API\\LogisticDashboard.API.csproj",
         "projectName": "LogisticDashboard.API",
-        "projectPath": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboard\\LogisticDashboard.API\\LogisticDashboard.API.csproj",
+        "projectPath": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashboard.API\\LogisticDashboard.API.csproj",
         "packagesPath": "C:\\Users\\arengama\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboard\\LogisticDashboard.API\\obj\\",
+        "outputPath": "C:\\Users\\arengama\\Documents\\repos\\LogisticDashboardGit\\LogisticDashboard.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
