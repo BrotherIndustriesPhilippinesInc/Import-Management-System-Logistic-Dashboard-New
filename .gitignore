@@ -1,4 +1,41 @@
-.vs
-bin
-obj
+# User-specific files
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
 LogisticDashboard.API/obj/
+LogisticDashboard.Core/obj/
+
+LogisticDashboard.Web/.vs/
+LogisticDashboard.Web/obj/
+
+# Backup & crash logs
+*.bak
+*.log
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Rider / VS Code / JetBrains stuff
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Environment / secrets
+.env
+*.env
+.env.*
+
+# Others
+TestResults/
+*.db
+*.sqlite
+*.mdb
+*.pdb
