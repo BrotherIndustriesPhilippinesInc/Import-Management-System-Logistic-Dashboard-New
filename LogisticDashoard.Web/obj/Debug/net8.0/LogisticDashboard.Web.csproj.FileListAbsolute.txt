@@ -347,3 +347,4 @@ C:\Users\arengama\Documents\repos\LogisticDashboardGit\LogisticDashoard.Web\obj\
 C:\Users\arengama\Documents\repos\LogisticDashboardGit\LogisticDashoard.Web\obj\Debug\net8.0\LogisticDashboard.Web.pdb
 C:\Users\arengama\Documents\repos\LogisticDashboardGit\LogisticDashoard.Web\obj\Debug\net8.0\LogisticDashboard.Web.genruntimeconfig.cache
 C:\Users\arengama\Documents\repos\LogisticDashboardGit\LogisticDashoard.Web\obj\Debug\net8.0\ref\LogisticDashboard.Web.dll
+C:\Users\arengama\Documents\repos\LogisticDashboardGit\LogisticDashoard.Web\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

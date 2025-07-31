@@ -14,11 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LogisticDashboard.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+edd237103aabb1fe372965381aa9e2441580e341")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+efe043dc66ea5b899ab7412c6dc582e9e5a93320")]
->>>>>>> HomeBranch
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+425498515339382bfa9b225b75f3f6a6b3c785c2")]
 [assembly: System.Reflection.AssemblyProductAttribute("LogisticDashboard.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LogisticDashboard.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

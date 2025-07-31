@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LogisticDashboard.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68b5bb1d69496d17d90afc3024bddaad7101ba33")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+425498515339382bfa9b225b75f3f6a6b3c785c2")]
 [assembly: System.Reflection.AssemblyProductAttribute("LogisticDashboard.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LogisticDashboard.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
