@@ -1,7 +1,0 @@
-C:\Users\arengama\Documents\repos\LogisticDashoard.Web\obj\Release\net8.0\PubTmp\Out\LogisticDashoard.Web.exe
-C:\Users\arengama\Documents\repos\LogisticDashoard.Web\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
-C:\Users\arengama\Documents\repos\LogisticDashoard.Web\obj\Release\net8.0\PubTmp\Out\appsettings.json
-C:\Users\arengama\Documents\repos\LogisticDashoard.Web\obj\Release\net8.0\PubTmp\Out\LogisticDashoard.Web.dll
-C:\Users\arengama\Documents\repos\LogisticDashoard.Web\obj\Release\net8.0\PubTmp\Out\LogisticDashoard.Web.deps.json
-C:\Users\arengama\Documents\repos\LogisticDashoard.Web\obj\Release\net8.0\PubTmp\Out\LogisticDashoard.Web.runtimeconfig.json
-C:\Users\arengama\Documents\repos\LogisticDashoard.Web\obj\Release\net8.0\PubTmp\Out\LogisticDashoard.Web.pdb

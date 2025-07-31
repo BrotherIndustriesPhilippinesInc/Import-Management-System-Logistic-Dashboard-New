@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\LogisticDashoard.Web.props" />
-</Project>
