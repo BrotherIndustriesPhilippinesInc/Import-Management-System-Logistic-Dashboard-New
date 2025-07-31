@@ -6,11 +6,16 @@
 # Build results
 bin/
 obj/
+
+LogisticDashboard.API/bin/
 LogisticDashboard.API/obj/
+
+LogisticDashboard.Core/bin/
 LogisticDashboard.Core/obj/
 
 LogisticDashboard.Web/.vs/
 LogisticDashboard.Web/obj/
+LogisticDashboard.API/bin/
 
 # Backup & crash logs
 *.bak
