@@ -15,7 +15,7 @@ LogisticDashboard.Core/obj/
 
 LogisticDashboard.Web/.vs/
 LogisticDashboard.Web/obj/
-LogisticDashboard.API/bin/
+LogisticDashboard.Web/Properites/PublicProfiles/
 
 # Backup & crash logs
 *.bak
