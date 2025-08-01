@@ -2,5 +2,145 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Sea Freight Delivery Info";
 }
 
+<h1 class="text-center">SEA FREIGHT SHIPMENT INFORMATION</h1>
+<div>
+    <div class="d-flex justify-content-between mb-2">
+        <div>
+            <span>Import Shipping Search</span>
+        </div>
+        <div class="d-flex gap-3">
+            <div>
+                <input type="file" id="uploadInput" class="d-none" />
+                <button class="sea-freight-controls d-flex align-items-end" type="button" onclick="document.getElementById('uploadInput').click();">
+                    <img src="@Url.Content("~/resources/icons/file-arrow-up-solid-full.svg")" alt="Upload Icon" width="32" height="32" />
+                    Upload data
+                </button>
+            </div>
+
+            @* <div>
+                <button class="sea-freight-controls d-flex align-items-end" type="button">
+                    <img src="@Url.Content("~/resources/icons/rotate-right-solid-full.svg")" alt="Upload Icon" width="32" height="32" />
+                    Refresh
+                </button>
+            </div>
+            <div>
+                <button class="sea-freight-controls d-flex align-items-end" type="button">
+                    <img src="@Url.Content("~/resources/icons/floppy-disk-solid-full.svg")" alt="Upload Icon" width="32" height="32" />
+                    Save
+                </button>
+            </div> *@
+        </div>
+    </div>
+    
+    <div class="d-flex justify-content-between">
+        <div class="d-flex flex-column gap-1">
+            <div class="d-flex gap-2 justify-content-end">
+                <span class="sub-label">SWB / AWB:</span>
+                <input type="text" />
+            </div>
+            <div class="d-flex gap-2 justify-content-end">
+                <span class="sub-label">SHIPPER:</span>
+                <input type="text" />
+            </div>
+            <div class="d-flex gap-2 justify-content-end">
+                <span class="sub-label">INVOICE NO.</span>
+                <input type="text" />
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-1">
+            <div class="d-flex gap-2 justify-content-end">
+                <span class="sub-label">DATE DELIVERED:</span>
+                <input type="text" />
+            </div>
+            <div class="d-flex gap-2 justify-content-end">
+                <span class="sub-label">ITEM CATEGORY:</span>
+                <input type="text" />
+            </div>
+            <div class="d-flex gap-2 justify-content-end">
+                <div>
+                    <span class="sub-label d-inline">START DATE:</span>
+                    <input type="date"/>
+                </div>
+                <div>
+                    <span class="sub-label d-inline">END DATE:</span>
+                    <input type="date" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="d-flex gap-2 justify-content-evenly my-3 text-center">
+        <div class="legends border bg-light p-2 w-50">
+            <span class="fw-bold">STATUS (DIRECT):</span>
+            <div class="d-flex flex-wrap gap-2">
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-yellow">
+                    <span>IN TRANSIT</span>
+                </div>
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-blue">
+                    <span>ON GOING</span>
+                </div>
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-green">
+                    <span>DELIVERED</span>
+                </div>
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-orange">
+                    <span>FOR DELIVERY TOMORROW</span>
+                </div>
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-light_green">
+                    <span>FOR DELIVERY TODAY</span>
+                </div>
+            </div>
+            
+        </div>
+        <div class="legends border bg-light p-2 w-50">
+            <span class="fw-bold">STATUS (INDIRECT):</span>
+            <div class="d-flex flex-wrap gap-2">
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-yellow">
+                    <span>IN TRANSIT</span>
+                </div>
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-blue">
+                    <span>ON GOING PROCESSING</span>
+                </div>
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-green">
+                    <span>DELIVERED</span>
+                </div>
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-orange">
+                    <span>FOR DELIVERY TOMORROW</span>
+                </div>
+                <div class="flex-grow-1 border border-1 text-center p-1 fill-light_green">
+                    <span>FOR DELIVERY TODAY</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div>
+        <table id="sea-freight-mainTable" class=overflow-scroll">
+            <thead>
+                <tr>
+                    <th class="shipment-details">ITEM CATEGORY</th>
+                    <th class="shipment-details">SHIPPER</th>
+                    <th class="shipment-details">ORIGIN</th>
+                    <th class="shipment-details">BIL</th>
+                    <th class="shipment-details">INV</th>
+                    <th class="shipment-details">MODE OF SHIPMENT</th>
+                    <th class="shipment-details">CONTAINER SIZE / NO. OF PKGS</th>
+                    <th class="shipment-details">CONTAINER #</th>
+                    <th class="shipment-details">TRUCKER</th>
+                    <th class="vessel-status">ATA</th>
+                    <th class="delivery">REQUESTED DEL. DATE TO TRUCKER</th>
+                    <th class="delivery">REQUESTED DEL. TIME TO TRUCKER</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <script src="@Url.Content("~/js/page-scripts/SeaFreightDeliveryInfo.js")"></script>
+}

@@ -32,8 +32,8 @@
             this.WebViewPanel = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WebViewPanel)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -46,7 +46,7 @@
             this.WebViewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.WebViewPanel.Location = new System.Drawing.Point(0, 30);
             this.WebViewPanel.Name = "WebViewPanel";
-            this.WebViewPanel.Size = new System.Drawing.Size(1264, 651);
+            this.WebViewPanel.Size = new System.Drawing.Size(1280, 690);
             this.WebViewPanel.Source = new System.Uri("http://apbiphbpswb01:1116/", System.UriKind.Absolute);
             this.WebViewPanel.TabIndex = 0;
             this.WebViewPanel.ZoomFactor = 1D;
@@ -60,7 +60,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1264, 30);
+            this.panel1.Size = new System.Drawing.Size(1280, 30);
             this.panel1.TabIndex = 1;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
@@ -73,28 +73,12 @@
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(9)))), ((int)(((byte)(75)))));
-            this.button1.Location = new System.Drawing.Point(1234, 3);
+            this.button1.Location = new System.Drawing.Point(1250, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(24, 24);
             this.button1.TabIndex = 0;
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(9)))), ((int)(((byte)(75)))));
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(9)))), ((int)(((byte)(75)))));
-            this.button2.Location = new System.Drawing.Point(1204, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(24, 24);
-            this.button2.TabIndex = 1;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -105,18 +89,34 @@
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(9)))), ((int)(((byte)(75)))));
-            this.button3.Location = new System.Drawing.Point(1174, 3);
+            this.button3.Location = new System.Drawing.Point(1190, 3);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(24, 24);
             this.button3.TabIndex = 2;
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // button2
+            // 
+            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(9)))), ((int)(((byte)(75)))));
+            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
+            this.button2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(9)))), ((int)(((byte)(75)))));
+            this.button2.Location = new System.Drawing.Point(1220, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(24, 24);
+            this.button2.TabIndex = 1;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.ClientSize = new System.Drawing.Size(1280, 720);
             this.Controls.Add(this.WebViewPanel);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

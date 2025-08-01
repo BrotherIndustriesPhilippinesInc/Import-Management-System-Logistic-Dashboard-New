@@ -9,5 +9,7 @@ namespace LogisticDashboard.Web.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<SeaFreightScheduleMonitoring> SeaFreightScheduleMonitoring { get; set; }
     }
 }

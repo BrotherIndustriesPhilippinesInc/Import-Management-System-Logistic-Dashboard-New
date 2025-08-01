@@ -2,7 +2,7 @@
 @using LogisticDashboard.Web.Views.Components.ComponentModels
 
 @{
-    ViewData["Title"] = "Homepage";
+
 }
 
 <!DOCTYPE html>
@@ -48,10 +48,10 @@
 
     
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNav" aria-labelledby="offcanvasNavLabel">
-        <div class="offcanvas-header">
+        <div class="offcanvas-header" style="align-items: flex-start">
             <div class="w-100 d-flex justify-content-center">
                 <div>
-                    <img src="~/resources/logo/temporary-logo.png" width="80" height="80" alt="logo">
+                    <img src="~/resources/logo/Logistic Dashboard Logo.png" width="240" height="160" alt="logo">
                 </div>
             </div>
             
@@ -60,7 +60,7 @@
         <div class="offcanvas-body">
 
             <div class="d-flex flex-column gap-2">
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Homepage", ASPController = "Home", Icon = "/resources/icons/imports.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Import", ASPController = "Home", Icon = "/resources/icons/imports.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Dashboard", ASPController = "Dashboard", Icon = "/resources/icons/dashboard.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Sea Freight Delivery Info", ASPController = "SeaFreightDeliveryInfo", Icon = "/resources/icons/sea-freight.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Air Freight Delivery Info", ASPController = "AirFreightDeliveryInfo", Icon = "/resources/icons/air-freight.svg" })
@@ -81,7 +81,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/libraries/less.js"></script>
+
+    <script src="~/lib/datatables/datatables.js"></script>
+    <link href="~/lib/datatables/datatables.css" rel="stylesheet" />
+
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
