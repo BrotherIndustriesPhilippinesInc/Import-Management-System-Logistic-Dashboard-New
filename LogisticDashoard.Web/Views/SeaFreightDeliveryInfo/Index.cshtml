@@ -117,24 +117,86 @@
         </div>
     </div>
 
-    <div>
-        <table id="sea-freight-mainTable" class=overflow-scroll">
+    <div >
+        <table id="sea-freight-mastringable" class="overflow-scroll" style="width: 300px;">
             <thead>
                 <tr>
-                    <th class="shipment-details">ITEM CATEGORY</th>
-                    <th class="shipment-details">SHIPPER</th>
-                    <th class="shipment-details">ORIGIN</th>
+                    <!-- SHIPMENT DETAILS -->
+                    <th>ID</th>
+                    <th class="shipment-details">Item Category</th>
+                    <th class="shipment-details">Shipper</th>
+                    <th class="shipment-details">Origin</th>
                     <th class="shipment-details">BIL</th>
                     <th class="shipment-details">INV</th>
-                    <th class="shipment-details">MODE OF SHIPMENT</th>
-                    <th class="shipment-details">CONTAINER SIZE / NO. OF PKGS</th>
-                    <th class="shipment-details">CONTAINER #</th>
-                    <th class="shipment-details">TRUCKER</th>
+                    <th>Carrier / Forwarded</th>
+                    <th>Port of Discharge</th>
+                    <th>Vessel Name</th>
+                    <th class="shipment-details">Mode of Shipment</th>
+                    <th class="shipment-details">Container Size / No. of PKGS</th>
+                    <th class="shipment-details">Container #</th>
+                    <th class="shipment-details">Trucker</th>
+
+                    <!-- VESSEL STATUS -->
+                    <th>Original ETD</th>
+                    <th>ATD</th>
+                    <th>Original ETA</th>
+                    <th>Latest ETA</th>
                     <th class="vessel-status">ATA</th>
-                    <th class="delivery">REQUESTED DEL. DATE TO TRUCKER</th>
-                    <th class="delivery">REQUESTED DEL. TIME TO TRUCKER</th>
+                    <th>ATB Date</th>
+                    <th>ATB Time</th>
+                    <th>No. of Days Delayed (ETD → ATD)</th>
+                    <th>No. of Days Delayed (ETA → ATA)</th>
+                    <th>No. of Days Delayed (ETA → ATB)</th>
+                    <th>Transit Days (ATD → ATA)</th>
+                    <th>Vessel Status</th>
+                    <th>Vessel Remarks</th>
+
+                    <!-- SPECIAL REQUIREMENTS -->
+                    <th>Have Job Operation</th>
+                    <th>With Special Permit</th>
+
+                    <!-- DELIVERY -->
+                    <th>BERTH Leadtime</th>
+                    <th>ETA BIPH</th>
+                    <th>Orig RDD</th>
+                    <th class="delivery">Requested Del. Date to Trucker</th>
+                    <th class="delivery">Requested Del. Time to Trucker</th>
+                    <th>Actual Delivery</th>
+                    <th>Actual Del. Time to Trucker</th>
+                    <th>Based on BERTH/BIPH Leadtime</th>
+                    <th>Actual Leadtime (ATA Port → ATA BIPH, excl. weekends)</th>
+
+                    <!-- SHIPMENT PROCESSING STATUS -->
+                    <th>Step 1</th>
+                    <th>Step 2</th>
+                    <th>Step 3</th>
+                    <th>Step 4</th>
+                    <th>Step 5</th>
+                    <th>Step 6</th>
+                    <th>Actual Status</th>
+                    <th>Shipment Processing Remarks</th>
+
+                    <!-- BOBTAIL / DETENTION -->
+                    <th>Bobtail Date</th>
+                    <th>Requested Pick Up Date</th>
+                    <th>Date Return of Empty Container</th>
+                    <th>Free Time Valid Until</th>
+                    <th>No. of Days with Detention (Est.)</th>
+                    <th>No. of Days of Free Time</th>
+
+                    <!-- MP / PURCHASING -->
+                    <th>Requested Del. Date to Ship</th>
+                    <th>Priority Container</th>
+                    <th>Earliest Shortage Date</th>
+                    <th>Request to Unload (AM/PM)</th>
+
+                    <!-- FINAL -->
+                    <th>Random Boolean</th>
+                    <th>Final Remarks</th>
                 </tr>
             </thead>
+
+            
             <tbody>
 
             </tbody>

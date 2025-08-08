@@ -26,55 +26,60 @@ namespace LogisticDashboard.Core
         public string Trucker { get; set; }
 
         //VESSEL STATUS
-        public DateOnly Original_ETD { get; set; }
-        public DateOnly ATD { get; set; }
-        public DateOnly Original_ETA { get; set; }
-        public DateOnly Latest_ETA { get; set; }
-        public DateOnly ATA { get; set; }
-        public DateOnly ATB_Date { get; set; }
-        public TimeOnly ATB_Time { get; set; }
+        public string Original_ETD { get; set; }
+        public string ATD { get; set; }
+        public string Original_ETA { get; set; }
+        public string Latest_ETA { get; set; }
+        public string ATA { get; set; }
+        public string ATB_Date { get; set; }
+        public string ATB_Time { get; set; }
+        public string No_Of_Days_Delayed_ETD_ATD { get; set; }
+        public string No_Of_Days_Delayed_ETA_ATA { get; set; }
+        public string No_Of_Days_Delayed_ETA_ATB { get; set; }
+        public string Transit_Days_ATD_ATA { get; set; }
+        public string Vessel_Status { get; set; }
         public string Vessel_Remarks { get; set; }
 
         //SPECIAL REQUIREMENTS
-        public bool Have_Job_Operation { get; set; }
-        public bool With_Special_Permit { get; set; }
+        public string Have_Job_Operation { get; set; }
+        public string With_Special_Permit { get; set; }
 
         //DELIVERY
         public string BERTH_Leadtime { get; set; }
-        public DateOnly ETA_BIPH { get; set; }
-        public DateOnly Orig_RDD { get; set; }
-        public DateOnly Requested_Del_Date_To_Trucker { get; set; }
-        public TimeOnly Requested_Del_Time_To_Trucker { get; set; }
-        public DateOnly Actual_Delivery { get; set; }
-        public TimeOnly Actual_Del_Time_To_Trucker { get; set; }
+        public string ETA_BIPH { get; set; }
+        public string Orig_RDD { get; set; }
+        public string Requested_Del_Date_To_Trucker { get; set; }
+        public string Requested_Del_Time_To_Trucker { get; set; }
+        public string Actual_Delivery { get; set; }
+        public string Actual_Del_Time_To_Trucker { get; set; }
         public string Based_On_BERTH_BIPH_Leadtime { get; set; }
-        public decimal Actual_Leadtime_ATA_Port_ATA_BIPH_exclude_weekend { get; set; }
+        public string Actual_Leadtime_ATA_Port_ATA_BIPH_exclude_weekend { get; set; }
 
         //SHIPMENT PROCESSING STATUS
-        public DateOnly Step_1 { get; set; }
-        public DateOnly Step_2 { get; set; }
-        public DateOnly Step_3 { get; set; }
-        public DateOnly Step_4 { get; set; }
-        public DateOnly Step_5 { get; set; }
-        public DateOnly Step_6 { get; set; }
-        public DateOnly Actual_Status { get; set; }
-        public DateOnly Shipment_Processing_Remarks { get; set; }
+        public string Step_1 { get; set; }
+        public string Step_2 { get; set; }
+        public string Step_3 { get; set; }
+        public string Step_4 { get; set; }
+        public string Step_5 { get; set; }
+        public string Step_6 { get; set; }
+        public string Actual_Status { get; set; }
+        public string Shipment_Processing_Remarks { get; set; }
 
         //BOBTAIL / DETENTION
         public string Bobtail_Date { get; set; }
-        public DateOnly? Requested_Pick_Up_Date { get; set; }
-        public DateOnly? Date_Return_of_Empty_Cntr { get; set; }
-        public DateOnly? FreeTime_Valid_Until { get; set; }
-        public decimal No_of_Days_with_Detention_Estimate_Only { get; set; }
-        public decimal No_of_Days_of_Free_Time { get; set; }
+        public string? Requested_Pick_Up_Date { get; set; }
+        public string? Date_Return_of_Empty_Cntr { get; set; }
+        public string? FreeTime_Valid_Until { get; set; }
+        public string No_of_Days_with_Detention_Estimate_Only { get; set; }
+        public string No_of_Days_of_Free_Time { get; set; }
 
         // MP / PURCHASING
-        public DateOnly? Requested_Del_Date_To_Ship { get; set; }
+        public string? Requested_Del_Date_To_Ship { get; set; }
         public string Priority_Container { get; set; }
-        public DateOnly? Earliest_Shortage_Date { get; set; }
+        public string? Earliest_Shortage_Date { get; set; }
         public string Request_to_Unload_AM_or_PM { get; set; }
 
-        public bool Random_Boolean { get; set; }
+        public string Random_Boolean { get; set; }
         public string Final_Remarks { get; set; }
 
     }

@@ -11,7 +11,7 @@ namespace LogisticDashboard.Web.Controllers
 
         public SeaFreightDeliveryInfoController(ApplicationDbContext dbContext)
         {
-            dbContext = _context;
+            _context = dbContext;
         }
         public async Task<IActionResult> Index()
         {
