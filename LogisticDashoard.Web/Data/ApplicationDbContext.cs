@@ -11,5 +11,7 @@ namespace LogisticDashboard.Web.Data
         public DbSet<Product> Products { get; set; }
 
         public DbSet<SeaFreightScheduleMonitoring> SeaFreightScheduleMonitoring { get; set; }
+
+        public DbSet<AirFreightScheduleMonitoring> AirFreightScheduleMonitoring { get; set; }
     }
 }

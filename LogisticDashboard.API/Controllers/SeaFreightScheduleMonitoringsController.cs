@@ -103,7 +103,7 @@ namespace LogisticDashboard.API.Controllers
             int startCol = 2;  // Change this
             int rowCount = worksheet.Dimension.Rows;
 
-            await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE SeaFreightScheduleMonitoring");
+            await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"SeaFreightScheduleMonitoring\"");
 
             for (int row = startRow; row <= rowCount; row++)
             {
@@ -119,6 +119,10 @@ namespace LogisticDashboard.API.Controllers
 
                 if (!rowHasData)
                     continue; // skip this row
+
+                var itemCategory = worksheet.Cells[row, startCol].Text;
+                if (string.IsNullOrWhiteSpace(itemCategory))
+                    continue;
 
                 var seaFreight = new SeaFreightScheduleMonitoring
                 {
@@ -141,7 +145,7 @@ namespace LogisticDashboard.API.Controllers
                     ATD = worksheet.Cells[row, startCol + 13].Text,
                     Original_ETA = worksheet.Cells[row, startCol + 14].Text,
                     Latest_ETA = worksheet.Cells[row, startCol + 15].Text,
-                    ATA = worksheet.Cells[row, startCol + 16].Text,
+                    ATA = (worksheet.Cells[row, startCol + 16].Value as DateTime?)?.ToString("yyyy-MM-dd") ?? "",
                     ATB_Date = worksheet.Cells[row, startCol + 17].Text,
                     ATB_Time = worksheet.Cells[row, startCol + 18].Text,
 
@@ -224,5 +228,26 @@ namespace LogisticDashboard.API.Controllers
         {
             return _context.SeaFreightScheduleMonitoring.Any(e => e.Id == id);
         }
+
+        [HttpGet("category_status")]
+        public async Task<ActionResult<IEnumerable<SeaFreightScheduleMonitoring>>> GetSeaFreightScheduleMonitoring(
+        [FromQuery] string item_category,
+        [FromQuery] string actual_status)
+        {
+            var results = await _context.SeaFreightScheduleMonitoring
+                .Where(x => x.ItemCategory.ToLower() == item_category.ToLower()
+                         && x.Actual_Status.ToLower() == actual_status.ToLower())
+                .ToListAsync();
+
+            if (!results.Any())
+            {
+                return NotFound();
+            }
+
+            return results;
+        }
+
+
+
     }
 }

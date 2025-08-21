@@ -1,5 +1,7 @@
-﻿$(function () {
-    const table = $('#sea-freight-mastringable').DataTable({
+﻿import apiCall from "../helpers/APICall.js";
+
+$(async function () {
+    const table = $('#sea-freight-table').DataTable({
         layout: {
             topStart: {
                 buttons: ['colvis']
@@ -7,12 +9,27 @@
             topEnd: ['search', 'pageLength'],
 
         },
-        autoWidth: true,
         ajax: {
-            url: 'http://apbiphbpswb01:1117/api/SeaFreightScheduleMonitorings',
+            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings`,
             method: "GET",
             dataSrc: '',
+            error: function (xhr, status, error) {
+                if (xhr.status === 404) {
+                    table.clear().draw();
+                    alert("No Data Found (404)");
+                } else {
+                    alert("Error: " + xhr.status + " " + thrown);
+                }
+            }
         },
+
+        fixedHeader: true,
+        autoWidth: true,
+        scrollX: true,
+
+        columnDefs: [
+            {className: "p-1 text-nowrap", target: "_all"}
+        ],
         columns: [
             // SHIPMENT DETAILS
             { data: 'id', title: 'ID', visible: false },
@@ -34,7 +51,7 @@
             { data: 'atd', title: 'ATD', visible: false },
             { data: 'original_ETA', title: 'Original ETA', visible: false },
             { data: 'latest_ETA', title: 'Latest ETA', visible: false },
-            { data: 'ata', title: 'ATA' },
+            { data: 'ata', title: 'ATA', class: "text-nowrap" },
             { data: 'atB_Date', title: 'ATB Date', visible: false },
             { data: 'atB_Time', title: 'ATB Time', visible: false },
             { data: 'no_Of_Days_Delayed_ETD_ATD', title: 'Days Delayed ETD→ATD', visible: false },
@@ -86,11 +103,11 @@
             // OTHER
             { data: 'random_Boolean', title: 'Random Boolean', visible: false },
             { data: 'final_Remarks', title: 'Final Remarks', visible: false }
-        ]
-
+        ],
+        
     });
 
-    table.columns.adjust().draw();
+    /*EVENTS*/
     $('#uploadInput').on('change', function () {
         const file = this.files[0];
 
@@ -103,7 +120,7 @@
         formData.append('file', file);
 
         $.ajax({
-            url: 'http://apbiphbpswb01:1117/api/SeaFreightScheduleMonitorings/upload', // 🔥 Replace with your actual API route
+            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/upload`, // 🔥 Replace with your actual API route
             type: 'POST',
             data: formData,
             processData: false,
@@ -119,4 +136,33 @@
         });
     });
 
-});
+    $(".ship-freight-button").on("click", async function () {
+        await searchButtons($(this).data("item_category"), $(this).data("status"));
+    });
+
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        const min = $('#start-date').val();
+        const max = $('#end-date').val();
+        const dateStr = data[17]; // e.g., 5 for 6th column
+        const date = new Date(dateStr);
+
+        if ((min === "" || date >= new Date(min)) &&
+            (max === "" || date <= new Date(max))) {
+            return true;
+        }
+        return false;
+    });
+
+    $('#start-date, #end-date').on('change', function () {
+        table.draw();
+    });
+
+    /*FUNCITONS*/
+    async function searchButtons(item_category, status) {
+        /*console.log(`CLICKED: ${item_category}, ${status}`);*/
+
+        const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/category_status?item_category=${item_category}&actual_status=${status}`;
+        table.ajax.url(url).load();
+        
+    }
+}); 

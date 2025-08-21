@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LogisticDashboard.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250807231706_AllStrings")]
-    partial class AllStrings
+    [Migration("20250821041953_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,123 @@ namespace LogisticDashboard.Web.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("LogisticDashboard.Core.AirFreightScheduleMonitoring", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ATA")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ATA_Port_BIPH_Leadtime")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ATD")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AWB")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Actual_Del")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Broker")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ETA_BIPH_Manual_Computation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Earliest_Shortage_Date")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Flight_Detail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Flight_Status_Remarks")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Forwarder_Courier")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Freight_Term")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Have_Arrangement")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Import_Permit_Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Import_Remarks")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Invoice_No")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ItemCategory")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Latest_ETA")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("No_Of_Pkgs")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Original_ETA")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Original_ETD")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Requested_Del_Date_To_Ship")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Shipper")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("System_Update")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("With_Special_Permit")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AirFreightScheduleMonitoring");
+                });
 
             modelBuilder.Entity("LogisticDashboard.Core.Product", b =>
                 {

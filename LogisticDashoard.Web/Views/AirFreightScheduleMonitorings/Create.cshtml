@@ -1,0 +1,158 @@
+﻿@model LogisticDashboard.Core.AirFreightScheduleMonitoring
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>AirFreightScheduleMonitoring</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ItemCategory" class="control-label"></label>
+                <input asp-for="ItemCategory" class="form-control" />
+                <span asp-validation-for="ItemCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Shipper" class="control-label"></label>
+                <input asp-for="Shipper" class="form-control" />
+                <span asp-validation-for="Shipper" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AWB" class="control-label"></label>
+                <input asp-for="AWB" class="form-control" />
+                <span asp-validation-for="AWB" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Forwarder_Courier" class="control-label"></label>
+                <input asp-for="Forwarder_Courier" class="form-control" />
+                <span asp-validation-for="Forwarder_Courier" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Broker" class="control-label"></label>
+                <input asp-for="Broker" class="form-control" />
+                <span asp-validation-for="Broker" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Flight_Detail" class="control-label"></label>
+                <input asp-for="Flight_Detail" class="form-control" />
+                <span asp-validation-for="Flight_Detail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Invoice_No" class="control-label"></label>
+                <input asp-for="Invoice_No" class="form-control" />
+                <span asp-validation-for="Invoice_No" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Freight_Term" class="control-label"></label>
+                <input asp-for="Freight_Term" class="form-control" />
+                <span asp-validation-for="Freight_Term" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="No_Of_Pkgs" class="control-label"></label>
+                <input asp-for="No_Of_Pkgs" class="form-control" />
+                <span asp-validation-for="No_Of_Pkgs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Original_ETD" class="control-label"></label>
+                <input asp-for="Original_ETD" class="form-control" />
+                <span asp-validation-for="Original_ETD" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ATD" class="control-label"></label>
+                <input asp-for="ATD" class="form-control" />
+                <span asp-validation-for="ATD" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Original_ETA" class="control-label"></label>
+                <input asp-for="Original_ETA" class="form-control" />
+                <span asp-validation-for="Original_ETA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Latest_ETA" class="control-label"></label>
+                <input asp-for="Latest_ETA" class="form-control" />
+                <span asp-validation-for="Latest_ETA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ATA" class="control-label"></label>
+                <input asp-for="ATA" class="form-control" />
+                <span asp-validation-for="ATA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Flight_Status_Remarks" class="control-label"></label>
+                <input asp-for="Flight_Status_Remarks" class="form-control" />
+                <span asp-validation-for="Flight_Status_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Import_Permit_Status" class="control-label"></label>
+                <input asp-for="Import_Permit_Status" class="form-control" />
+                <span asp-validation-for="Import_Permit_Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Have_Arrangement" class="control-label"></label>
+                <input asp-for="Have_Arrangement" class="form-control" />
+                <span asp-validation-for="Have_Arrangement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="With_Special_Permit" class="control-label"></label>
+                <input asp-for="With_Special_Permit" class="form-control" />
+                <span asp-validation-for="With_Special_Permit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ATA_Port_BIPH_Leadtime" class="control-label"></label>
+                <input asp-for="ATA_Port_BIPH_Leadtime" class="form-control" />
+                <span asp-validation-for="ATA_Port_BIPH_Leadtime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ETA_BIPH_Manual_Computation" class="control-label"></label>
+                <input asp-for="ETA_BIPH_Manual_Computation" class="form-control" />
+                <span asp-validation-for="ETA_BIPH_Manual_Computation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Requested_Del_Date_To_Ship" class="control-label"></label>
+                <input asp-for="Requested_Del_Date_To_Ship" class="form-control" />
+                <span asp-validation-for="Requested_Del_Date_To_Ship" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Earliest_Shortage_Date" class="control-label"></label>
+                <input asp-for="Earliest_Shortage_Date" class="form-control" />
+                <span asp-validation-for="Earliest_Shortage_Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actual_Del" class="control-label"></label>
+                <input asp-for="Actual_Del" class="form-control" />
+                <span asp-validation-for="Actual_Del" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Import_Remarks" class="control-label"></label>
+                <input asp-for="Import_Remarks" class="form-control" />
+                <span asp-validation-for="Import_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="System_Update" class="control-label"></label>
+                <input asp-for="System_Update" class="form-control" />
+                <span asp-validation-for="System_Update" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

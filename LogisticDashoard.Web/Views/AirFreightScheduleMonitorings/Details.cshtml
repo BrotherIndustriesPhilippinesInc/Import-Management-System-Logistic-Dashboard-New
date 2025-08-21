@@ -1,0 +1,174 @@
+﻿@model LogisticDashboard.Core.AirFreightScheduleMonitoring
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>AirFreightScheduleMonitoring</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ItemCategory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ItemCategory)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Shipper)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Shipper)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AWB)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AWB)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Forwarder_Courier)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Forwarder_Courier)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Broker)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Broker)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Flight_Detail)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Flight_Detail)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Invoice_No)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Invoice_No)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Freight_Term)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Freight_Term)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.No_Of_Pkgs)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.No_Of_Pkgs)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Original_ETD)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Original_ETD)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ATD)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ATD)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Original_ETA)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Original_ETA)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Latest_ETA)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Latest_ETA)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ATA)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ATA)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Flight_Status_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Flight_Status_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Import_Permit_Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Import_Permit_Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Have_Arrangement)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Have_Arrangement)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.With_Special_Permit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.With_Special_Permit)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ATA_Port_BIPH_Leadtime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ATA_Port_BIPH_Leadtime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ETA_BIPH_Manual_Computation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ETA_BIPH_Manual_Computation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Requested_Del_Date_To_Ship)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Requested_Del_Date_To_Ship)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Earliest_Shortage_Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Earliest_Shortage_Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Actual_Del)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Actual_Del)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Import_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Import_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.System_Update)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.System_Update)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

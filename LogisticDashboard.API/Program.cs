@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using LogisticDashboard.API.Data;
+using LogisticDashboard.API.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,9 +34,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseRouting();
-
 app.UseCors("AllowLocalhost");
+
+app.UseRouting();
 
 if (app.Environment.IsDevelopment())
 {

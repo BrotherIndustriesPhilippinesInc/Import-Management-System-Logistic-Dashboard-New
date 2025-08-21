@@ -161,6 +161,10 @@ table.dataTable {
     background-color: white;
 }
 
-.dt-layout-table{
+/*.dt-layout-table{
     overflow: scroll;
+}*/
+
+.btn:hover{
+    color: white;
 }

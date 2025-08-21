@@ -16,5 +16,6 @@ namespace LogisticDashboard.API.Data
 
         public DbSet<LogisticDashboard.Core.SeaFreightScheduleMonitoring> SeaFreightScheduleMonitoring { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.Product> Product { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.AirFreightScheduleMonitoring> AirFreightScheduleMonitoring { get; set; } = default!;
     }
 }
