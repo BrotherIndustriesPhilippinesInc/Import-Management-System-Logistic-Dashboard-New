@@ -139,7 +139,7 @@ input[type=text] {
     vertical-align: middle;
 }
 
-.sea-freight-controls {
+.sea-freight-controls, .air-freight-controls {
     background: none;
     border: none;
     font-size: 12px;

@@ -96,14 +96,14 @@ $(async function () {
         });
     });
 
-    $(".ship-freight-button").on("click", async function () {
+    $(".air-freight-button").on("click", async function () {
         await searchButtons($(this).data("item_category"), $(this).data("status"));
     });
 
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
         const min = $('#start-date').val();
         const max = $('#end-date').val();
-        const dateStr = data[17]; // e.g., 5 for 6th column
+        const dateStr = data[13]; // e.g., 5 for 6th column
         const date = new Date(dateStr);
 
         if ((min === "" || date >= new Date(min)) &&

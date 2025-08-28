@@ -191,5 +191,23 @@ namespace LogisticDashboard.API.Controllers
 
             return Ok("Data imported successfully.");
         }
+
+        [HttpGet("category_status")]
+        public async Task<ActionResult<IEnumerable<AirFreightScheduleMonitoring>>> GetAirFreightScheduleMonitoring(
+        [FromQuery] string item_category,
+        [FromQuery] string actual_status)
+        {
+            var results = await _context.AirFreightScheduleMonitoring
+                .Where(x => x.ItemCategory.ToLower() == item_category.ToLower()
+                         && x.Status.ToLower() == actual_status.ToLower())
+                .ToListAsync();
+
+            if (!results.Any())
+            {
+                return NotFound();
+            }
+
+            return results;
+        }
     }
 }
