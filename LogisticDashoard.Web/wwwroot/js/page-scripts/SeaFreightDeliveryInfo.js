@@ -107,7 +107,13 @@ $(async function () {
         
     });
 
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
     /*EVENTS*/
+
+
     $('#uploadInput').on('change', function () {
         const file = this.files[0];
 
@@ -160,9 +166,7 @@ $(async function () {
     /*FUNCITONS*/
     async function searchButtons(item_category, status) {
         /*console.log(`CLICKED: ${item_category}, ${status}`);*/
-
         const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/category_status?item_category=${item_category}&actual_status=${status}`;
         table.ajax.url(url).load();
-        
     }
-}); 
+});

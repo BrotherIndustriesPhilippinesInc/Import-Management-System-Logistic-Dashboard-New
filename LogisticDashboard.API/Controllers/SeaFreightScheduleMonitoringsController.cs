@@ -103,12 +103,10 @@ namespace LogisticDashboard.API.Controllers
             int startCol = 2;  // Change this
             int rowCount = worksheet.Dimension.Rows;
 
-            await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"SeaFreightScheduleMonitoring\"");
-
             for (int row = startRow; row <= rowCount; row++)
             {
                 bool rowHasData = false;
-                for (int col = startCol; col <= startCol + 55; col++) // adjust max col as needed
+                for (int col = startCol; col <= startCol + 55; col++)
                 {
                     if (!string.IsNullOrWhiteSpace(worksheet.Cells[row, col].Text))
                     {
@@ -118,91 +116,95 @@ namespace LogisticDashboard.API.Controllers
                 }
 
                 if (!rowHasData)
-                    continue; // skip this row
-
-                var itemCategory = worksheet.Cells[row, startCol].Text;
-                if (string.IsNullOrWhiteSpace(itemCategory))
                     continue;
 
-                var seaFreight = new SeaFreightScheduleMonitoring
+                var containerNo = worksheet.Cells[row, startCol + 10].Text; // Container_No column
+                if (string.IsNullOrWhiteSpace(containerNo))
+                    continue;
+
+                var existing = await _context.SeaFreightScheduleMonitoring
+                    .FirstOrDefaultAsync(x => x.Container_No == containerNo);
+
+                if (existing == null)
                 {
-                    //SHIPMENT DETAILS
-                    ItemCategory = worksheet.Cells[row, startCol].Text,
-                    Shipper = worksheet.Cells[row, startCol + 1].Text,
-                    Origin = worksheet.Cells[row, startCol + 2].Text,
-                    BL = worksheet.Cells[row, startCol + 3].Text,
-                    INV = worksheet.Cells[row, startCol + 4].Text,
-                    Carrier_Forwarded = worksheet.Cells[row, startCol + 5].Text,
-                    Port_Of_Discharge = worksheet.Cells[row, startCol + 6].Text,
-                    Vessel_Name = worksheet.Cells[row, startCol + 7].Text,
-                    Mode_Of_Shipment = worksheet.Cells[row, startCol + 8].Text,
-                    Container_Size_No_Of_PKGS = worksheet.Cells[row, startCol + 9].Text,
-                    Container_No = worksheet.Cells[row, startCol + 10].Text,
-                    Trucker = worksheet.Cells[row, startCol + 11].Text,
+                    existing = new SeaFreightScheduleMonitoring();
+                    _context.SeaFreightScheduleMonitoring.Add(existing);
+                }
 
-                    //VESSEL STATUS
-                    Original_ETD = worksheet.Cells[row, startCol + 12].Text,
-                    ATD = worksheet.Cells[row, startCol + 13].Text,
-                    Original_ETA = worksheet.Cells[row, startCol + 14].Text,
-                    Latest_ETA = worksheet.Cells[row, startCol + 15].Text,
-                    ATA = (worksheet.Cells[row, startCol + 16].Value as DateTime?)?.ToString("yyyy-MM-dd") ?? "",
-                    ATB_Date = worksheet.Cells[row, startCol + 17].Text,
-                    ATB_Time = worksheet.Cells[row, startCol + 18].Text,
+                //SHIPMENT DETAILS
+                existing.ItemCategory = worksheet.Cells[row, startCol].Text;
+                existing.Shipper = worksheet.Cells[row, startCol + 1].Text;
+                existing.Origin = worksheet.Cells[row, startCol + 2].Text;
+                existing.BL = worksheet.Cells[row, startCol + 3].Text;
+                existing.INV = worksheet.Cells[row, startCol + 4].Text;
+                existing.Carrier_Forwarded = worksheet.Cells[row, startCol + 5].Text;
+                existing.Port_Of_Discharge = worksheet.Cells[row, startCol + 6].Text;
+                existing.Vessel_Name = worksheet.Cells[row, startCol + 7].Text;
+                existing.Mode_Of_Shipment = worksheet.Cells[row, startCol + 8].Text;
+                existing.Container_Size_No_Of_PKGS = worksheet.Cells[row, startCol + 9].Text;
+                existing.Container_No = containerNo;
+                existing.Trucker = worksheet.Cells[row, startCol + 11].Text;
 
-                    No_Of_Days_Delayed_ETD_ATD = worksheet.Cells[row, startCol + 19].Text,
-                    No_Of_Days_Delayed_ETA_ATA = worksheet.Cells[row, startCol + 20].Text,
-                    No_Of_Days_Delayed_ETA_ATB = worksheet.Cells[row, startCol + 21].Text,
-                    Transit_Days_ATD_ATA = worksheet.Cells[row, startCol + 22].Text,
-                    Vessel_Status = worksheet.Cells[row, startCol + 23].Text,
-                    Vessel_Remarks = worksheet.Cells[row, startCol + 24].Text,
+                //VESSEL STATUS
+                existing.Original_ETD = worksheet.Cells[row, startCol + 12].Text;
+                existing.ATD = worksheet.Cells[row, startCol + 13].Text;
+                existing.Original_ETA = worksheet.Cells[row, startCol + 14].Text;
+                existing.Latest_ETA = worksheet.Cells[row, startCol + 15].Text;
+                existing.ATA = (worksheet.Cells[row, startCol + 16].Value as DateTime?)?.ToString("yyyy-MM-dd") ?? "";
+                existing.ATB_Date = worksheet.Cells[row, startCol + 17].Text;
+                existing.ATB_Time = worksheet.Cells[row, startCol + 18].Text;
 
-                    //SPECIAL REQUIREMENTS
-                    Have_Job_Operation = worksheet.Cells[row, startCol + 25].Text,
-                    With_Special_Permit = worksheet.Cells[row, startCol + 26].Text,
+                existing.No_Of_Days_Delayed_ETD_ATD = worksheet.Cells[row, startCol + 19].Text;
+                existing.No_Of_Days_Delayed_ETA_ATA = worksheet.Cells[row, startCol + 20].Text;
+                existing.No_Of_Days_Delayed_ETA_ATB = worksheet.Cells[row, startCol + 21].Text;
+                existing.Transit_Days_ATD_ATA = worksheet.Cells[row, startCol + 22].Text;
+                existing.Vessel_Status = worksheet.Cells[row, startCol + 23].Text;
+                existing.Vessel_Remarks = worksheet.Cells[row, startCol + 24].Text;
 
-                    //DELIVERY
-                    Based_On_BERTH_BIPH_Leadtime = worksheet.Cells[row, startCol + 27].Text,
-                    ETA_BIPH = worksheet.Cells[row, startCol + 28].Text,
+                //SPECIAL REQUIREMENTS
+                existing.Have_Job_Operation = worksheet.Cells[row, startCol + 25].Text;
+                existing.With_Special_Permit = worksheet.Cells[row, startCol + 26].Text;
 
-                    Orig_RDD = worksheet.Cells[row, startCol + 29].Text,
-                    Requested_Del_Date_To_Trucker = worksheet.Cells[row, startCol + 30].Text,
-                    Requested_Del_Time_To_Trucker = worksheet.Cells[row, startCol + 31].Text,
-                    Actual_Delivery = worksheet.Cells[row, startCol + 32].Text,
-                    Actual_Del_Time_To_Trucker = worksheet.Cells[row, startCol + 33].Text,
+                //DELIVERY
+                existing.Based_On_BERTH_BIPH_Leadtime = worksheet.Cells[row, startCol + 27].Text;
+                existing.ETA_BIPH = worksheet.Cells[row, startCol + 28].Text;
+                existing.Orig_RDD = worksheet.Cells[row, startCol + 29].Text;
+                existing.Requested_Del_Date_To_Trucker = worksheet.Cells[row, startCol + 30].Text;
+                existing.Requested_Del_Time_To_Trucker = worksheet.Cells[row, startCol + 31].Text;
+                existing.Actual_Delivery = worksheet.Cells[row, startCol + 32].Text;
+                existing.Actual_Del_Time_To_Trucker = worksheet.Cells[row, startCol + 33].Text;
 
-                    BERTH_Leadtime = worksheet.Cells[row, startCol + 34].Text,
-                    Actual_Leadtime_ATA_Port_ATA_BIPH_exclude_weekend = worksheet.Cells[row, startCol + 35].Text,
+                existing.BERTH_Leadtime = worksheet.Cells[row, startCol + 34].Text;
+                existing.Actual_Leadtime_ATA_Port_ATA_BIPH_exclude_weekend = worksheet.Cells[row, startCol + 35].Text;
 
-                    //SHIPMENT PROCESS
-                    Step_1 = worksheet.Cells[row, startCol + 36].Text,
-                    Step_2 = worksheet.Cells[row, startCol + 37].Text,
-                    Step_3 = worksheet.Cells[row, startCol + 38].Text,
-                    Step_4 = worksheet.Cells[row, startCol + 39].Text,
-                    Step_5 = worksheet.Cells[row, startCol + 40].Text,
-                    Step_6 = worksheet.Cells[row, startCol + 41].Text,
-                    Actual_Status = worksheet.Cells[row, startCol + 42].Text,
-                    Shipment_Processing_Remarks = worksheet.Cells[row, startCol + 43].Text,
+                //SHIPMENT PROCESS
+                existing.Step_1 = worksheet.Cells[row, startCol + 36].Text;
+                existing.Step_2 = worksheet.Cells[row, startCol + 37].Text;
+                existing.Step_3 = worksheet.Cells[row, startCol + 38].Text;
+                existing.Step_4 = worksheet.Cells[row, startCol + 39].Text;
+                existing.Step_5 = worksheet.Cells[row, startCol + 40].Text;
+                existing.Step_6 = worksheet.Cells[row, startCol + 41].Text;
+                existing.Actual_Status = worksheet.Cells[row, startCol + 42].Text;
+                existing.Shipment_Processing_Remarks = worksheet.Cells[row, startCol + 43].Text;
 
-                    //BOBTAIL/DETENTION
-                    Bobtail_Date = worksheet.Cells[row, startCol + 44].Text,
-                    Requested_Pick_Up_Date = worksheet.Cells[row, startCol + 45].Text,
-                    Date_Return_of_Empty_Cntr = worksheet.Cells[row, startCol + 46].Text,
-                    FreeTime_Valid_Until = worksheet.Cells[row, startCol + 47].Text,
-                    No_of_Days_with_Detention_Estimate_Only = worksheet.Cells[row, startCol + 48].Text,
-                    No_of_Days_of_Free_Time = worksheet.Cells[row, startCol + 49].Text,
+                //BOBTAIL/DETENTION
+                existing.Bobtail_Date = worksheet.Cells[row, startCol + 44].Text;
+                existing.Requested_Pick_Up_Date = worksheet.Cells[row, startCol + 45].Text;
+                existing.Date_Return_of_Empty_Cntr = worksheet.Cells[row, startCol + 46].Text;
+                existing.FreeTime_Valid_Until = worksheet.Cells[row, startCol + 47].Text;
+                existing.No_of_Days_with_Detention_Estimate_Only = worksheet.Cells[row, startCol + 48].Text;
+                existing.No_of_Days_of_Free_Time = worksheet.Cells[row, startCol + 49].Text;
 
-                    //MP/PURCHASING
-                    Requested_Del_Date_To_Ship = worksheet.Cells[row, startCol + 50].Text,
-                    Priority_Container = worksheet.Cells[row, startCol + 51].Text,
-                    Earliest_Shortage_Date = worksheet.Cells[row, startCol + 52].Text,
-                    Request_to_Unload_AM_or_PM = worksheet.Cells[row, startCol + 53].Text,
+                //MP/PURCHASING
+                existing.Requested_Del_Date_To_Ship = worksheet.Cells[row, startCol + 50].Text;
+                existing.Priority_Container = worksheet.Cells[row, startCol + 51].Text;
+                existing.Earliest_Shortage_Date = worksheet.Cells[row, startCol + 52].Text;
+                existing.Request_to_Unload_AM_or_PM = worksheet.Cells[row, startCol + 53].Text;
 
-                    Random_Boolean = worksheet.Cells[row, startCol + 54].Text,
-                    Final_Remarks = worksheet.Cells[row, startCol + 55].Text
-                };
+                existing.Random_Boolean = worksheet.Cells[row, startCol + 54].Text;
+                existing.Final_Remarks = worksheet.Cells[row, startCol + 55].Text;
 
-                _context.SeaFreightScheduleMonitoring.Add(seaFreight);
-                await _context.SaveChangesAsync(); // save immediately for this row
+                await _context.SaveChangesAsync(); // save per row, or batch outside loop if large file
             }
 
             return Ok("Data imported successfully.");

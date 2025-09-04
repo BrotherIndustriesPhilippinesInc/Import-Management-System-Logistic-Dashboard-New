@@ -39,8 +39,12 @@ body {
     background-color: var(--light-backbround);
 }
 
+.primary-background{
+    background-color: var(--light-backbround);
+}
+
 .btn {
-    color: white;
+    color: white !important;
     font-weight: bold;
     text-align: left;
 }
@@ -165,6 +169,12 @@ table.dataTable {
     overflow: scroll;
 }*/
 
-.btn:hover{
+.btn:hover {
     color: white;
+    background-color: var(--button-hover);
+}
+
+.btn:focus {
+    color: white;
+    background-color: var(--button-hover);
 }

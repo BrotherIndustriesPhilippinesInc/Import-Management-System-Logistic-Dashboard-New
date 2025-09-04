@@ -64,7 +64,24 @@
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Dashboard", ASPController = "Dashboard", Icon = "/resources/icons/dashboard.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Sea Freight Delivery Info", ASPController = "SeaFreightDeliveryInfo", Icon = "/resources/icons/sea-freight.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Air Freight Delivery Info", ASPController = "AirFreightScheduleMonitorings", Icon = "/resources/icons/air-freight.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Information", ASPController = "LogisticInformation", Icon = "/resources/icons/logistic-information.svg" })
+                <div class="dropdown  w-100">
+                    <button class="btn link-btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="me-2" src="~/resources/icons/logistic-information.svg" width="24" height="24" style="filter: brightness(0) invert(1);" />
+                        Dropdown button
+                    </button>
+                    <ul class="dropdown-menu primary-background px-3">
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Sailing Schedule</a></li>
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Port Utilization</a></li>
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Berthing Status</a></li>
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Delivery Leadtime</a></li>
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Incoterms</a></li>
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Shipment Mode</a></li>
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Vessel Route Map</a></li>
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">CNTR. Visualization</a></li>
+                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Shipping Instruction</a></li>
+                        
+                    </ul>
+                </div>
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Cost", ASPController = "LogisticCost", Icon = "/resources/icons/dollar.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Others", ASPController = "Others", Icon = "/resources/icons/others.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Administrator", ASPController = "Administrator", Icon = "/resources/icons/administrator.svg" })

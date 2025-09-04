@@ -7,52 +7,62 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LogisticDashboard.API.Data;
 using LogisticDashboard.Core;
+using AutoMapper;
+using LogisticDashboard.API.DTO;
 
 namespace LogisticDashboard.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class RoutesController : ControllerBase
     {
         private readonly LogisticDashboardAPIContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductsController(LogisticDashboardAPIContext context)
+        public RoutesController(IMapper mapper, LogisticDashboardAPIContext context)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Products
+        // GET: api/Routes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
+        public async Task<ActionResult<IEnumerable<RouteDto>>> GetRoutes()
         {
-            return await _context.Product.ToListAsync();
+            var routes = await _context.Routes
+                .Include(r => r.SailingSchedule)
+                .ToListAsync();
+
+            var routeDto = _mapper.Map<List<RouteDto>>(routes);
+
+            return Ok(routeDto);
         }
 
-        // GET: api/Products/5
+        // GET: api/Routes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<Routes>> GetRoutes(int id)
         {
-            var product = await _context.Product.FindAsync(id);
+            var routes = await _context.Routes.FindAsync(id);
 
-            if (product == null)
+            if (routes == null)
             {
                 return NotFound();
             }
 
-            return product;
+            return routes;
         }
 
-        // PUT: api/Products/5
+        // PUT: api/Routes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        public async Task<IActionResult> PutRoutes(int id, Routes routes)
         {
-            if (id != product.Id)
+            if (id != routes.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            _context.Entry(routes).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +70,7 @@ namespace LogisticDashboard.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(id))
+                if (!RoutesExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +83,36 @@ namespace LogisticDashboard.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Products
+        // POST: api/Routes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Routes>> PostRoutes(Routes routes)
         {
-            _context.Product.Add(product);
+            _context.Routes.Add(routes);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            return CreatedAtAction("GetRoutes", new { id = routes.Id }, routes);
         }
 
-        // DELETE: api/Products/5
+        // DELETE: api/Routes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<IActionResult> DeleteRoutes(int id)
         {
-            var product = await _context.Product.FindAsync(id);
-            if (product == null)
+            var routes = await _context.Routes.FindAsync(id);
+            if (routes == null)
             {
                 return NotFound();
             }
 
-            _context.Product.Remove(product);
+            _context.Routes.Remove(routes);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProductExists(int id)
+        private bool RoutesExists(int id)
         {
-            return _context.Product.Any(e => e.Id == id);
+            return _context.Routes.Any(e => e.Id == id);
         }
     }
 }
