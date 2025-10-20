@@ -5,7 +5,7 @@ window.API_BASE_URL = (function () {
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
         return 'https://localhost:7019';
     } else if (hostname === 'apbiphbpswb01') {
-        return 'https://apbiphbpswb01:1117';
+        return 'http://apbiphbpswb01:1117';
     } else {
         console.warn('Unknown host. Defaulting to localhost.');
         return 'https://localhost:7019';

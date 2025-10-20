@@ -1,0 +1,164 @@
+﻿@{
+    ViewData["Title"] = "Berthing Status";
+}
+
+<div class="d-flex mt-4 justify-content-between align-items-center">
+    <div class="misc-color px-3 py-3 d-inline-flex mb-2 rounded align-items-center gap-2">
+        <img src="/resources/icons/crane.png" width="32" height="32" alt="Upload Icon" />
+        <span class="text-light fs-2 fw-bold">Berthing Status FY2025</span>
+    </div>
+
+
+    <div>
+        <button type="button" class="berth-utilization d-flex align-items-end" id="addBerth" data-bs-toggle="modal" data-bs-target="#addBerthModal">
+            <i class="fa-solid fa-anchor" style="width: 32px; height: 32px; font-size: 28.5px; color: black;"></i>
+            Add Berth
+        </button>
+    </div>
+
+</div>
+
+
+
+<div class="accordion mb-2" id="termsAndTerminologies">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Terms and Terminologies
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div>
+                    <strong>• Vessel At Berth</strong> Vessel docked at port and ready for container unloading
+                </div>
+                <div>
+                    <strong>• Vessel At Anchorage</strong> - Vessel arrived at port waiting for vessel manifest and to be docked (Berth).
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-inline-flex gap-2 sticky-top p-3 mx-3 body-background rounded">
+
+    <div id="yearDiv">
+        <label for="year" class="form-label">Select Year</label>
+        <select id="year" class="form-select">
+        </select>
+    </div>
+
+
+    <div>
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="startDate" />
+    </div>
+
+    <div>
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" class="form-control" id="endDate" />
+    </div>
+
+</div>
+
+<div class="d-flex justify-content-center w-100">
+
+    <div style="width: 1200px;">
+        <canvas id="berthUtilizationChart"></canvas>
+    </div>
+
+</div>
+
+<div class="text-center">
+    <input type="checkbox" id="showAll" class="form-check-input" />
+    <label for="showAll" class="form-check-label">Show All</label>
+</div>
+<div class="d-flex justify-content-center gap-4">
+    <div>
+        <h2 id="berthName" class="text-center fw-bold">Batangas (POB)</h2>
+        <div>
+            <ul class="list-group list-group-horizontal justify-content-center">
+
+                <li class="list-group-item w-100 text-nowrap">Vessels at Berth: 2</li>
+                <li class="list-group-item w-100 text-nowrap">Vessels at Anchorage (Waiting): 3</li>
+            </ul>
+        </div>
+        <table id="berthListA-table">
+            <tr>
+                <th>Date</th>
+                <th>Vessels At Berth</th>
+                <th>Vessels At Anchorage</th>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h2 id="berthNameB" class="text-center fw-bold">Manila North (MICT)</h2>
+        <div>
+            <ul class="list-group list-group-horizontal justify-content-center">
+                
+                <li class="list-group-item w-100 text-nowrap">Vessels at Berth: 7</li>
+                <li class="list-group-item w-100 text-nowrap">Vessels at Anchorage (Waiting): 8</li>
+            </ul>
+        </div>
+        <table id="berthListB-table">
+            <tr>
+                <th>Date</th>
+                <th>Vessels At Berth</th>
+                <th>Vessels At Anchorage</th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+@*MODAL*@
+<div class="modal fade" id="addBerthModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Berth</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="berth" class="form-label">Berth Name</label>
+                    <input type="text" class="form-control" id="berth" />
+                </div>
+
+                <div>
+                    <label for="fyear" class="form-label">Calendar Year</label>
+                    <input type="number" class="form-control" id="cyear" value="2025" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="saveBerth" type="button" class="btn btn-primary">
+                    Save Berth
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*TOAST*@
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="watchEdit" class="toast border-2 border-success" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex justify-content-between toast-header">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-bell"></i>
+                <strong class="me-auto">Data Updated</strong>
+            </div>
+
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Update is successful.
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module" src="@Url.Content("~/js/page-scripts/BerthingStatus.js")"></script>
+}

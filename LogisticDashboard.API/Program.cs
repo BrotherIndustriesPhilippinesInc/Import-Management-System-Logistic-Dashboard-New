@@ -6,16 +6,7 @@ using LogisticDashboard.API.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AddProfile<MappingProfile>();
-});
 
-// CORS
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.AddProfile<MappingProfile>();
-});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost", policy =>
@@ -29,6 +20,7 @@ builder.Services.AddCors(options =>
         .AllowCredentials();
     });
 });
+builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
 

@@ -33,8 +33,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\js\libraries\" />
     <Folder Include="wwwroot\resources\logo\" />
+    <Folder Include="wwwroot\resources\ports\" />
   </ItemGroup>
 
   <ItemGroup>

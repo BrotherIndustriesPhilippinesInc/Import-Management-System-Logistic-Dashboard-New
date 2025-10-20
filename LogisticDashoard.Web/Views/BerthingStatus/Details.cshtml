@@ -1,0 +1,66 @@
+﻿@model LogisticDashboard.Core.BerthingStatus
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>BerthingStatus</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PortName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PortName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Normal_Range_VesselsAtBerth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Normal_Range_VesselsAtBerth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.VesselsAtBerth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VesselsAtBerth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Normal_Range_VesselsAtAnchorage)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Normal_Range_VesselsAtAnchorage)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.VesselsAtAnchorage)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VesselsAtAnchorage)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

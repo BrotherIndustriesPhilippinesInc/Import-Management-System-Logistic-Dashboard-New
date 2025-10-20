@@ -1,0 +1,50 @@
+﻿@model IEnumerable<LogisticDashboard.Core.VesselRouteMap>
+
+@{
+    ViewData["Title"] = "Vessel Route Maps";
+}
+
+<h1>Vessel Route Maps</h1>
+
+<div class="text-end">
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</div>
+
+<div class="card shadow">
+    <div class="card-header bg-dark text-white">
+        <i class="fa-solid fa-ship"></i> Vessels
+    </div>
+    <ul class="list-group list-group-flush">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>@item.VesselName</span>
+                <div>
+                    <button class="liveView btn btn-sm btn-success"
+                            asp-route-id="@item.Id"
+                            data-shipid="@item.ShipId"
+                            data-name="@item.VesselName">
+                        Live View
+                    </button>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+@section Scripts{
+    <script type="module">
+            import { sendToWebView } from "./../../js/helpers/WebViewInteraction.js";
+
+            $(document).ready(function() {
+                $(".liveView").on("click", function(){
+
+                    sendToWebView("liveView", {"shipid": $(this).attr("data-shipid"), "name": $(this).attr("data-name")});
+
+                });
+        
+            });
+    </script>
+}

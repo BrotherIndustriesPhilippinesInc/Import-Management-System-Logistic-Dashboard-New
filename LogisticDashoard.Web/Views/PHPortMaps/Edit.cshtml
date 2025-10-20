@@ -1,0 +1,122 @@
+﻿@model LogisticDashboard.Core.PHPortMap
+
+@{
+    ViewData["Title"] = "Edit Port";
+}
+
+<h1 class="text-start mb-4">Edit Port</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-body p-4">
+                <form asp-action="Edit" enctype="multipart/form-data" class="d-flex flex-column gap-3">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <!-- Carrier -->
+                    <div class="form-group">
+                        <label asp-for="Carrier" class="form-label fw-bold">Carrier</label>
+                        <input asp-for="Carrier" class="form-control" />
+                        <span asp-validation-for="Carrier" class="text-danger"></span>
+                    </div>
+
+                    <!-- Sailing Leadtime -->
+                    <div class="form-group">
+                        <label asp-for="SailingLeadtime" class="form-label fw-bold">Sailing Leadtime</label>
+                        <input asp-for="SailingLeadtime" class="form-control" />
+                        <span asp-validation-for="SailingLeadtime" class="text-danger"></span>
+                    </div>
+
+                    <!-- Port Name -->
+                    <div class="form-group">
+                        <label asp-for="OriginPort" class="form-label fw-bold">Port Name</label>
+                        <input asp-for="OriginPort" class="form-control" />
+                        <span asp-validation-for="OriginPort" class="text-danger"></span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label asp-for="Description" class="form-label fw-bold">Description</label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <!-- Map Section -->
+                    <div class="form-group">
+                        <label class="form-label fw-bold">Select Port Location</label>
+
+                        <input type="hidden" asp-for="OriginPortCoordinates.Latitude" id="Latitude" />
+                        <input type="hidden" asp-for="OriginPortCoordinates.Longitude" id="Longitude" />
+
+                        <div id="map" class="rounded shadow-sm border" style="height: 70vh;"></div>
+
+                        <span asp-validation-for="OriginPortCoordinates.Latitude" class="text-danger"></span>
+                        <span asp-validation-for="OriginPortCoordinates.Longitude" class="text-danger"></span>
+                    </div>
+
+                    <!-- Picture -->
+                    <div class="form-group">
+                        <label asp-for="PictureLocation" class="form-label fw-bold">Port Picture</label>
+                        <input type="file" name="pictureFile" class="form-control" accept="image/*" />
+                        @if (!string.IsNullOrEmpty(Model.PictureLocation))
+                        {
+                            <div class="mt-2 text-center">
+                                <img src="@Url.Content("~/" + Model.PictureLocation)" alt="Current Port Image" class="img-thumbnail rounded shadow-sm" width="250" />
+                                <p class="text-muted mt-1 small">Current Picture</p>
+                            </div>
+                        }
+                        <span asp-validation-for="PictureLocation" class="text-danger"></span>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="form-group text-end mt-3">
+                        <input type="submit" value="Save Changes" class="btn btn-primary px-4" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a asp-action="Index" class="text-decoration-none">&larr; Back to Map</a>
+        </div>
+    </div>
+</div>
+
+<!-- Leaflet Libraries -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<link rel="stylesheet" href="~/js/libraries/leaflet-routing/leaflet-routing-machine.css" />
+<script src="~/js/libraries/leaflet-routing/leaflet-routing-machine.js"></script>
+<script src="~/js/libraries/leaflet-routing/leaflet.PopupMovable.js"></script>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        const lat = parseFloat($('#Latitude').val()) || 14.1356;
+        const lng = parseFloat($('#Longitude').val()) || 121.1246;
+
+        const map = L.map('map', {
+            popupMovable: true,
+            popupMovableZoomMode: 'relative',
+            closePopupOnClick: false
+        }).setView([lat, lng], 15);
+
+        const clickedMarker = L.marker([lat, lng]).addTo(map);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        map.on('click', function (e) {
+            $('#Latitude').val(e.latlng.lat);
+            $('#Longitude').val(e.latlng.lng);
+            clickedMarker.setLatLng(e.latlng);
+            console.log(`Selected: ${e.latlng.lat}, ${e.latlng.lng}`);
+        });
+    </script>
+}

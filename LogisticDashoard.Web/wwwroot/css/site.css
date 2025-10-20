@@ -1,12 +1,17 @@
 :root {
     --light-backbround: #E2C9DF;
     --dark-background: #2B0F48;
-
     --button-hover: #640264;
+    --misc-color: #6F056F;
+    --body-background: #FFF2F2;
 }
 
 html {
   font-size: 14px;
+}
+
+.body-background{
+    background-color: var(--body-background);
 }
 
 @media (min-width: 768px) {
@@ -33,6 +38,14 @@ body {
     background-repeat: no-repeat;
     background-blend-mode: darken;
     background-position: center;
+}
+
+.dark-backround{
+    background-color: var(--dark-background);
+}
+
+.misc-color{
+    background-color: var(--misc-color);
 }
 
 .offcanvas {
@@ -82,7 +95,17 @@ header {
     height: 84%;
 }
 
-#sea-freight-mainTable, th, td {
+#sea-freight-table, #sea-freight-table th, #sea-freight-table td,
+#air-freight-table, #air-freight-table th, #air-freight-table td,
+#sailing-schedule-table, #sailing-schedule-table th, #sailing-schedule-table td,
+#portListB-table, #portListB-table th, #portListB-table td,
+#portListA-table, #portListA-table th, #portListA-table td,
+#berthListB-table, #berthListB-table th, #berthListB-table td,
+#berthListA-table, #berthListA-table th, #berthListA-table td 
+
+
+
+{
     text-align: center;
     border: solid 1px black;
     border-collapse: collapse;
@@ -143,7 +166,7 @@ input[type=text] {
     vertical-align: middle;
 }
 
-.sea-freight-controls, .air-freight-controls {
+.sea-freight-controls, .air-freight-controls, .sailing-schedule, .port-utilization, .berth-utilization {
     background: none;
     border: none;
     font-size: 12px;
@@ -177,4 +200,129 @@ table.dataTable {
 .btn:focus {
     color: white;
     background-color: var(--button-hover);
+}
+
+td input[type="date"] {
+    border: 0;
+    color: black;
+}
+
+td input.empty-date {
+    color: transparent;
+}
+
+.sailingSchedule-head {
+    background-color: #305496;
+    
+}
+
+.sailingSchedule-head .dt-column-title {
+    text-align: center;
+    padding: 8px;
+}
+
+.sailingSchedule-delay{
+    background-color:red !important;
+}
+
+.sailingSchedule-delay-row {
+    background-color: #92D050 !important;
+}
+
+#sailingScheduleChart {
+    /*background-image: url('/resources/logo/Logistic Dasboard Background.png');
+    background-size: cover;
+    background-repeat: no-repeat;*/
+}
+
+.accordion-body {
+    background-color: #e0c9e0;
+    padding: 0;
+}
+
+/* Make fixed columns match the main table background */
+th.dtfc-fixed-start.dtfc-fixed-left {
+    /*background-color: teal !important;*/ /* or match your table bg */
+    z-index: 3;
+}
+
+.fixed-column {
+    background-color: #395497 !important;
+
+}
+
+td.dtfc-fixed-start{
+    background-color: white !important;
+}
+
+#termsAndTerminologies .accordion-button {
+    display: inline-flex !important;
+    width: auto !important;
+    gap: 8px;
+    background-color: transparent !important;
+}
+
+#termsAndTerminologies .accordion-item {
+    background-color: transparent !important;
+    border: 0;
+}
+
+#termsAndTerminologies .accordion-body {
+    background-color: transparent !important;
+}
+
+#incoterms-table td{
+    padding: 0 !important;
+}
+
+#incoterms-table td {
+    border: 1px solid black;
+    height: 50px;
+}
+
+#incoterms-table td select {
+    border: 0;
+    border-radius: 0;
+    color: white;
+    text-align: center;
+    
+}
+
+#incoterms-table tr {
+    border: 1px solid black;
+    border-radius: 0;
+    color: white;
+    text-align: center;
+}
+
+#incoterms-table th {
+    border: 1px solid black;
+    border-radius: 0;
+    color: black;
+    text-align: center;
+}
+
+#incoterms-table .code{
+    color: black !important;
+    vertical-align: middle;
+}
+
+#incoterms-header{
+    vertical-align: middle;
+}
+
+.row-header {
+    writing-mode: vertical-rl; /* vertical layout, top-to-bottom, right-to-left */
+    text-orientation: upright; /* keeps letters upright */
+    white-space: nowrap;
+}
+
+#incoterms-table td select.form-control {
+    width: 100%;
+    height: 100%; /* match the row height */
+    box-sizing: border-box;
+}
+
+.leaflet-routing-container.leaflet-bar.leaflet-routing-container-hide.leaflet-control{
+    display: none;
 }

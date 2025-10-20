@@ -134,6 +134,8 @@ $(async function () {
             success: function (response) {
                 console.log('Upload success:', response);
                 // 😎 Do your success handling here (toast, reload, etc.)
+                alert('Upload success');
+                location.reload();
             },
             error: function (xhr, status, error) {
                 console.error('Upload failed:', error);

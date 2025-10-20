@@ -1,0 +1,105 @@
+﻿@model IEnumerable<LogisticDashboard.Core.PHPortMap>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>PH Port Map</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Add Port</a>
+</p>
+
+<div>
+    <div id="map" style="height: 75vh;"></div>
+</div>
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+crossorigin=""></script>
+
+<link rel="stylesheet" href="./js/libraries/leaflet-routing/leaflet-routing-machine.css" />
+<script src="./js/libraries/leaflet-routing/leaflet-routing-machine.js"></script>
+<script src="./js/libraries/leaflet-routing/leaflet.PopupMovable.js"></script>
+
+@section Scripts{
+    <script>
+        const map = L.map('map', {
+            popupMovable: true,
+            popupMovableZoomMode: 'relative',
+            closePopupOnClick: false,
+        }).setView([13.756384, 121.0388501], 13);
+
+        // Add OSM base layer
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // Fetch port data from controller
+        fetch('@Url.Action("GetPorts", "PHPortMaps")')
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(port => {
+                    const origin = L.latLng(port.originPortCoordinates.latitude, port.originPortCoordinates.longitude);
+                    const destination = L.latLng(14.1354141, 121.1234902);
+
+                    // Create route without adding draggable markers
+                    const routing = L.Routing.control({
+                        waypoints: [origin, destination],
+                        addWaypoints: false,
+                        draggableWaypoints: false,
+                        routeWhileDragging: false,
+                        show: false,
+                        createMarker: () => null
+                    })
+                    .on('routesfound', e => {
+                        const route = e.routes[0];
+                        const { totalDistance, totalTime } = route.summary;
+
+                        const distance = (totalDistance / 1000).toFixed(2); // km
+                        const duration = (totalTime / 60).toFixed(1); // minutes
+
+                        // Attach distance/time to the port marker popup
+                        const popupContent = `
+                            <div style="text-align:center;">
+                                <h4>${port.originPort}</h4>
+                                <img src="${port.pictureLocation}"
+                                     alt="${port.name}"
+                                     width="200"
+                                     style="border-radius:8px; margin-top:5px;" />
+                                <p>${port.description}</p>
+                                <p><strong>Distance:</strong> ${distance} km</p>
+                                <p><strong>Estimated Time:</strong> ${duration} min</p>
+                                <a class="btn btn-primary btn-sm mt-1" href="/PHPortMaps/Edit/${port.id}">Edit</a>
+                            </div>`;
+
+                        const marker = L.marker(origin).addTo(map);
+                        marker.bindPopup(popupContent, {
+                            autoClose: false,
+                            closeOnClick: false
+                        }).openPopup();
+                    })
+                    .addTo(map);
+                });
+
+                // Add BIPH destination marker
+                const biph = L.marker([14.1354141, 121.1234902]).addTo(map);
+                biph.bindPopup(`
+                    <div style="text-align:center;">
+                        <h4>Brother Industries (Philippines), Inc.</h4>
+                        <img src="https://tse4.mm.bing.net/th/id/OIP.rMCFCiRsc0bgetHS9lwlwQHaDk?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3"
+                             alt="BIPH"
+                             width="200"
+                             style="border-radius:8px; margin-top:5px;" />
+                    </div>
+                `);
+            })
+            .catch(err => console.error('Error loading ports:', err));
+    </script>
+
+}

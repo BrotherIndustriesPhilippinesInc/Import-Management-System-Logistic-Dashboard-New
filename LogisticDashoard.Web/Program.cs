@@ -1,10 +1,20 @@
-using LogisticDashboard.Web.Data;
+﻿using LogisticDashboard.Web.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Npgsql;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// 💡 Get the connection string
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// 💡 Build a custom data source with dynamic JSON enabled
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+dataSourceBuilder.EnableDynamicJson(); // 👈 This is the key
+var dataSource = dataSourceBuilder.Build();
+
+// 💡 Use the data source for EF Core
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(dataSource)); // <-- use the dataSource here, NOT the connection string!
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -15,7 +25,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

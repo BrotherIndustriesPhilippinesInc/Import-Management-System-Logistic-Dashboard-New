@@ -24,6 +24,7 @@ $(async function () {
         fixedHeader: true,
         autoWidth: true,
         scrollX: true,
+        scrollY: true,
         columnDefs: [
             { className: "p-1 text-nowrap", target: "_all" }
         ],

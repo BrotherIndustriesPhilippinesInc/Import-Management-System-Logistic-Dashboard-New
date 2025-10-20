@@ -9,6 +9,7 @@ using LogisticDashboard.API.Data;
 using LogisticDashboard.Core;
 using LogisticDashboard.API.DTO;
 using AutoMapper;
+using System.Globalization;
 
 namespace LogisticDashboard.API.Controllers
 {
@@ -17,12 +18,11 @@ namespace LogisticDashboard.API.Controllers
     public class SailingSchedulesController : ControllerBase
     {
         private readonly LogisticDashboardAPIContext _context;
-        private readonly IMapper _mapper;
 
-        public SailingSchedulesController(IMapper mapper, LogisticDashboardAPIContext context)
+
+        public SailingSchedulesController(LogisticDashboardAPIContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         // GET: api/SailingSchedules
@@ -32,10 +32,16 @@ namespace LogisticDashboard.API.Controllers
             var schedules = await _context.SailingSchedule.ToListAsync();
 
             // Map to DTO
-            var dtoList = _mapper.Map<List<SailingScheduleNoRoutesDTO>>(schedules);
+            var dtoList = new SailingScheduleNoRoutesDTO() { 
+                
+            };
 
             return Ok(dtoList);
         }
+
+        
+
+
 
         // GET: api/SailingSchedules/5
         [HttpGet("{id}")]
@@ -53,59 +59,71 @@ namespace LogisticDashboard.API.Controllers
 
         // PUT: api/SailingSchedules/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSailingSchedule(int id, SailingSchedule sailingSchedule)
+        [HttpPost("update/{id}")]
+        public async Task<IActionResult> PutSailingSchedule(int id, SailingScheduleUpdateDTO sailingScheduleDto)
         {
-            if (id != sailingSchedule.Id)
+            if (id != sailingScheduleDto.Id)
             {
-                return BadRequest();
+                return BadRequest(new { message = "ID mismatch." });
             }
 
-            _context.Entry(sailingSchedule).State = EntityState.Modified;
-
-            try
+            var schedule = await _context.SailingSchedule.FindAsync(id);
+            if (schedule == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SailingScheduleExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
-            return NoContent();
+            // Map DTO -> Entity
+            schedule.Week = sailingScheduleDto.Week;
+            schedule.Start = sailingScheduleDto.Start.HasValue
+                ? DateTime.SpecifyKind(sailingScheduleDto.Start.Value, DateTimeKind.Utc)
+                : null;
+
+            schedule.End = sailingScheduleDto.End.HasValue
+                ? DateTime.SpecifyKind(sailingScheduleDto.End.Value, DateTimeKind.Utc)
+                : null;
+            schedule.VesselName = sailingScheduleDto.VesselName;
+            schedule.VoyNo = sailingScheduleDto.VoyNo;
+            schedule.Origin = sailingScheduleDto.Origin;
+            schedule.OriginalETD = sailingScheduleDto.OriginalETD;
+            schedule.OriginalETAMNL = sailingScheduleDto.OriginalETAMNL;
+            schedule.LatestETD = sailingScheduleDto.LatestETD;
+            schedule.LatestETAMNL = sailingScheduleDto.LatestETAMNL;
+            schedule.TransitDays = sailingScheduleDto.TransitDays;
+            schedule.DelayDeparture = sailingScheduleDto.DelayDeparture;
+            schedule.DelayArrival = sailingScheduleDto.DelayArrival;
+            schedule.Remarks = sailingScheduleDto.Remarks;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new {status= 200});
         }
+
 
         // POST: api/SailingSchedules
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<SailingScheduleNoRoutesDTO>> PostSailingSchedule(SailingScheduleNoRoutesDTO sailingScheduleDto)
-        {
-            // Map DTO to entity
-            var sailingSchedule = _mapper.Map<SailingSchedule>(sailingScheduleDto);
+        //[HttpPost]
+        //public async Task<ActionResult<SailingScheduleNoRoutesDTO>> PostSailingSchedule(SailingScheduleNoRoutesDTO sailingScheduleDto)
+        //{
+        //    // Map DTO to entity
+        //    //var sailingSchedule = _mapper.Map<SailingSchedule>(sailingScheduleDto);
 
-            // Optional: load the Route from DB to assign navigation property
-            var route = await _context.Routes.FindAsync(sailingScheduleDto.RouteId);
-            if (route == null)
-                return BadRequest("Route not found");
+        //    // Optional: load the Route from DB to assign navigation property
+        //    var route = await _context.Routes.FindAsync(sailingScheduleDto.RouteId);
+        //    if (route == null)
+        //        return BadRequest("Route not found");
 
-            sailingSchedule.Route = route;
+        //    sailingSchedule.Route = route;
 
-            // Add and save
-            _context.SailingSchedule.Add(sailingSchedule);
-            await _context.SaveChangesAsync();
+        //    // Add and save
+        //    _context.SailingSchedule.Add(sailingSchedule);
+        //    await _context.SaveChangesAsync();
 
-            // Map back to DTO for response
-            var resultDto = _mapper.Map<SailingScheduleNoRoutesDTO>(sailingSchedule);
+        //    // Map back to DTO for response
+        //    //var resultDto = _mapper.Map<SailingScheduleNoRoutesDTO>(sailingSchedule);
 
-            return CreatedAtAction(nameof(GetSailingSchedule), new { id = sailingSchedule.Id }, resultDto);
-        }
+        //    return CreatedAtAction(nameof(GetSailingSchedule), new { id = sailingSchedule.Id }, sa);
+        //}
 
 
         // DELETE: api/SailingSchedules/5

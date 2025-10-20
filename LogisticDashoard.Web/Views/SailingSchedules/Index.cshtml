@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Sailing Schedule";
+}
+
+<div class="d-flex mt-4 justify-content-between align-items-center">
+    <div class="misc-color px-3 py-3 d-inline-block mb-2 rounded">
+        <span class="text-light fs-2 fw-bold">Sailing Schedule FY2025</span>
+    </div>
+
+    
+    <div>
+        <button type="button" class="sailing-schedule d-flex align-items-end" id="addRoute" data-bs-toggle="modal" data-bs-target="#addRouteModal">
+            <img src="/resources/icons/route-solid-full.svg" alt="Upload Icon" width="32" height="32">
+            Add Route
+        </button>
+
+    </div>
+    
+
+</div>
+
+<div class="d-inline-flex gap-2 sticky-top p-3 mx-3 body-background rounded">
+    <div>
+        <label for="route" class="form-label">Select Route</label>
+        <select id="route" class="form-select">
+            <option selected>Open this select routes</option>
+        </select>
+
+    </div>
+    <div id="yearDiv">
+        <label for="year" class="form-label">Select Year</label>
+        <select id="year" class="form-select">
+        </select>
+    </div>
+
+    
+    <div>
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="startDate" />
+    </div>
+
+    <div>
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" class="form-control" id="endDate" />
+    </div>
+
+</div>
+
+<div class="d-flex justify-content-center w-100">
+   
+    <div style="width: 1200px;">
+        <canvas id="sailingScheduleChart"></canvas>
+    </div>
+
+</div>
+
+<div class="d-inline-block">
+    <h4>Legend</h4>
+    <div class="d-flex gap-2">
+        <div class="bg-success text-light p-2 rounded">0-2 days delay <span class="fw-bold">Normal</span></div>
+        <div class="bg-warning text-light p-2 rounded">3-6 days delay <span class="fw-bold">Critical</span></div>
+        <div class="bg-danger text-light p-2 rounded">7 days delay <span class="fw-bold">Serious</span></div>
+    </div>
+</div>
+
+
+
+<h2 id="routeName" class="text-center mt-3 fw-bold">Manila to Nagoya</h2>
+<div>
+    <input type="checkbox" id="showAll" class="form-check-input"/>
+    <label for="showAll" class="form-check-label">Show All</label>
+</div>
+<table id="sailing-schedule-table">
+    <thead class="sailingSchedule-head text-light text-center">
+        <tr>
+            <th rowspan="2" class="fixed-column">Week Number</th>
+            @* <th rowspan="2">Week</th> *@
+            <th rowspan="2" class="fixed-column">Start</th>
+            <th rowspan="2" class="fixed-column">End</th>
+            <th rowspan="2" class="fixed-column">Vessel Name</th>
+            <th rowspan="2">Voy No</th>
+            <th rowspan="2">Origin</th>
+            <th colspan="2">Original Schedule</th>
+            <th colspan="2">Latest Schedule</th>
+            <th rowspan="2">Transit Days</th>
+            <th class="sailingSchedule-delay" colspan="2">No. Of Days Delay</th>
+            <th rowspan="2">Remarks</th>
+        </tr>
+        <tr>
+            <th>Original ETD</th>
+            <th>Original ETA MNL</th>
+            <th>Latest ETD</th>
+            <th>Latest ETA MNL</th>
+            <th class="sailingSchedule-delay">Delay Departure</th>
+            <th class="sailingSchedule-delay">Delay Arrival</th>
+        </tr>
+    </thead>
+
+    <tbody></tbody>
+</table>
+<div class="modal fade" id="addRouteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Route</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="from" class="form-label">From</label>
+                    <input type="text" class="form-control" id="from" />
+                </div>
+                <div>
+                    <label for="to" class="form-label">To</label>
+                    <input type="text" class="form-control" id="to" />
+                </div>
+                <div>
+                    <label for="fyear" class="form-label">Calendar Year</label>
+                    <input type="number" class="form-control" id="fyear" value="2025"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="saveRoute" type="button" class="btn btn-primary">
+                    Save Route
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="watchEdit" class="toast border-2 border-success" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex justify-content-between toast-header">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-bell"></i>
+                <strong class="me-auto">Data Updated</strong>
+            </div>
+
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Update is successful.
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module" src="@Url.Content("~/js/page-scripts/SailingSchedule.js")"></script>
+}

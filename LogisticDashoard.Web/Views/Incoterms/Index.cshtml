@@ -1,0 +1,203 @@
+﻿@model IEnumerable<LogisticDashboard.Core.Incoterms>
+
+@{
+    ViewData["Title"] = "Index";
+
+    var roleList = new[] { "SELLER", "BUYER (BIPH)" };
+    
+}
+
+<div class="mt-4">
+    <div class="misc-color px-3 py-3 d-inline-flex mb-2 rounded align-items-center gap-2">
+        <span class="text-light fs-2 fw-bold" style="width: 300px; text-align: center">Incoterms</span>
+    </div>
+
+</div>
+
+<div class="accordion mb-2" id="termsAndTerminologies">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Terms and Terminologies
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div>
+                    <strong>• Incoterms</strong> - are referred to as <span style="font-weight: bold">In</span>ternational <span style="font-weight: bold">Co</span>mmerical <span style="font-weight: bold">Terms</span>.
+                </div>
+                <div>
+                     - They are a set of rules published by the International Chamber of Commerce (ICC), which relate to International Commercial Law.
+                </div>
+                <div>
+                    - Incoterms rules provide internationally accepted definitions and rules of interpretation for most common commercial terms used in contracts for the sale of goods.
+                </div>
+                <div>
+                    - All international purchases will be processed on an agreed Incoterm to define which party legally incurs costs and risks. Incorterms® will be clearly stated on relecvant shiping documents.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="d-flex flex-column text-center" id="legend" style="width: 160px;">
+        <div class="p-1" style="background-color: #538034; color: white;">SELLER</div>
+        <div class="p-1" style="background-color: #0070C0; color: white;">BUYER (BIPH)</div>
+    </div>
+    <div>
+
+    </div>
+</div>
+
+<table id="incoterms-table" class="table">
+    <thead>
+        <tr>
+            <th id="incoterms-header" rowspan="2" colspan="2">INCOTERMS</th>
+            <th colspan="4">ORIGIN</th>
+            <th>IN-TRANSIT</th>
+            <th colspan="4">DESTINATION</th>
+        </tr>
+        <tr>
+            <th><i class="fa-solid fa-industry"></i>SELLER</th>
+            <th><i class="fa-solid fa-truck"></i>TRUCKING</th>
+            <th><i class="fa-solid fa-person-military-pointing"></i>CUSTOMS CLEARANCE</th>
+            <th><i class="fa-brands fa-docker"></i>TERMINAL PORT</th>
+            <th><i class="fa-solid fa-ship"></i>OCEAN FREIGHT / AIRFREIGHT</th>
+            <th><i class="fa-brands fa-docker"></i>TERMINAL PORT</th>
+            <th><i class="fa-solid fa-person-military-pointing"></i>CUSTOMS CLEARANCE</th>
+            <th><i class="fa-solid fa-truck"></i>TRUCKING</th>
+            <th><i class="fa-solid fa-industry"></i>BUYER</th>
+        </tr>
+        
+    </thead>
+    <tbody>
+        @{
+            var modelList = Model.ToList(); // convert once
+        }
+        @foreach (var item in Model)
+        {
+            // Only show the header for the first item in each group
+            if (modelList.IndexOf(item) % 3 == 0)
+            {
+                <tr>
+                    <th class="row-header fw-normal" rowspan="3">
+                        @(modelList.IndexOf(item) == 0 ? "COLLECT" : "PREPAID")
+                    </th>
+
+                    <td class="code">@item.Code</td>
+                    <td>
+                        @Html.DropDownList("Seller_" + item.Id, new SelectList(roleList, item.Seller), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("OriginTruckings_" + item.Id, new SelectList(roleList, item.OriginTruckings), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("OriginCustoms_" + item.Id, new SelectList(roleList, item.OriginCustoms), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("OriginTerminalCharges_" + item.Id, new SelectList(roleList, item.OriginTerminalCharges), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("OceanFreightAirFreight_" + item.Id, new SelectList(roleList, item.OceanFreightAirFreight), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("DestinationTerminalCharges_" + item.Id, new SelectList(roleList, item.DestinationTerminalCharges), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("DestinationCustoms_" + item.Id, new SelectList(roleList, item.DestinationCustoms), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("DestinationTrucking_" + item.Id, new SelectList(roleList, item.DestinationTrucking), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("Buyer_" + item.Id, new SelectList(roleList, item.Buyer), new { @class = "form-control" })
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td class="code">@item.Code</td>
+                    <td>
+                        @Html.DropDownList("Seller_" + item.Id, new SelectList(roleList, item.Seller), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("OriginTruckings_" + item.Id, new SelectList(roleList, item.OriginTruckings), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("OriginCustoms_" + item.Id, new SelectList(roleList, item.OriginCustoms), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("OriginTerminalCharges_" + item.Id, new SelectList(roleList, item.OriginTerminalCharges), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("OceanFreightAirFreight_" + item.Id, new SelectList(roleList, item.OceanFreightAirFreight), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("DestinationTerminalCharges_" + item.Id, new SelectList(roleList, item.DestinationTerminalCharges), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("DestinationCustoms_" + item.Id, new SelectList(roleList, item.DestinationCustoms), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("DestinationTrucking_" + item.Id, new SelectList(roleList, item.DestinationTrucking), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.DropDownList("Buyer_" + item.Id, new SelectList(roleList, item.Buyer), new { @class = "form-control" })
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+
+            // 1️⃣ Set initial colors on page load
+            $('select').each(function() {
+                var val = $(this).val();
+                if(val === 'SELLER' || val === 'Seller') {
+                    $(this).css('background-color', '#538034');
+                } else {
+                    $(this).css('background-color', '#0070C0');
+                }
+            });
+
+            // 2️⃣ Handle change event
+            $('select').change(function() {
+                var select = $(this);
+                var value = select.val();
+                var name = select.attr('name');
+
+                // Update background color for this select only
+                if(value === 'SELLER' || value === 'Seller') {
+                    select.css('background-color', '#538034');
+                } else {
+                    select.css('background-color', '#0070C0');
+                }
+
+                // AJAX update
+                $.ajax({
+                    url: '@Url.Action("UpdateRole", "Incoterms")',
+                    type: 'POST',
+                    data: {
+                        fieldName: name,
+                        fieldValue: value
+                    },
+                    success: function() {
+                        console.log('Updated successfully');
+                    },
+                    error: function() {
+                        alert('Update failed');
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}

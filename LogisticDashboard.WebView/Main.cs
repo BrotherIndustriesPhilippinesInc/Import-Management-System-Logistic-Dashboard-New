@@ -12,12 +12,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LogisticDashboard.Forms;
 using System.Data.SqlClient;
+using IQCSystemV2.Functions;
+using Newtonsoft.Json.Linq;
 
 namespace LogisticDashboard
 {
     public partial class MainForm: Form
     {
         // Constants
+        //http://localhost:5235/
+        //http://apbiphbpswb01:1116/
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
 
@@ -53,7 +57,7 @@ namespace LogisticDashboard
             SqlCommand SelectUserAccount = new SqlCommand("SP_SelectLoginRequestFromCentralizedLogin", CentralizedLogin);
             SelectUserAccount.CommandType = CommandType.StoredProcedure;
             SelectUserAccount.Parameters.AddWithValue("@IPAddress", localIP);
-            SelectUserAccount.Parameters.AddWithValue("@SystemID", "64"); //palitan ng assigned system id
+            SelectUserAccount.Parameters.AddWithValue("@SystemID", "77"); //palitan ng assigned system id
             SqlDataAdapter da = new SqlDataAdapter(SelectUserAccount);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -76,6 +80,10 @@ namespace LogisticDashboard
             }
         }
 
+        private WebViewFunctions webViewFunctions;
+
+        private APIHandler apiHandler;
+
         public MainForm()
         {
             localIP = GetLocalIPAddress();
@@ -83,6 +91,9 @@ namespace LogisticDashboard
 
             InitializeComponent();
             this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+
+            apiHandler = new APIHandler();
+            webViewFunctions = new WebViewFunctions(WebViewPanel);
         }
 
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -119,6 +130,29 @@ namespace LogisticDashboard
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void WebViewPanel_WebMessageReceived(object sender, Microsoft.Web.WebView2.Core.CoreWebView2WebMessageReceivedEventArgs e)
+        {
+            JObject data = webViewFunctions.CapturedMessage(e);
+            string jsonString = data.ToString(Newtonsoft.Json.Formatting.Indented);
+
+            if (data["actionName"].ToString() == "liveView")
+            {
+                VesselRouteMap vesselRouteMap = new VesselRouteMap(Convert.ToInt32(data["data"]["shipid"]), data["data"]["name"].ToString());
+                vesselRouteMap.Show();
+            }
+        }
+
+        private async void WebViewPanel_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e)
+        {
+            Dictionary<string, string> post = new Dictionary<string, string> {
+                { "id_number", UserIdNumber.ToString() }
+            };
+
+            JObject data = await apiHandler.APIPostCall("http://apbiphbpsts01:8080/homs/api/user/getUser.php", post);
+
+            await webViewFunctions.ExecuteJavascript($"localStorage.setItem(\"user\", JSON.stringify({data["data"]}));");
         }
     }
 }

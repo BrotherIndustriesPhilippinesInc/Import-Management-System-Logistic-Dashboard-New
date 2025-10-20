@@ -1,0 +1,77 @@
+﻿@model IEnumerable<LogisticDashboard.Core.Users>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Administrator</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table" id="users-table">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email Address</th>
+            <th>Section</th>
+            <th>Position</th>
+            <th>Employee Number</th>
+            <th>ADID</th>
+            <th>Is Admin</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+            let table = $("#users-table").DataTable({
+        ajax: {
+            url: 'http://apbiphbpswb01:1117/api/Users/GetDataTableUsers',
+            type: 'POST',
+            contentType: 'application/json',
+            data: function (d) {
+                return JSON.stringify(d); // DataTables request model
+            }
+        },
+            processing: true,
+            serverSide: true,
+            columns: [
+                { data: "fullName" },
+                { data: "emailAddress" },
+                { data: "section" },
+                { data: "position" },
+                { data: "employeeNumber" },
+                { data: "adid" },
+                { 
+                    data: "isAdmin",
+                    render: function (data) {
+                        if(data) {
+                            return '<i class="fas fa-check-circle text-success"></i>'; // green check
+                        } else {
+                            return '<i class="fas fa-times-circle text-danger"></i>'; // red cross
+                        }
+                    },
+                    className: "text-center" // optional: center the icon
+                },
+                {
+                    data: "id",
+                    orderable: false,
+                    render: function (data) {
+                        return `
+                                <a href="/Users/Delete?portalId=${data}" asp-user-id="${data}" class="btn btn-danger">Delete</a>
+                        `;
+                    },
+                    className: "text-center" // optional: center the buttons
+                }
+            ]
+        });
+
+    
+    
+    </script>
+}

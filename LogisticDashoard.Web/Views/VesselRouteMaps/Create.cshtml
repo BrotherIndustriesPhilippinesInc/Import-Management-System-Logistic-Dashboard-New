@@ -1,0 +1,47 @@
+﻿@model LogisticDashboard.Core.VesselRouteMap
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row justify-content-center align-items-center" style="height: 75vh">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header bg-gradient bg-primary text-white text-center fw-bold">
+                <i class="fa-solid fa-ship me-2"></i> Create Sailing Schedule
+            </div>
+            <div class="card-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="VesselName" class="form-label fw-semibold">Vessel Name</label>
+                        <input asp-for="VesselName" class="form-control" placeholder="Enter vessel name..." />
+                        <span asp-validation-for="VesselName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ShipId" class="form-label fw-semibold">Ship ID (MarineTraffic)</label>
+                        <input asp-for="ShipId" class="form-control" placeholder="Enter ship ID..." />
+                        <span asp-validation-for="ShipId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left me-1"></i> Back
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-plus-circle me-1"></i> Create
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

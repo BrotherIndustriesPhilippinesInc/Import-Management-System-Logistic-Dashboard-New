@@ -1,0 +1,79 @@
+﻿@model LogisticDashboard.Core.Incoterms
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Incoterms</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Seller" class="control-label"></label>
+                <input asp-for="Seller" class="form-control" />
+                <span asp-validation-for="Seller" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OriginTruckings" class="control-label"></label>
+                <input asp-for="OriginTruckings" class="form-control" />
+                <span asp-validation-for="OriginTruckings" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OriginCustoms" class="control-label"></label>
+                <input asp-for="OriginCustoms" class="form-control" />
+                <span asp-validation-for="OriginCustoms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OriginTerminalCharges" class="control-label"></label>
+                <input asp-for="OriginTerminalCharges" class="form-control" />
+                <span asp-validation-for="OriginTerminalCharges" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OceanFreightAirFreight" class="control-label"></label>
+                <input asp-for="OceanFreightAirFreight" class="form-control" />
+                <span asp-validation-for="OceanFreightAirFreight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationTerminalCharges" class="control-label"></label>
+                <input asp-for="DestinationTerminalCharges" class="form-control" />
+                <span asp-validation-for="DestinationTerminalCharges" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationCustoms" class="control-label"></label>
+                <input asp-for="DestinationCustoms" class="form-control" />
+                <span asp-validation-for="DestinationCustoms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationTrucking" class="control-label"></label>
+                <input asp-for="DestinationTrucking" class="form-control" />
+                <span asp-validation-for="DestinationTrucking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Buyer" class="control-label"></label>
+                <input asp-for="Buyer" class="form-control" />
+                <span asp-validation-for="Buyer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

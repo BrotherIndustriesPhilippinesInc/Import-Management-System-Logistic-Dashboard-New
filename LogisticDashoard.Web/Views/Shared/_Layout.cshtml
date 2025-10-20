@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/LogisticDashboard.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header class="p-3">
+    <header class="p-3 sticky-top">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex">
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav" aria-controls="offcanvasNav" aria-label="Toggle navigation">
@@ -31,8 +31,11 @@
                 <div class="d-flex align-items-center gap-2">
                     <img class="user-icon" src="~/resources/icons/administrator.svg" width="40" height="40">
                     <div class="d-flex flex-column">
-                        <span>User: John Doe</span>
-                        <span>Department/Section: PC / SHIP</span>
+                        <span id="userName"></span>
+                        <span>
+                            <span id="userDepartment"></span> 
+                            <span id="userSection"></span>
+                        </span>
                     </div>
                     
                 </div>
@@ -40,7 +43,7 @@
         </div>
         
     </header>
-    <div class="container">
+    <div class="px-5">
         <main role="main">
             @RenderBody()
         </main>
@@ -64,33 +67,36 @@
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Dashboard", ASPController = "Dashboard", Icon = "/resources/icons/dashboard.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Sea Freight Delivery Info", ASPController = "SeaFreightDeliveryInfo", Icon = "/resources/icons/sea-freight.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Air Freight Delivery Info", ASPController = "AirFreightScheduleMonitorings", Icon = "/resources/icons/air-freight.svg" })
-                <div class="dropdown  w-100">
-                    <button class="btn link-btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img class="me-2" src="~/resources/icons/logistic-information.svg" width="24" height="24" style="filter: brightness(0) invert(1);" />
-                        Dropdown button
-                    </button>
-                    <ul class="dropdown-menu primary-background px-3">
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Sailing Schedule</a></li>
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Port Utilization</a></li>
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Berthing Status</a></li>
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Delivery Leadtime</a></li>
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Incoterms</a></li>
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Shipment Mode</a></li>
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Vessel Route Map</a></li>
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">CNTR. Visualization</a></li>
-                        <li><a class="dropdown-item btn link-btn w-100 mt-2" href="#">Shipping Instruction</a></li>
-                        
-                    </ul>
+                <div class="accordion" id="accordionLogisticInformation">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button btn dark-backround collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                <img class="me-2" src="~/resources/icons/logistic-information.svg" width="24" height="24" style="filter: brightness(0) invert(1);" />
+                                Logistic Information
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionLogisticInformation">
+                            <div class="accordion-body p-2 d-flex flex-column gap-2">
+                                    <a asp-action="Index" asp-controller="SailingSchedules" class="btn link-btn dropdown-item">Sailing Schedule</a>
+                                    <a asp-action="Index" asp-controller="PortUtilizations" class="btn link-btn dropdown-item">Port Utilization</a>
+                                    <a asp-action="Index" asp-controller="BerthingStatus" class="btn link-btn dropdown-item">Berthing Status</a>
+                                    <a class="btn link-btn dropdown-item" href="#">Delivery Leadtime</a>
+                                    <a asp-action="Index" asp-controller="Incoterms" class="btn link-btn dropdown-item">Incoterms</a>
+                                    <a class="btn link-btn dropdown-item" href="#">Shipment Mode</a>
+                                    <a asp-action="Index" asp-controller="VesselRouteMaps" class="btn link-btn dropdown-item">Vessel Route Map</a>
+                                    <a asp-action="Index" asp-controller="PHPortMaps" class="btn link-btn dropdown-item">PH Port Maps</a>
+                                    <a class="btn link-btn dropdown-item" href="#">CNTR. Visualization</a>
+                                    <a class="btn link-btn dropdown-item" href="#">Shipping Instruction</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Cost", ASPController = "LogisticCost", Icon = "/resources/icons/dollar.svg" })
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Others", ASPController = "Others", Icon = "/resources/icons/others.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Administrator", ASPController = "Administrator", Icon = "/resources/icons/administrator.svg" })
+                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Administrator", ASPController = "Users", Icon = "/resources/icons/administrator.svg" })
             </div>
         </div>
 
-        <div class="offcanvas-footer">
-            <span>Name</span>
-        </div>
     </div>
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -101,7 +107,17 @@
     <link href="~/lib/datatables/datatables.css" rel="stylesheet" />
 
     <script src="~/js/helpers/config.js"></script>
+    <script type="module" src="~/js/helpers/loadUser.js"></script>
 
+    @* SWEET ALERT *@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @* CHART JS *@
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+    @* FONT AWESOME *@
+    <script src="https://kit.fontawesome.com/b745f328d5.js" crossorigin="anonymous"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,0 +1,59 @@
+﻿@model LogisticDashboard.Core.PortUtilization
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PortUtilization</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="PortId" class="control-label"></label>
+                <select asp-for="PortId" class="form-control" asp-items="ViewBag.PortId"></select>
+                <span asp-validation-for="PortId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Week" class="control-label"></label>
+                <input asp-for="Week" class="form-control" />
+                <span asp-validation-for="Week" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Overall_Yard_Utilization" class="control-label"></label>
+                <input asp-for="Overall_Yard_Utilization" class="form-control" />
+                <span asp-validation-for="Overall_Yard_Utilization" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vessels_At_Berth" class="control-label"></label>
+                <input asp-for="Vessels_At_Berth" class="form-control" />
+                <span asp-validation-for="Vessels_At_Berth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vessels_At_Anchorage_Waiting" class="control-label"></label>
+                <input asp-for="Vessels_At_Anchorage_Waiting" class="form-control" />
+                <span asp-validation-for="Vessels_At_Anchorage_Waiting" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Last_Update" class="control-label"></label>
+                <input asp-for="Last_Update" class="form-control" />
+                <span asp-validation-for="Last_Update" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
