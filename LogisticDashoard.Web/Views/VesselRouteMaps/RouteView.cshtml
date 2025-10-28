@@ -1,0 +1,151 @@
+﻿@model LogisticDashboard.Core.VesselRouteMap
+
+@{
+    ViewData["Title"] = "Route View";
+    
+}
+
+<h1>Vessel Route</h1>
+
+<div>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Vessel Name
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VesselName)
+        </dd>
+        <dt class = "col-sm-2">
+            Origin Port Name
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OriginPortName)
+        </dd>
+       @*  <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OriginPortCoordinates)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OriginPortCoordinates)
+        </dd> *@
+        <dt class = "col-sm-2">
+            Destination Port Name
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DestinationPortName)
+        </dd>
+        @* <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DestinationPortCoordinates)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DestinationPortCoordinates)
+        </dd> *@
+        @* <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ShipId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ShipId)
+        </dd> *@
+        <dt class = "col-sm-2">
+            Creation Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdate)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<div>
+    <div id="map" style="height: 75vh;"></div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<link rel="stylesheet" href="~/js/libraries/leaflet-routing/leaflet-routing-machine.css" />
+<script src="~/js/libraries/leaflet-routing/leaflet-routing-machine.js"></script>
+<script src="~/js/libraries/leaflet-routing/leaflet.PopupMovable.js"></script>
+
+@section Scripts {
+    <script>
+                const map = L.map('map').setView([13.756384, 121.0388501], 6);
+
+        // Base map
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        // Fetch vessel route data
+        fetch('/VesselRouteMaps/GetVesselRouteMap/@Model?.Id')
+          .then(res => res.json())
+          .then(port => {
+            const origin = L.latLng(port.originPortCoordinates.latitude, port.originPortCoordinates.longitude);
+            const destination = L.latLng(port.destinationPortCoordinates.latitude, port.destinationPortCoordinates.longitude);
+
+            // Colored marker icons
+            const blueIcon = L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
+
+            const greenIcon = L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
+
+            // Origin marker
+            const originMarker = L.marker(origin, { icon: blueIcon }).addTo(map);
+            originMarker.bindPopup(`
+              <div style="text-align:center;">
+                <h5 style="color:#0d6efd;">Origin Port: ${port.originPortName}</h5>
+
+              </div>
+            `).openPopup();
+
+            // Destination marker
+            const destMarker = L.marker(destination, { icon: greenIcon }).addTo(map);
+            destMarker.bindPopup(`
+              <div style="text-align:center;">
+                <h5 style="color:#198754;">Destination Port: ${port.destinationPortName}</h5>
+              </div>
+            `);
+
+            // Dashed line style (straight line route)
+            const dashedLine = L.polyline([origin, destination], {
+              color: 'blue',
+              weight: 4,
+              opacity: 0.7,
+              dashArray: '10, 10' // dashed pattern: 10px line, 10px space
+            }).addTo(map);
+
+            // Fit map to show both markers
+            map.fitBounds(dashedLine.getBounds(), { padding: [50, 50] });
+          })
+          .catch(err => console.error('Error loading vessel route:', err));
+
+
+    </script>
+
+}

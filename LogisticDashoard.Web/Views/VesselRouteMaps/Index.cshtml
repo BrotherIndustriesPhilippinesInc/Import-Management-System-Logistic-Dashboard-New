@@ -20,6 +20,13 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span>@item.VesselName</span>
                 <div>
+                    <a class="routeView btn btn-sm btn-success"
+                            asp-action="RouteView"
+                            asp-route-id="@item.Id"
+                            data-shipid="@item.ShipId"
+                            data-name="@item.VesselName">
+                        Route View
+                    </a>
                     <button class="liveView btn btn-sm btn-success"
                             asp-route-id="@item.Id"
                             data-shipid="@item.ShipId"
@@ -34,17 +41,120 @@
     </ul>
 </div>
 
-@section Scripts{
+<div>
+    <div id="map" class="rounded shadow-sm border" style="height: 70vh;"></div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+
+<link rel="stylesheet" href="~/js/libraries/leaflet-routing/leaflet-routing-machine.css" />
+<script src="~/js/libraries/leaflet-routing/leaflet-routing-machine.js"></script>
+<script src="~/js/libraries/leaflet-routing/leaflet.PopupMovable.js"></script>
+
+@section Scripts {
     <script type="module">
-            import { sendToWebView } from "./../../js/helpers/WebViewInteraction.js";
+        import { sendToWebView } from "./../../js/helpers/WebViewInteraction.js";
 
-            $(document).ready(function() {
-                $(".liveView").on("click", function(){
-
-                    sendToWebView("liveView", {"shipid": $(this).attr("data-shipid"), "name": $(this).attr("data-name")});
-
+        $(document).ready(function () {
+            $(".liveView").on("click", function () {
+                sendToWebView("liveView", {
+                    "shipid": $(this).attr("data-shipid"),
+                    "name": $(this).attr("data-name")
                 });
-        
             });
+        });
+
+        const map = L.map('map').setView([13.756384, 121.0388501], 6);
+
+        // Base map
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        // Colored marker icons
+        const blueIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        const greenIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        // Fetch all vessel route data
+        fetch('/VesselRouteMaps/GetAllVesselRouteMap')
+        .then(res => res.json())
+        .then(routes => {
+          if (!routes || routes.length === 0) {
+            console.warn("No vessel routes found.");
+            return;
+          }
+
+          const allCoords = [];
+
+          routes.forEach(route => {
+            const originCoords = route.originPortCoordinates;
+            const destCoords = route.destinationPortCoordinates;
+
+            // Skip routes with missing coordinates
+            if (!originCoords || !destCoords) {
+              console.warn("Skipping route due to missing coordinates:", route.vesselName);
+              return;
+            }
+
+            const origin = L.latLng(originCoords.latitude, originCoords.longitude);
+            const destination = L.latLng(destCoords.latitude, destCoords.longitude);
+
+            // Origin marker (blue)
+            const originMarker = L.marker(origin, { icon: blueIcon }).addTo(map);
+            originMarker.bindPopup(`
+              <div style="text-align:center;">
+                <h6 style="color:#0d6efd;">${route.originPortName || "Unknown"}</h6>
+                <small>${route.vesselName}</small>
+              </div>
+            `);
+
+            // Destination marker (green)
+            const destMarker = L.marker(destination, { icon: greenIcon }).addTo(map);
+            destMarker.bindPopup(`
+              <div style="text-align:center;">
+                <h6 style="color:#198754;">${route.destinationPortName || "Unknown"}</h6>
+                <small>${route.vesselName}</small>
+              </div>
+            `);
+
+            // Dashed straight line between origin and destination
+            const dashedLine = L.polyline([origin, destination], {
+              color: 'blue',
+              weight: 3,
+              opacity: 0.7,
+              dashArray: '10, 10'
+            }).addTo(map);
+
+            allCoords.push(origin, destination);
+          });
+
+          // Fit map to show all valid routes
+          if (allCoords.length > 0)
+            map.fitBounds(L.latLngBounds(allCoords), { padding: [50, 50] });
+        })
+        .catch(err => console.error('Error loading vessel routes:', err));
+
+
     </script>
 }

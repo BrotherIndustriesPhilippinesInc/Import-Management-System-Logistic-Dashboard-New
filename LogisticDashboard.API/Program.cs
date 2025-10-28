@@ -38,6 +38,8 @@ var app = builder.Build();
 
 app.UseCors("AllowLocalhost");
 
+app.UseStaticFiles();
+
 app.UseRouting();
 
 if (app.Environment.IsDevelopment())

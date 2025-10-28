@@ -34,6 +34,7 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\resources\logo\" />
+    <Folder Include="wwwroot\resources\courier\" />
     <Folder Include="wwwroot\resources\ports\" />
   </ItemGroup>
 

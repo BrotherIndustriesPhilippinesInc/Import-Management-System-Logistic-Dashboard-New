@@ -1,0 +1,185 @@
+﻿@model IEnumerable<LogisticDashboard.Core.ModeOfShipment>
+
+@{
+    ViewData["Title"] = "Mode Of Shipments";
+}
+
+<div class="mt-4">
+    <div class="misc-color px-3 py-3 d-inline-flex mb-2 rounded align-items-center gap-2">
+        <span class="text-light fs-2 fw-bold" style="width: 300px; text-align: center">Mode Of Shipment</span>
+    </div>
+</div>
+
+<div>
+    <button class="sea-freight-controls d-flex align-items-end" type="button" data-bs-toggle="modal" data-bs-target="#updateImageModal">
+        <i class="fa-solid fa-upload" style="font-size: 32px; color: black;"></i>
+        Upload data
+    </button>
+</div>
+
+<div>
+    <div>
+        <p>
+            <span class="fw-bold">Full Container Load - FCL</span> FCL (full container load) shipping is where you hire an entire shipping container to transport your goods.
+        </p>
+        <p>
+            <span class="fw-bold">Less Container Load - LCL</span> the cargo has small volumes or dimensions that will not take up the entire space of a container. In this case, the shipper can opt for LCL, which combines their shipment with other smaller cargoes
+        </p>
+    </div>
+</div>
+
+<div>
+    <h3 class="fw-bold">FCL Process Flow</h3>
+    <div>
+        <img id="fclImage"/>
+    </div>
+</div>
+
+<div>
+    <h3 class="fw-bold">LCL Process Flow</h3>
+    <div>
+        <img id="lclImage"/>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col fw-bold text-center">
+            LCL
+        </div>
+        <div class="col fw-bold text-center">
+            FCL
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col fw-bold text-center">
+            Advantage
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            Very Flexible <br />
+            Is delivered to you more conveniently<br />
+            Only pay for what you ship
+        </div>
+        <div class="col">
+            A few days quicker than LCL<br />
+            Cheaper per cbm<br />
+            Less cargo damage due to limited handling
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col fw-bold text-center">
+            Disadvantage
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            LCL is more expensive per CBM<br />
+            has longer Leadtime<br />
+            Goods are being handled more<br />
+            Has risk of cargo damage
+        </div>
+        <div class="col">
+            Delivery options are restricted
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="updateImageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Leadtime</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="type" placeholder="LCL">
+                    <label for="type">Flow Type</label>
+                </div>
+
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="pictureInput">
+                </div>
+
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="update" type="button" class="btn btn-primary">
+                    Update
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(async function () {
+            try {
+                const response = await fetch("https://localhost:7019/api/ModeOfShipments/get_picture", {
+                    method: "GET"
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch data");
+
+                const data = await response.json();
+                console.log(data);
+
+                // Example: display the images
+                if (data.fclProcessFlow_Image_Link)
+                    $("#fclImage").attr("src", "https://localhost:7019/" + data.fclProcessFlow_Image_Link);
+
+                if (data.lclProcessFlow_Image_Link)
+                    $("#lclImage").attr("src", "https://localhost:7019/" + data.lclProcessFlow_Image_Link);
+
+            } catch (error) {
+                console.error("Error loading mode of shipments:", error);
+            }
+
+                    $("#update").on("click", async function () {
+            const type = $("#type").val();
+            const file = $("#pictureInput")[0].files[0];
+
+            if (!file) {
+                alert("Please select a file first!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch(`https://localhost:7019/api/ModeOfShipments/upload?type=${type}`, {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error("Upload failed!");
+                }
+
+                const result = await response.json();
+                console.log("Upload success:", result);
+
+                alert("File uploaded successfully!");
+                location.reload(); // ✅ reload page after success
+
+            } catch (error) {
+                console.error("Error uploading:", error);
+                alert("Error uploading file!");
+            }
+        });
+
+        });
+    </script>
+
+}

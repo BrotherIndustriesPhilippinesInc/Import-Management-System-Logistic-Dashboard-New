@@ -1,0 +1,161 @@
+﻿@model LogisticDashboard.Web.DTO.DeliveryLeadtimeCombined
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-flex mt-4 justify-content-between align-items-center">
+    <div class="misc-color px-3 py-3 d-inline-block mb-2 rounded ">
+        <div class="d-flex gap-2 align-items-center justify-content-center">
+            <img src="~/resources/icons/crane.png" width="32" height="32" />
+            <span class="text-light fs-2 fw-bold">Delivery Leadtime</span>
+        </div>
+        
+    </div>
+
+    <div class="d-flex flex-column gap-2">
+        <div class="d-flex justify-content-end">
+            <div class="d-flex flex-column gap-1">
+                <div class="d-flex gap-2 justify-content-end">
+                    <div>
+                        <span class="sub-label d-inline">START DATE:</span>
+                        <input id="start-date" type="date" />
+                    </div>
+                    <div>
+                        <span class="sub-label d-inline">END DATE:</span>
+                        <input id="end-date" type="date" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="button" class="sailing-schedule d-flex align-items-end" id="addRoute" data-bs-toggle="modal" data-bs-target="#addLeadtimeModal">
+                <i class="fa-solid fa-clock " style="font-size: 32px; color: black;"></i>
+                Add Leadtime
+            </button>
+
+            <div>
+                <input type="file" id="uploadInput" class="d-none" />
+                <button class="sea-freight-controls d-flex align-items-end" type="button" onclick="document.getElementById('uploadInput').click();">
+                    <i class="fa-solid fa-upload" style="font-size: 32px; color: black;"></i>
+                    Upload data
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <div class="text-center">
+        <img width="80%" height="300px" src="~/resources/logo/Process.png" />
+    </div>
+
+    <table id="delivery-leadtime" class="table table-striped table-hover">
+        <thead id="delivery-leadtime-head" class="text-light">
+            <tr>
+                <th scope="col">Carrier</th>
+                <th scope="col">Origin Port</th>
+                <th scope="col">Destination Port</th>
+                <th scope="col">Vessel Transit Leadtime (day)</th>
+                <th scope="col">Customs Clearance Lead time (day)</th>
+                <th scope="col">TOTAL Lead time (day)</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.DeliveryLeadtime)
+            {
+                <tr data-id="@item.Id">
+                    <td>@item.Carrier</td>
+                    <td>@item.OriginPort</td>
+                    <td>@item.DestinationPort</td>
+                    <td>@item.VesselTransitLeadtime</td>
+                    <td>@item.CustomsClearanceLeadtime</td>
+                    <td>@item.TotalLeadtime</td>
+                    <td>
+                        <button class="btn btn-danger delete-btn" data-id="@item.Id">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+        
+</div>
+
+<div class="d-flex flex-column align-items-center">
+    <div class="w-25 d-flex flex-column gap-2 justify-content-center align-items-center">
+
+        <button id="leadtime-1" data-id="HK-BIPH Leadtime via Maersk" class="leadTime-btn w-100 border border-dark rounded text-dark p-2">
+            <h4 class="m-0">HK to BIPH Leadtime via Maersk</h4>
+        </button>
+
+        <button id="leadtime-2" data-id="JPN-BIPH Leadtime via ONE" class="leadTime-btn w-100 border border-dark rounded text-dark p-2">
+            <h4 class="m-0">JPN to BIPH Leadtime via ONE</h4>
+        </button>
+
+        <button id="leadtime-3" data-id="CN-BIPH Leadtime via Maersk" class="leadTime-btn w-100 border border-dark rounded text-dark p-2">
+            <h4 class="m-0">CN to BIPH Leadtime via Maersk</h4>
+        </button>
+
+    </div>
+</div>
+
+
+<div id="chart">
+    <canvas id="leadtimeChartCanvas" width="800" height="300"></canvas>
+</div>
+
+
+<div class="modal fade" id="addLeadtimeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Leadtime</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="carrier" placeholder="Carrier">
+                        <label for="carrier">Carrier</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="origin_port" placeholder="Origin Port">
+                        <label for="origin_port">Origin Port</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="destination_port" placeholder="Destination Port">
+                        <label for="destination_port">Destination Port</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="vessel_transit_leadtime" placeholder="Vessel Transit Leadtime">
+                        <label for="vessel_transit_leadtime">Vessel Transit Leadtime (day)</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="customs_clearance_leadtime" placeholder="Customs Clearance Leadtime">
+                        <label for="customs_clearance_leadtime">Customs Clearance Lead time (day)</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="total_leadtime" placeholder="Total Leadtime">
+                        <label for="total_leadtime">Total Lead time (day)</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="saveLeadtime" type="button" class="btn btn-primary">
+                        Save Leadtime
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="module" src="@Url.Content("~/js/page-scripts/DeliveryLeadtime.js")"></script>
+}

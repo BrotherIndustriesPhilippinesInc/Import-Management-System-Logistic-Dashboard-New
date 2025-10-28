@@ -25,6 +25,24 @@ namespace LogisticDashboard.Web.Controllers
             return View(await _context.VesselRouteMap.ToListAsync());
         }
 
+        [HttpGet("VesselRouteMaps/RouteView/{id?}")]
+        public async Task<IActionResult> RouteView(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var vesselRouteMap = await _context.VesselRouteMap
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (vesselRouteMap == null)
+            {
+                return NotFound();
+            }
+
+            return View(vesselRouteMap);
+        }
+
         // GET: VesselRouteMaps/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -59,6 +77,7 @@ namespace LogisticDashboard.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                vesselRouteMap.CreatedDate = DateTime.UtcNow;
                 _context.Add(vesselRouteMap);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -87,7 +106,7 @@ namespace LogisticDashboard.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] VesselRouteMap vesselRouteMap)
+        public async Task<IActionResult> Edit(int id, VesselRouteMap vesselRouteMap)
         {
             if (id != vesselRouteMap.Id)
             {
@@ -98,6 +117,7 @@ namespace LogisticDashboard.Web.Controllers
             {
                 try
                 {
+                    vesselRouteMap.LastUpdate = DateTime.UtcNow;
                     _context.Update(vesselRouteMap);
                     await _context.SaveChangesAsync();
                 }
@@ -150,9 +170,29 @@ namespace LogisticDashboard.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
         private bool VesselRouteMapExists(int id)
         {
             return _context.VesselRouteMap.Any(e => e.Id == id);
         }
+
+        [HttpGet("VesselRouteMaps/GetVesselRouteMap/{id?}")]
+        public async Task<IActionResult> GetVesselRouteMap(int id)
+        {
+            var data = await _context.VesselRouteMap
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            return Json(data);
+        }
+
+        [HttpGet("VesselRouteMaps/GetAllVesselRouteMap")]
+        public async Task<IActionResult> GetAllVesselRouteMap(int id)
+        {
+            var data = await _context.VesselRouteMap.ToListAsync();
+
+            return Json(data);
+        }
+
     }
 }

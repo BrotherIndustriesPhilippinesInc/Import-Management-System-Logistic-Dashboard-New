@@ -1,0 +1,79 @@
+﻿@model LogisticDashboard.Core.DeliveryLeadtimeData
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>DeliveryLeadtimeData</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="LeadtimeName" class="control-label"></label>
+                <input asp-for="LeadtimeName" class="form-control" />
+                <span asp-validation-for="LeadtimeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Month" class="control-label"></label>
+                <input asp-for="Month" class="form-control" />
+                <span asp-validation-for="Month" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Actual_Ave" class="control-label"></label>
+                <input asp-for="Actual_Ave" class="form-control" />
+                <span asp-validation-for="Actual_Ave" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Target_Max" class="control-label"></label>
+                <input asp-for="Target_Max" class="form-control" />
+                <span asp-validation-for="Target_Max" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Target_Min" class="control-label"></label>
+                <input asp-for="Target_Min" class="form-control" />
+                <span asp-validation-for="Target_Min" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="No_Of_BL" class="control-label"></label>
+                <input asp-for="No_Of_BL" class="form-control" />
+                <span asp-validation-for="No_Of_BL" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualFYAverage" class="control-label"></label>
+                <input asp-for="ActualFYAverage" class="form-control" />
+                <span asp-validation-for="ActualFYAverage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TargetFYMax" class="control-label"></label>
+                <input asp-for="TargetFYMax" class="form-control" />
+                <span asp-validation-for="TargetFYMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TargetFYMin" class="control-label"></label>
+                <input asp-for="TargetFYMin" class="form-control" />
+                <span asp-validation-for="TargetFYMin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NoOfBLFY" class="control-label"></label>
+                <input asp-for="NoOfBLFY" class="form-control" />
+                <span asp-validation-for="NoOfBLFY" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

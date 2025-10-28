@@ -13,12 +13,10 @@ namespace LogisticDashboard.Core
         public string VesselName { get; set; }
 
         public string OriginPortName { get; set; }
-        public string OriginPort { get; set; }
         [Column(TypeName = "jsonb")]
         public Coordinates? OriginPortCoordinates { get; set; }
 
         public string DestinationPortName { get; set; }
-        public string? DestinationPort { get; set; }
         [Column(TypeName = "jsonb")]
         public Coordinates? DestinationPortCoordinates { get; set; }
 

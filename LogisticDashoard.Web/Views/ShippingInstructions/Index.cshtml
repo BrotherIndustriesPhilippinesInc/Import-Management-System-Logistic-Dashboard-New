@@ -1,0 +1,70 @@
+﻿@model IEnumerable<LogisticDashboard.Core.ShippingInstruction>
+
+@{
+    ViewData["Title"] = "Shipping Instructions";
+}
+
+<div class="mt-4">
+    <div class="misc-color px-3 py-3 d-inline-flex mb-2 rounded align-items-center gap-2">
+        <span class="text-light fs-2 fw-bold">Shipping Instructions</span>
+    </div>
+</div>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th class="text-center" colspan="2">Language</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="w-50">
+                    @Html.DisplayFor(modelItem => item.ShippingInstructionName)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.FileLinkEnglish))
+                    {
+                        <div class="text-center">
+                            <a href="@item.FileLinkEnglish" target="_blank" class="text-decoration-none text-dark">
+                                <i class="fa-solid fa-download fs-4"></i>
+                                <span>English</span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted">—</div>
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.FileLinkJapanese))
+                    {
+                        <div class="text-center">
+                            <a href="@item.FileLinkJapanese" target="_blank" class="text-decoration-none text-dark">
+                                <i class="fa-solid fa-download fs-4"></i>
+                                <span>Japanese</span>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted">—</div>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

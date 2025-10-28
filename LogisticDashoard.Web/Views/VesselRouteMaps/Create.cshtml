@@ -26,6 +26,47 @@
                         <span asp-validation-for="ShipId" class="text-danger small"></span>
                     </div>
 
+                    <div class="mb-3 row">
+                        <div class="col-6">
+                            <label asp-for="OriginPortName" class="form-label fw-semibold">Origin Port</label>
+                            <input asp-for="OriginPortName" class="form-control" placeholder="Enter origin port..." />
+                            <span asp-validation-for="OriginPortName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-6">
+                            <label asp-for="DestinationPortName" class="form-label fw-semibold">Destination Port</label>
+                            <input asp-for="DestinationPortName" class="form-control" placeholder="Enter destination port..." />
+                            <span asp-validation-for="DestinationPortName" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mb-3">
+                        <button type="button" id="setOriginBtn" class="btn btn-primary">
+                            <i class="fa fa-map-marker-alt me-1"></i> Set Origin
+                        </button>
+                        <button type="button" id="setDestinationBtn" class="btn btn-primary">
+                            <i class="fa fa-location-arrow me-1"></i> Set Destination
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label fw-bold">Select Port Location</label>
+
+                        <input type="hidden" asp-for="OriginPortCoordinates.Latitude" id="OriginLatitude" />
+                        <input type="hidden" asp-for="OriginPortCoordinates.Longitude" id="OriginLongitude" />
+                        <input type="hidden" asp-for="DestinationPortCoordinates.Latitude" id="DestinationLatitude" />
+                        <input type="hidden" asp-for="DestinationPortCoordinates.Longitude" id="DestinationLongitude" />
+
+
+                        <div id="map" class="rounded shadow-sm border" style="height: 70vh;"></div>
+
+                        <span asp-validation-for="OriginPortCoordinates.Latitude" class="text-danger"></span>
+                        <span asp-validation-for="OriginPortCoordinates.Longitude" class="text-danger"></span>
+                        <span asp-validation-for="DestinationPortCoordinates.Latitude" class="text-danger"></span>
+                        <span asp-validation-for="DestinationPortCoordinates.Longitude" class="text-danger"></span>
+
+                    </div>
+
                     <div class="d-flex justify-content-between mt-4">
                         <a asp-action="Index" class="btn btn-secondary">
                             <i class="fa fa-arrow-left me-1"></i> Back
@@ -40,8 +81,118 @@
     </div>
 </div>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<link rel="stylesheet" href="~/js/libraries/leaflet-routing/leaflet-routing-machine.css" />
+<script src="~/js/libraries/leaflet-routing/leaflet-routing-machine.js"></script>
+<script src="~/js/libraries/leaflet-routing/leaflet.PopupMovable.js"></script>
+
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        var map = L.map('map', {
+            popupMovable: true,
+            popupMovableZoomMode: 'relative',
+            closePopupOnClick: false,
+        }).setView([14.135657825671856, 121.12459750310252], 10);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        var originMarker = null;
+        var destinationMarker = null;
+        var routeLine = null;
+        var selecting = null;
+
+        // Buttons for setting pins
+        $('#setOriginBtn').click(() => {
+            selecting = 'origin';
+            alert('Click on the map to set the ORIGIN port 🟦');
+        });
+        $('#setDestinationBtn').click(() => {
+            selecting = 'destination';
+            alert('Click on the map to set the DESTINATION port 🟩');
+        });
+
+        // Add marker function
+        function addDraggableMarker(latlng, label, color, onDragEnd) {
+            return L.marker(latlng, {
+                draggable: true,
+                icon: L.divIcon({
+                    className: 'custom-pin',
+                    html: `<i class="fa fa-map-marker-alt" style="color:${color};font-size:24px"></i>`,
+                    iconSize: [24, 24],
+                    iconAnchor: [12, 24]
+                })
+            }).addTo(map)
+              .bindPopup(label)
+              .openPopup()
+              .on('dragend', onDragEnd);
+        }
+
+        // Map click handler
+        map.on('click', function (e) {
+            if (!selecting) return;
+
+            if (selecting === 'origin') {
+                if (originMarker) map.removeLayer(originMarker);
+                originMarker = addDraggableMarker(e.latlng, "Origin Port", "blue", function (evt) {
+                    var pos = evt.target.getLatLng();
+                    $('#OriginLatitude').val(pos.lat);
+                    $('#OriginLongitude').val(pos.lng);
+                    updateRouteLine();
+                });
+                $('#OriginLatitude').val(e.latlng.lat);
+                $('#OriginLongitude').val(e.latlng.lng);
+            }
+
+            if (selecting === 'destination') {
+                if (destinationMarker) map.removeLayer(destinationMarker);
+                destinationMarker = addDraggableMarker(e.latlng, "Destination Port", "green", function (evt) {
+                    var pos = evt.target.getLatLng();
+                    $('#DestinationLatitude').val(pos.lat);
+                    $('#DestinationLongitude').val(pos.lng);
+                    updateRouteLine();
+                });
+                $('#DestinationLatitude').val(e.latlng.lat);
+                $('#DestinationLongitude').val(e.latlng.lng);
+            }
+
+            selecting = null;
+            updateRouteLine();
+        });
+
+        // Draw or update route line between markers
+        function updateRouteLine() {
+            if (routeLine) map.removeLayer(routeLine);
+
+            if (originMarker && destinationMarker) {
+                var origin = originMarker.getLatLng();
+                var destination = destinationMarker.getLatLng();
+
+                routeLine = L.polyline([origin, destination], {
+                    color: 'blue',
+                    weight: 4,
+                    opacity: 0.8,
+                    dashArray: '5, 10'
+                }).addTo(map);
+
+                map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
+            }
+        }
+
+        // Validation before submit
+        $('form').on('submit', function (e) {
+            if (!$('#OriginLatitude').val() || !$('#DestinationLatitude').val()) {
+                e.preventDefault();
+                alert("You must set BOTH origin and destination ports before submitting, baka~ 💢");
+            }
+        });
+    </script>
+
 }

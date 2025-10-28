@@ -9,7 +9,7 @@ namespace LogisticDashboard.Core
     public class DeliveryLeadtime
     {
         public int Id { get; set; }
-        public int Year { get; set; }
+        public int? Year { get; set; }
         public string Carrier { get; set; }
         public string OriginPort { get; set; }
         public string DestinationPort { get; set; }

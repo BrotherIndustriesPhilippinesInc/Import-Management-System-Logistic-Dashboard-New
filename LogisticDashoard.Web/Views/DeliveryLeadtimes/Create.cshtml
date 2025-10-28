@@ -1,0 +1,63 @@
+﻿@model LogisticDashboard.Core.DeliveryLeadtime
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>DeliveryLeadtime</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Year" class="control-label"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Carrier" class="control-label"></label>
+                <input asp-for="Carrier" class="form-control" />
+                <span asp-validation-for="Carrier" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OriginPort" class="control-label"></label>
+                <input asp-for="OriginPort" class="form-control" />
+                <span asp-validation-for="OriginPort" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DestinationPort" class="control-label"></label>
+                <input asp-for="DestinationPort" class="form-control" />
+                <span asp-validation-for="DestinationPort" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VesselTransitLeadtime" class="control-label"></label>
+                <input asp-for="VesselTransitLeadtime" class="form-control" />
+                <span asp-validation-for="VesselTransitLeadtime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomsClearanceLeadtime" class="control-label"></label>
+                <input asp-for="CustomsClearanceLeadtime" class="form-control" />
+                <span asp-validation-for="CustomsClearanceLeadtime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalLeadtime" class="control-label"></label>
+                <input asp-for="TotalLeadtime" class="form-control" />
+                <span asp-validation-for="TotalLeadtime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

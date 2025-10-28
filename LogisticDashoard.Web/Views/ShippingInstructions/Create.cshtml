@@ -1,0 +1,52 @@
+﻿@model LogisticDashboard.Core.ShippingInstruction
+
+@{
+    ViewData["Title"] = "Create Shipping Instruction";
+}
+
+<h2>Create Shipping Instruction</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ShippingInstructionName" class="control-label">Instruction Name</label>
+                <input asp-for="ShippingInstructionName" class="form-control" />
+                <span asp-validation-for="ShippingInstructionName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Type" class="control-label">Type</label>
+                <select asp-for="Type" class="form-select">
+                    <option value="Instruction">Instruction</option>
+                    <option value="Request Form">Request Form</option>
+                </select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">English File</label>
+                <input type="file" name="FileEnglish" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Japanese File</label>
+                <input type="file" name="FileJapanese" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

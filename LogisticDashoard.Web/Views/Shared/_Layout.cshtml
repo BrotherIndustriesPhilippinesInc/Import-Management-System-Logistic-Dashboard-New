@@ -80,19 +80,52 @@
                                     <a asp-action="Index" asp-controller="SailingSchedules" class="btn link-btn dropdown-item">Sailing Schedule</a>
                                     <a asp-action="Index" asp-controller="PortUtilizations" class="btn link-btn dropdown-item">Port Utilization</a>
                                     <a asp-action="Index" asp-controller="BerthingStatus" class="btn link-btn dropdown-item">Berthing Status</a>
-                                    <a class="btn link-btn dropdown-item" href="#">Delivery Leadtime</a>
+                                    <a asp-action="Index" asp-controller="DeliveryLeadtimes" class="btn link-btn dropdown-item">Delivery Leadtime</a>
                                     <a asp-action="Index" asp-controller="Incoterms" class="btn link-btn dropdown-item">Incoterms</a>
-                                    <a class="btn link-btn dropdown-item" href="#">Shipment Mode</a>
+                                    <a asp-action="Index" asp-controller="ModeOfShipments" class="btn link-btn dropdown-item">Shipment Mode</a>
                                     <a asp-action="Index" asp-controller="VesselRouteMaps" class="btn link-btn dropdown-item">Vessel Route Map</a>
                                     <a asp-action="Index" asp-controller="PHPortMaps" class="btn link-btn dropdown-item">PH Port Maps</a>
-                                    <a class="btn link-btn dropdown-item" href="#">CNTR. Visualization</a>
-                                    <a class="btn link-btn dropdown-item" href="#">Shipping Instruction</a>
+                                    <a asp-action="Index" asp-controller="ContainerVisualizations" class="btn link-btn dropdown-item">CNTR. Visualization</a>
+                                    <div class="accordion" id="accordionShippingInstruction">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button btn dark-backround collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseOne">
+                                                        
+                                                    <i class="me-2 fa-solid fa-person-chalkboard" style="filter: brightness(0) invert(1);"></i>
+                                                    Shipping Instructions
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionShippingInstruction">
+                                                <div class="accordion-body p-2 d-flex flex-column gap-2">
+                                                    <a asp-action="Index" asp-controller="CourierInformations" class="btn link-btn dropdown-item">Courier Information</a>
+                                                    <a asp-action="Index" asp-controller="ShippingInstructions" class="btn link-btn dropdown-item">Shipping Instructions</a>
+                                                <a asp-action="RequestForms" asp-controller="ShippingInstructions" class="btn link-btn dropdown-item">Request Form</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Logistic Cost", ASPController = "LogisticCost", Icon = "/resources/icons/dollar.svg" })
-                @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Others", ASPController = "Others", Icon = "/resources/icons/others.svg" })
+                <div class="accordion" id="accordionOthers">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button btn dark-backround collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseOne">
+
+                                <i class="me-2 fa-solid fa-ellipsis" style="filter: brightness(0) invert(1);"></i>
+                                Others
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionOthers">
+                            <div class="accordion-body p-2 d-flex flex-column gap-2">
+                                <a asp-action="Index" asp-controller="PhilippineHolidays" class="btn link-btn dropdown-item">Announcement</a>
+                                <a asp-action="Index" asp-controller="ShippingInstructions" class="btn link-btn dropdown-item">Import PIC Shipping Reporting Flow</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 @await Html.PartialAsync(CustomComponent.Render("NavLinks"), new NavLinkModel { Text = "Administrator", ASPController = "Users", Icon = "/resources/icons/administrator.svg" })
             </div>
         </div>

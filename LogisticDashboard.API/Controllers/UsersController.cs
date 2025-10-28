@@ -127,9 +127,6 @@ namespace LogisticDashboard.API.Controllers
             return portalData ?? new DataTableResponse<PortalUser> { Data = new List<PortalUser>() };
         }
 
-
-
-
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Users>> GetUsers(int id)

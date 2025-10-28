@@ -1,0 +1,78 @@
+﻿@model LogisticDashboard.Core.DeliveryLeadtimeData
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>DeliveryLeadtimeData</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LeadtimeName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LeadtimeName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Month)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Month)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Actual_Ave)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Actual_Ave)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Target_Max)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Target_Max)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Target_Min)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Target_Min)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.No_Of_BL)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.No_Of_BL)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ActualFYAverage)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ActualFYAverage)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TargetFYMax)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TargetFYMax)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TargetFYMin)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TargetFYMin)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NoOfBLFY)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NoOfBLFY)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

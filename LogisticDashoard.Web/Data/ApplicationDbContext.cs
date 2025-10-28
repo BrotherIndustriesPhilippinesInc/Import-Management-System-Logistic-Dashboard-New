@@ -20,6 +20,14 @@ namespace LogisticDashboard.Web.Data
         public DbSet<LogisticDashboard.Core.VesselRouteMap> VesselRouteMap { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.PHPortMap> PHPortMap { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.Users> Users { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.DeliveryLeadtime> DeliveryLeadtime { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.DeliveryLeadtimeData> DeliveryLeadtimeData { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ModeOfShipment> ModeOfShipment { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ContainerVisualization> ContainerVisualization { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.CourierInformation> CourierInformation { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.DHL> DHL { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ShippingInstruction> ShippingInstruction { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.PhilippineHolidays> PhilippineHolidays { get; set; } = default!;
 
     }
 }

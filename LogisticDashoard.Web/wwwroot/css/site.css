@@ -57,7 +57,7 @@ body {
 }
 
 .btn {
-    color: white !important;
+    color: white ;
     font-weight: bold;
     text-align: left;
 }
@@ -325,4 +325,12 @@ td.dtfc-fixed-start{
 
 .leaflet-routing-container.leaflet-bar.leaflet-routing-container-hide.leaflet-control{
     display: none;
+}
+
+#delivery-leadtime-head {
+    background-color: #008BD5 !important;
+}
+
+.accordion-button::after {
+    filter: brightness(0) invert(1); /* makes arrow white */
 }
