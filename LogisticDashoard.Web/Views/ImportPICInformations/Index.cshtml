@@ -1,0 +1,545 @@
+﻿@model IEnumerable<LogisticDashboard.Core.ImportPICInformation>
+
+@{
+    ViewData["Title"] = "Index";
+    var items = Model.ToList();
+    int i = 0;
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+    #flowchart-container {
+        display: flex;
+        gap: 10px;
+        height: 80vh;
+        padding: 10px;
+        flex-direction: column;
+    }
+
+    #palette {
+        /* width: 50%; */
+        background: #fff;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    #canvas-wrapper {
+        flex-grow: 1;
+        background: #fafafa;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+    }
+
+    #canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5000px;
+        height: 5000px;
+        transform-origin: top left !important;
+        /* visual grid background */
+        /* background-image: linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        background-size: 20px 20px; */
+    }
+
+
+    /* ===== Toolbar ===== */
+    #toolbar {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #fff;
+        border-radius: 8px;
+        padding: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        display: flex;
+        gap: 8px;
+        z-index: 1000;
+    }
+
+    .toolbar-btn {
+        background: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+
+        .toolbar-btn:hover {
+            background: #2980b9;
+        }
+
+        .toolbar-btn:active {
+            background: #21618c;
+        }
+
+    #zoom-display {
+        background: #ecf0f1;
+        color: #2c3e50;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        min-width: 60px;
+        text-align: center;
+    }
+
+    /* ===== Shapes ===== */
+    .shape {
+        width: 140px;
+        min-height: 50px;
+        padding: 10px;
+        text-align: center;
+        /* color: #fff; */
+        border-radius: 6px;
+        cursor: move;
+        user-select: none;
+        position: absolute;
+        /* box-shadow: 0 2px 5px rgba(0,0,0,0.2); */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        resize: both;
+        overflow: hidden;
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
+        .shape.selected {
+            outline: 3px solid #1abc9c;
+            outline-offset: 2px;
+        }
+
+    .palette-shape {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        color: #fff;
+        cursor: grab;
+    }
+
+        .shape.start, .palette-shape.start {
+            border: 2px solid pink;
+            color: black;
+        }
+
+        .shape.start, .palette-shape.start,
+        .shape.end, .palette-shape.end {
+            border-radius: 50%; /* makes it circular */
+            width: 80px; /* optional: smaller width & height for circles */
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shape.process, .palette-shape.process {
+            border: 2px solid pink;
+            width: 200px;
+            color: black;
+        }
+
+        .shape.decision, .palette-shape.decision {
+            background: transparent;
+            line-height: normal;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+            padding: 15px;
+        }
+
+            .shape.decision .decision-diamond {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+                background: pink; /* ensure no fill */
+                pointer-events: none;
+                z-index: 0;
+            }
+
+
+
+            .shape.decision .editable {
+                position: relative;
+                z-index: 1;
+            }
+
+        .palette-shape.decision {
+            background: pink;
+            color: black;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            width: 200px;
+        }
+
+        .shape.end, .palette-shape.end {
+            /* background: #c0392b; */
+            border: 2px solid pink;
+            color: black;
+        }
+
+    /* ===== Editable text ===== */
+    .shape .editable {
+        width: 100%;
+        height: auto;
+        padding: 8px;
+        color: inherit;
+        font-weight: 600;
+        text-align: center;
+        word-wrap: break-word;
+        white-space: normal;
+        cursor: move;
+        border: none;
+        background: transparent;
+        outline: none;
+    }
+
+    .shape.editing .editable {
+        cursor: text;
+        background: rgba(255,255,255,0.2);
+        border-radius: 4px;
+        pointer-events: all;
+    }
+
+    .shape:not(.editing) .editable {
+        pointer-events: none;
+    }
+
+    .shape .ui-resizable-handle {
+        opacity: 0;
+        transition: opacity 0.15s;
+    }
+
+    .shape:hover .ui-resizable-handle {
+        opacity: 1;
+    }
+
+    /* ===== Mini Map ===== */
+    #minimap {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 150px;
+        height: 100px;
+        background: rgba(255,255,255,0.9);
+        border: 2px solid #3498db;
+        border-radius: 4px;
+        z-index: 999;
+        overflow: hidden;
+    }
+
+    #minimap-canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    #minimap-viewport {
+        position: absolute;
+        border: 2px solid #e74c3c;
+        background: rgba(231, 76, 60, 0.1);
+        pointer-events: none;
+    }
+</style>
+
+<div class="mt-4">
+    <div class="misc-color px-3 py-3 d-inline-flex mb-2 rounded align-items-center gap-2">
+        <span class="text-light fs-2 fw-bold">Shipping Instructions</span>
+    </div>
+</div>
+
+<p><a asp-action="Create">Create New</a></p>
+
+<div class="w-100 d-flex justify-content-center">
+    <table class="table w-75 border">
+        <thead class="text-center">
+            <tr>
+                <th class="border">Mode Of Shipment</th>
+                <th class="border">Supplier</th>
+                <th class="border">Shipping Main PIC - Staff</th>
+                <th class="border">Shipping Sub PIC - Staff</th>
+                <th class="border">Supervisor</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @while (i < items.Count)
+            {
+                var current = items[i];
+                int rowspan = 1;
+                for (int j = i + 1; j < items.Count; j++)
+                {
+                    if (items[j].ModeOfShipment == current.ModeOfShipment) rowspan++;
+                    else break;
+                }
+
+                <tr class="text-center">
+                    <td rowspan="@rowspan" class="align-middle border">@current.ModeOfShipment</td>
+                    <td class="border">@current.Supplier</td>
+                    <td class="border">@current.ShippingMainPICStaff</td>
+                    <td class="border">@current.ShippingSubPICStaff</td>
+                    <td class="border">@current.Supervisor</td>
+                    <td class="border">
+                        <a asp-action="Edit" asp-route-id="@current.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@current.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@current.Id">Delete</a>
+                    </td>
+                </tr>
+
+                for (int j = 1; j < rowspan; j++)
+                {
+                    var next = items[i + j];
+                    <tr class="text-center">
+                        <td class="border">@next.Supplier</td>
+                        <td class="border">@next.ShippingMainPICStaff</td>
+                        <td class="border">@next.ShippingSubPICStaff</td>
+                        <td class="border">@next.Supervisor</td>
+                        <td class="border">
+                            <a asp-action="Edit" asp-route-id="@next.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@next.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@next.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+                i += rowspan;
+            }
+        </tbody>
+    </table>
+</div>
+<div class="d-flex w-100 align-items-center">
+    <!-- ===== Flowchart ===== -->
+    <div class="w-75" id="flowchart-container">
+        <div class="d-flex gap-2 align-items-center" id="palette">
+            <div class="palette-shape start" draggable="true" data-type="start">Start</div>
+            <div class="palette-shape process" draggable="true" data-type="process">Process</div>
+            <div class="palette-shape decision" draggable="true" data-type="decision">Decision</div>
+            <div class="palette-shape end" draggable="true" data-type="end">End</div>
+
+            <button id="saveChart" class="toolbar-btn">Save</button>
+            <button id="loadChart" class="toolbar-btn d-none">Load</button>
+
+        </div>
+
+        <div id="canvas-wrapper">
+            <div id="canvas"></div>
+        </div>
+    </div>
+
+    <!-- ===== Contact Card ===== -->
+    <div class="border w-25" style="height: fit-content;">
+        <h4>Import Shipping Contact Information</h4>
+        <h4>Telephone Number:</h4>
+        <p>043 430 1030 Local 3240-3244</p>
+        <h4>Mobile Number:</h4>
+        <p>+63 998-973-9408</p>
+        <h4>Email Address:</h4>
+        <p>import.external@brother-biph.com.ph</p>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/jsplumb@2.15.6/css/jsplumbtoolkit-defaults.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jsplumb@2.15.6/dist/js/jsplumb.min.js"></script>
+
+    <script>
+                jsPlumb.ready(function() {
+            const canvas = document.getElementById("canvas");
+            const wrapper = document.getElementById("canvas-wrapper");
+            const palette = document.querySelectorAll(".palette-shape");
+
+            const instance = jsPlumb.getInstance({
+                Container: canvas,
+                Connector: ["Flowchart", { cornerRadius: 5 }],
+                PaintStyle: { strokeWidth: 2, stroke: "#34495e" },
+                EndpointStyle: { fill: "#34495e", radius: 4 },
+                HoverPaintStyle: { stroke: "#1abc9c", strokeWidth: 3 },
+                ConnectionOverlays: [["Arrow", { width: 10, length: 10, location: 1 }]]
+            });
+
+            let idCounter = 0;
+            let scale = 1, panX = 0, panY = 0;
+            let isPanning = false, startX = 0, startY = 0;
+            let selectedShape = null;
+
+            function updateTransform() { canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`; }
+
+            // ===== Palette drag & drop =====
+            palette.forEach(shape => shape.addEventListener("dragstart", e => e.dataTransfer.setData("shapeType", shape.dataset.type)));
+            wrapper.addEventListener("dragover", e => e.preventDefault());
+            wrapper.addEventListener("drop", e => {
+                e.preventDefault();
+                const type = e.dataTransfer.getData("shapeType");
+                if (!type) return;
+                const rect = wrapper.getBoundingClientRect();
+                const canvasX = (e.clientX - rect.left - panX) / scale;
+                const canvasY = (e.clientY - rect.top - panY) / scale;
+                addShape(type, canvasX - 70, canvasY - 25);
+            });
+
+            // ===== Add shape =====
+            function addShape(type, x, y) {
+                const div = document.createElement("div");
+                div.className = `shape ${type}`;
+                div.id = `shape_${++idCounter}`;
+                div.style.left = x + "px";
+                div.style.top = y + "px";
+                div.style.width = "140px";
+                div.style.height = "50px";
+                div.style.position = "absolute";
+                div.style.borderRadius = (type === "start" || type === "end") ? "50%" : "6px";
+
+                const text = document.createElement("div");
+                text.className = "editable";
+                text.innerText = type.charAt(0).toUpperCase() + type.slice(1);
+                div.appendChild(text);
+
+                if (type === "decision") {
+                    const diamond = document.createElement("div");
+                    diamond.className = "decision-diamond";
+                    div.appendChild(diamond);
+                }
+
+                canvas.appendChild(div);
+
+                $(div).resizable({ handles: "all", minHeight: 40, minWidth: 80, resize: () => instance.repaintEverything() })
+                        .draggable({ containment: canvas, cancel: ".ui-resizable-handle", drag: () => instance.repaintEverything() });
+
+                ["Top","Bottom","Left","Right"].forEach(anchor => instance.addEndpoint(div, { anchor, isSource: true, isTarget: true, maxConnections: -1 }));
+
+                div.addEventListener("click", () => {
+                    if (selectedShape) selectedShape.classList.remove("selected");
+                    selectedShape = div;
+                    div.classList.add("selected");
+                });
+
+                div.addEventListener("dblclick", () => { div.classList.add("editing"); text.contentEditable = true; text.focus(); });
+                text.addEventListener("blur", () => { div.classList.remove("editing"); text.contentEditable = false; });
+                text.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); text.blur(); } });
+
+                instance.repaintEverything();
+                return div;
+            }
+
+            // ===== Delete shape =====
+            function deleteShape(shape) { if (!shape) return; instance.remove(shape); selectedShape = null; }
+
+            // ===== Delete connection independently =====
+            instance.bind("click", function(connection) {
+                if (confirm("Delete this connection?")) instance.deleteConnection(connection);
+            });
+
+            // ===== Zoom/Pan =====
+            wrapper.addEventListener("wheel", e => {
+                e.preventDefault();
+                const rect = wrapper.getBoundingClientRect();
+                const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+                const factor = e.deltaY < 0 ? 1.1 : 0.9;
+                const oldScale = scale;
+                scale = Math.min(3, Math.max(0.1, scale * factor));
+                panX = mx - (mx - panX) * (scale / oldScale);
+                panY = my - (my - panY) * (scale / oldScale);
+                updateTransform();
+            });
+            wrapper.addEventListener("mousedown", e => { if(e.button!==1)return; isPanning=true; startX=e.clientX-panX; startY=e.clientY-panY; });
+            wrapper.addEventListener("mousemove", e => { if(isPanning){ panX=e.clientX-startX; panY=e.clientY-startY; updateTransform(); } });
+            wrapper.addEventListener("mouseup", e => isPanning=false);
+
+            // ===== Keyboard shortcuts =====
+            document.addEventListener("keydown", e => {
+                if(e.ctrlKey||e.metaKey){ if(e.key==="="||e.key==="+"){ e.preventDefault(); zoomIn(); } else if(e.key==="-"){ e.preventDefault(); zoomOut(); } else if(e.key==="0"){ e.preventDefault(); zoomReset(); } }
+                else if(e.key==="Delete" && selectedShape) deleteShape(selectedShape);
+            });
+
+            function zoomIn(){ scale=Math.min(3,scale*1.1); updateTransform(); }
+            function zoomOut(){ scale=Math.max(0.1,scale*0.9); updateTransform(); }
+            function zoomReset(){ scale=1; panX=0; panY=0; updateTransform(); }
+
+            // ===== SAVE & LOAD BUTTONS =====
+            document.getElementById("saveChart").addEventListener("click", () => {
+                const shapes = [];
+                document.querySelectorAll(".shape").forEach(div => {
+                    shapes.push({
+                        id: div.id,
+                        type: [...div.classList].find(c => ["start","process","decision","end"].includes(c)),
+                        text: div.querySelector(".editable")?.innerText || "",
+                        position: { left: div.style.left, top: div.style.top, width: div.style.width, height: div.style.height },
+                    });
+                });
+                const connections = instance.getAllConnections().map(c=>({ source:c.sourceId, target:c.targetId }));
+                const flowchartData = JSON.stringify({ shapes, connections });
+
+                        fetch('/Flowcharts/Save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ drawflowData: flowchartData })
+        })
+        .then(r => r.text())        // <-- return the text
+        .then(msg => {
+            alert(msg);             // show server message
+            window.location.reload(); // reload after alert
+        })
+        .catch(err => alert("Error saving: " + err));
+
+            });
+
+                async function loadChart() {
+            try {
+                const res = await fetch('/Flowcharts/Get');
+                const json = await res.json();
+                if (!json || json === "{}") return; // no saved chart
+
+                const data = JSON.parse(json);
+
+                // Clear canvas
+                document.querySelectorAll(".shape").forEach(s => s.remove());
+                instance.deleteEveryConnection();
+
+                // Recreate shapes
+                        data.shapes.forEach(s => {
+            const div = addShape(s.type, parseFloat(s.position.left), parseFloat(s.position.top));
+            div.id = s.id; // set original id
+            idCounter = Math.max(idCounter, parseInt(s.id.split("_")[1])); // update counter
+            div.style.width = s.position.width;
+            div.style.height = s.position.height;
+            div.querySelector(".editable").innerText = s.text;
+        });
+
+                // Recreate connections
+                setTimeout(() => {
+                    data.connections.forEach(c => {
+                        try { instance.connect({ source: c.source, target: c.target }); } catch {}
+                    });
+                    instance.repaintEverything();
+                }, 300);
+
+            } catch (err) {
+                console.error("Failed to load chart:", err);
+            }
+        }
+        document.getElementById("loadChart").addEventListener("click", loadChart);
+        loadChart();
+            updateTransform();
+        });
+
+
+    </script>
+}

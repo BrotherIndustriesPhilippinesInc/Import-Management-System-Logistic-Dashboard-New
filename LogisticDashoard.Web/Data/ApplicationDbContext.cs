@@ -28,6 +28,8 @@ namespace LogisticDashboard.Web.Data
         public DbSet<LogisticDashboard.Core.DHL> DHL { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.ShippingInstruction> ShippingInstruction { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.PhilippineHolidays> PhilippineHolidays { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportPICInformation> ImportPICInformation { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.Flowchart> Flowchart { get; set; } = default!;
 
     }
 }
