@@ -1,81 +1,119 @@
-﻿@model IEnumerable<LogisticDashboard.Core.ImportPICInformation>
+﻿@model IEnumerable<LogisticDashboard.Core.PhilippineHolidays>
+@using System.Text.Json
 
 @{
-    ViewData["Title"] = "Index";
-
-    // Convert to list for easier index access
-    var items = Model.ToList();
-    int i = 0;
+    ViewData["Title"] = "Philippine Holidays";
+    var jsonData = JsonSerializer.Serialize(Model);
 }
 
 <div class="mt-4">
     <div class="misc-color px-3 py-3 d-inline-flex mb-2 rounded align-items-center gap-2">
-        <span class="text-light fs-2 fw-bold">Shipping Instructions</span>
+        <span class="text-light fs-2 fw-bold" style="width: 300px; text-align: center">
+            Philippine Holidays
+        </span>
     </div>
 </div>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary mb-3">➕ Add Holiday</a>
 </p>
 
-<table class="table">
-    <thead>
+<div id="calendar" class="mb-4"></div>
+
+<!-- ✅ DataTable-compatible table -->
+<table id="holidaysTable" class="table table-bordered table-striped align-middle text-center">
+    <thead class="table-dark">
         <tr>
-            <th>Mode Of Shipment</th>
-            <th>Supplier</th>
-            <th>Main PIC</th>
-            <th>Sub PIC</th>
-            <th>Supervisor</th>
-            <th></th>
+            <th>Date</th>
+            <th>Day</th>
+            <th>Holiday</th>
+            <th>Agency / Office</th>
+            <th>Port</th>
+            <th>Status</th>
+            <th style="width: 160px;">Actions</th>
         </tr>
     </thead>
     <tbody>
-        @while (i < items.Count)
+        @foreach (var item in Model)
         {
-            var current = items[i];
-            // Count how many consecutive rows have the same ModeOfShipment
-            int rowspan = 1;
-            for (int j = i + 1; j < items.Count; j++)
+            string bgColor = item.Status switch
             {
-                if (items[j].ModeOfShipment == current.ModeOfShipment)
-                    rowspan++;
-                else
-                    break;
-            }
+                "NORMAL" => "#00b050",
+                "SKELETAL" => "#ffc000",
+                "NO WORK" => "#ff0000",
+                _ => "#cccccc"
+            };
 
             <tr>
-                <td rowspan="@rowspan">
-                    @Html.DisplayFor(modelItem => current.ModeOfShipment)
+                <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                <td>@item.Date.ToString("dddd")</td>
+                <td>@item.Holiday</td>
+                <td>@item.Agency_Office</td>
+                <td>@item.Port</td>
+                <td style="background-color:@bgColor; color:white; font-weight:bold;">
+                    @item.Status
                 </td>
-                <td>@Html.DisplayFor(modelItem => current.Supplier)</td>
-                <td>@Html.DisplayFor(modelItem => current.ShippingMainPICStaff)</td>
-                <td>@Html.DisplayFor(modelItem => current.ShippingSubPICStaff)</td>
-                <td>@Html.DisplayFor(modelItem => current.Supervisor)</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@current.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@current.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@current.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-1">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this holiday?');">
+                            Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
-
-            // Render the remaining rows without ModeOfShipment cell
-            for (int j = 1; j < rowspan; j++)
-            {
-                var next = items[i + j];
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => next.Supplier)</td>
-                    <td>@Html.DisplayFor(modelItem => next.ShippingMainPICStaff)</td>
-                    <td>@Html.DisplayFor(modelItem => next.ShippingSubPICStaff)</td>
-                    <td>@Html.DisplayFor(modelItem => next.Supervisor)</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@next.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@next.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@next.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-
-            i += rowspan;
         }
     </tbody>
 </table>
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
+
+@section Scripts {
+    <script>
+        const rawData = @Html.Raw(jsonData);
+
+        const statusColors = {
+            NORMAL: '#00b050',
+            SKELETAL: '#ffc000',
+            'NO WORK': '#ff0000'
+        };
+
+        // ✅ Convert your backend model to FullCalendar events
+        const events = rawData.map(s => ({
+            title: `${s.Port} (${s.Status})`,
+            start: s.Date.split('T')[0],
+            allDay: true,
+            backgroundColor: statusColors[s.Status],
+            borderColor: statusColors[s.Status],
+            extendedProps: { status: s.Status, holiday: s.Holiday }
+        }));
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 🗓️ Render FullCalendar
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                height: 500,
+                initialView: 'dayGridMonth',
+                events: events,
+                eventDidMount: function(info) {
+                    info.el.title = `${info.event.extendedProps.holiday} — ${info.event.extendedProps.status}`;
+                }
+            });
+            calendar.render();
+
+            // 📊 Initialize DataTable
+            $('#holidaysTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                pageLength: 10,
+                order: [[0, 'asc']], // sort by Date by default
+                columnDefs: [
+                    { orderable: false, targets: [5, 6] } // disable sorting on Status color and Actions
+                ]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<LogisticDashboard.Core.LogisticCost>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="mt-4">
+    <div class="misc-color px-3 py-3 d-inline-flex mb-2 rounded align-items-center gap-2">
+        <span class="text-light fs-2 fw-bold" style="width: 300px; text-align: center">Logistic Costs</span>
+    </div>
+
+</div>
+
+<div class="d-flex justify-content-end">
+    <div>
+        <input type="file" id="uploadInput" class="d-none" />
+        <button class="sea-freight-controls d-flex align-items-end" type="button" onclick="document.getElementById('uploadInput').click();">
+            <img src="@Url.Content("~/resources/icons/file-arrow-up-solid-full.svg")" alt="Upload Icon" width="32" height="32" />
+            Upload data
+        </button>
+    </div>
+</div>
+
+<div class="container ">
+    <div class="text-center mb-4">
+        <img src="@Url.Content("~/resources/icons/LogisticCost.png")" width="75%" />
+    </div>
+    
+    <div class="d-flex justify-content-center align-items-center gap-3">
+        <div class="border" style ="width: 100%; height: 450px">
+            <div class="d-flex gap-3 align-items-center justify-content-center mt-3">
+                <div>
+                    <img src="@Url.Content("~/resources/icons/LogisticCostIcon.png")" width="80px" />
+                </div>
+
+                    <div class="misc-color px-3 rounded align-items-center gap-2 d-flex">
+                        <span class="text-light fs-3 fw-bold" style="text-align: center">Courier</span>
+                    </div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+        <div class="border" style="width: 100%; height: 450px">
+            <div class="d-flex gap-3 align-items-center justify-content-center mt-3">
+                <div>
+                    <img src="@Url.Content("~/resources/icons/LogisticCostIcon.png")" width="80px" />
+                </div>
+
+                <div class="misc-color px-3 rounded align-items-center gap-2 d-flex">
+                    <span class="text-light fs-3 fw-bold" style="text-align: center">AF</span>
+                </div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -30,6 +30,7 @@ namespace LogisticDashboard.Web.Data
         public DbSet<LogisticDashboard.Core.PhilippineHolidays> PhilippineHolidays { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.ImportPICInformation> ImportPICInformation { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.Flowchart> Flowchart { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.LogisticCost> LogisticCost { get; set; } = default!;
 
     }
 }
