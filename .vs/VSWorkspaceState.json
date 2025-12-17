@@ -1,10 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\LogisticDashoard.Web",
-    "\\LogisticDashoard.Web\\Views",
+    "\\LogisticDashboard.WebView",
     "\\LogisticDashoard.Web\\Views\\Shared"
   ],
-  "SelectedNode": "\\LogisticDashoard.Web\\Views\\Shared\\_Layout.cshtml",
+  "SelectedNode": "\\LogisticDashboard.WebView\\LogisticDashboard.sln",
   "PreviewInSolutionExplorer": false
 }

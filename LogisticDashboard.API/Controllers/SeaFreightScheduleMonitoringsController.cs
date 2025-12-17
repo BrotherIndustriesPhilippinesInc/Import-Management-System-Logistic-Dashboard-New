@@ -26,7 +26,7 @@ namespace LogisticDashboard.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SeaFreightScheduleMonitoring>>> GetSeaFreightScheduleMonitoring()
         {
-            return await _context.SeaFreightScheduleMonitoring.ToListAsync();
+            return await _context.SeaFreightScheduleMonitoring.OrderByDescending(x => x.Id).ToListAsync();
         }
 
         // GET: api/SeaFreightScheduleMonitorings/5
@@ -148,8 +148,8 @@ namespace LogisticDashboard.API.Controllers
                 //VESSEL STATUS
                 existing.Original_ETD = worksheet.Cells[row, startCol + 12].Text;
                 existing.ATD = worksheet.Cells[row, startCol + 13].Text;
-                existing.Original_ETA = worksheet.Cells[row, startCol + 14].Text;
-                existing.Latest_ETA = worksheet.Cells[row, startCol + 15].Text;
+                existing.Original_ETA = worksheet.Cells[row, startCol + 14].Value?.ToString() ?? "";
+                existing.Latest_ETA = worksheet.Cells[row, startCol + 15].Value?.ToString() ?? "";
                 existing.ATA = (worksheet.Cells[row, startCol + 16].Value as DateTime?)?.ToString("yyyy-MM-dd") ?? "";
                 existing.ATB_Date = worksheet.Cells[row, startCol + 17].Text;
                 existing.ATB_Time = worksheet.Cells[row, startCol + 18].Text;
@@ -204,6 +204,7 @@ namespace LogisticDashboard.API.Controllers
                 existing.Random_Boolean = worksheet.Cells[row, startCol + 54].Text;
                 existing.Final_Remarks = worksheet.Cells[row, startCol + 55].Text;
 
+                existing.Vessel_Status_BIPH_Action = "";
                 await _context.SaveChangesAsync(); // save per row, or batch outside loop if large file
             }
 
@@ -249,7 +250,21 @@ namespace LogisticDashboard.API.Controllers
             return results;
         }
 
+        [HttpGet("ImportInfo")]
+        public async Task<IActionResult> ImportInfo()
+        {
+            var seaFreightDeliveryInfo = await _context.SeaFreightScheduleMonitoring
+                .Select(x => new { x.Id, x.BL, x.Shipper, x.Original_ETA, x.Latest_ETA, x.Vessel_Remarks, x.Vessel_Status_BIPH_Action })
+                .ToListAsync();
+            return Ok(seaFreightDeliveryInfo);
+        }
 
+        [HttpGet("VesselTransitDays")]
+        public async Task<IActionResult> VesselTransitDays()
+        {
+            var seaFreightDeliveryInfo = await _context.SeaFreightScheduleMonitoring.ToListAsync();
 
+            return Ok(seaFreightDeliveryInfo);
+        }
     }
 }

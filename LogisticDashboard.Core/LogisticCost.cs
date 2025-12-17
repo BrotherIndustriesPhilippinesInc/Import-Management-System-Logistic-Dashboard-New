@@ -9,7 +9,8 @@ namespace LogisticDashboard.Core
     public class LogisticCost
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public double Value { get; set; }
+        public string KGS { get; set; }
+        public decimal TotalUSD { get; set; }
+        public string Origin { get; set; }
     }
 }

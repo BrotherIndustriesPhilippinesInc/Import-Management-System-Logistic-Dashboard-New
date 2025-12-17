@@ -4,6 +4,11 @@
     --button-hover: #640264;
     --misc-color: #6F056F;
     --body-background: #FFF2F2;
+    --normal-background: #00B050;
+    --critical-background: #ED7D31;
+    --serious-background: #FF0000;
+
+    --import-landing-table-header: #9BC2E6;
 }
 
 html {
@@ -79,10 +84,16 @@ header {
     filter: invert(100%) sepia(0%) saturate(7478%) hue-rotate(23deg) brightness(124%) contrast(97%);
 }
 
-.filter-inputs{
-    border: solid 1px;
+.filter-table  {
+    border-spacing: 4px;
+    border-collapse: separate !important;
+}
+
+.filter-inputs {
+    margin: 8px;
     padding: 8px;
-    text-align: center;
+   
+    border-spacing: 4px;
 }
 
 .filter-inputs input{
@@ -90,9 +101,7 @@ header {
 }
 
 #announcement-container{
-    border: solid 1px black;
-    width: 200px;
-    height: 84%;
+
 }
 
 #sea-freight-table, #sea-freight-table th, #sea-freight-table td,
@@ -166,7 +175,7 @@ input[type=text] {
     vertical-align: middle;
 }
 
-.sea-freight-controls, .air-freight-controls, .sailing-schedule, .port-utilization, .berth-utilization {
+.sea-freight-controls, .air-freight-controls, .sailing-schedule, .port-utilization, .berth-utilization, .refresh {
     background: none;
     border: none;
     font-size: 12px;
@@ -374,4 +383,158 @@ td.dtfc-fixed-start{
 
 #holidaysTable{
     background-color: white;
+}
+
+.logisticCostBevel {
+    border: 0 !important;
+    background-color: var(--misc-color) !important;
+    color: white;
+    
+    box-shadow: 
+        inset 0 0 2px 0 rgba(255,255,255,.4), 
+        inset 0 0 3px 0 rgba(0,0,0,.4), 
+        inset 0 0 3px 5px rgba(0,0,0,.05), 
+        2px 2px 4px 0 rgba(0,0,0,.25);
+}
+
+/* Base Layout stuff so it looks decent */
+.retro-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.retro-glossy {
+    /* 1. The Shape */
+    border: none !important; /* Remove default browser border */
+    border-radius: 4px; /* Slight rounding like the image */
+    padding: 5px 10px;
+    width: 150px;
+    /*height: 30px;*/
+    outline: none;
+    /* 2. The Color Base - A deep purple */
+    background-color: #7d3c98 !important;
+    /* 3. The Glossy Gradient 
+     This creates the "light top / dark bottom" cylinder look.
+     We use rgba to overlay white/black on the base purple.
+  */
+    background-image: linear-gradient( to bottom, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.1) 45%, rgba(0, 0, 0, 0.1) 50%, rgba(255, 255, 255, 0.2) 100% ) !important;
+    /* 4. The 3D Bevels (The secret sauce) 
+     - First shadow: A dark border around the edge
+     - Second shadow: A drop shadow under the element
+     - Third shadow: An inner white highlight at the top (inset)
+  */
+    box-shadow: 0 0 0 1px #4a235a, /* Faux border */
+    0 4px 5px rgba(0, 0, 0, 0.4), /* Drop Shadow */
+    inset 0 1px 0 rgba(255, 255, 255, 0.6); /* Inner Top Highlight */
+
+    color: white; /* Text color */
+}
+
+.soft-gel-input {
+    border: 1px solid #5b2c6f !important; /* Dark purple border */
+    border-radius: 4px;
+    height: 25px;
+    width: 150px;
+    /* Smooth gradient from light purple to dark purple */
+    background: linear-gradient(to bottom, #af7ac5, #884ea0 20%, #633974) !important;
+    /* Depth effects */
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), /* Top inner light */
+    0 3px 5px rgba(0,0,0,0.3); /* Drop shadow */
+}
+
+.home-header {
+    color: #0000CC;
+}
+
+.home-icon {
+    color: #002060
+}
+
+.home-bg {
+    background-color: #D0CECE;
+}
+
+.filter-inputs{
+    background-color: lightgray;
+}
+
+.normal-background{
+    background-color: var(--normal-background);
+}
+
+.critical-background{
+    background-color: var(--critical-background);
+}
+
+.serious-background{
+    background-color: var(--serious-background);
+}
+
+.import-landing-table-header {
+    background-color: var(--import-landing-table-header) !important;
+}
+
+/*.filter-table {
+    border: 0px solid white;
+    border-collapse: collapse;
+}*/
+
+#vessel-status-table thead tr:first-child th{
+    pointer-events: none;
+    cursor: default;
+}
+
+
+#vessel-status-table thead tr:first-child th .dt-column-order {
+    display:none;
+    
+}
+
+#vessel-status-table td {
+    border-right: 1px solid black;
+}
+
+#vessel-status-table th {
+    border-right: 1px solid black;
+}
+
+#import-delivery-table td,
+#port-utilization-manila-table td,
+#port-utilization-batangas-table td,
+#berthing-manila-table td,
+#berthing-batangas-table td {
+    border-right: 1px solid black;
+}
+
+#import-delivery-table th,
+#port-utilization-manila-table th,
+#port-utilization-batangas-table th,
+#berthing-manila-table th,
+#berthing-batangas-table th {
+    border-right: 1px solid black;
+}
+
+#import-delivery-table thead tr:first-child th,
+#port-utilization-manila-table thead tr:first-child th,
+#port-utilization-batangas-table thead tr:first-child th,
+#berthing-manila-table thead tr:first-child th,
+#berthing-batangas-table thead tr:first-child th {
+    pointer-events: none;
+    cursor: default;
+}
+
+#import-delivery-table thead tr:first-child th .dt-column-order,
+#port-utilization-manila-table thead tr:first-child th .dt-column-order,
+#port-utilization-batangas-table thead tr:first-child th .dt-column-order,
+#berthing-manila-table thead tr:first-child th .dt-column-order,
+#berthing-batangas-table thead tr:first-child th .dt-column-order {
+    display: none;
+}
+
+.dashboard-containers {
+    background-color: rgba(128, 128, 128, 0.6);
+    border-radius: 8px;
 }

@@ -26,7 +26,7 @@ namespace LogisticDashboard.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AirFreightScheduleMonitoring>>> GetAirFreightScheduleMonitoring()
         {
-            return await _context.AirFreightScheduleMonitoring.ToListAsync();
+            return await _context.AirFreightScheduleMonitoring.OrderByDescending(x => x.Id).ToListAsync();
         }
 
         // GET: api/AirFreightScheduleMonitorings/5

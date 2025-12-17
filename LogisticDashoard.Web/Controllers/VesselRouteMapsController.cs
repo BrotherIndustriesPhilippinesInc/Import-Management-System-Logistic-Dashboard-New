@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LogisticDashboard.Core;
 using LogisticDashboard.Web.Data;
+using LogisticDashboard.Web.Services;
 
 namespace LogisticDashboard.Web.Controllers
 {
     public class VesselRouteMapsController : Controller
     {
         private readonly ApplicationDbContext _context;
+
 
         public VesselRouteMapsController(ApplicationDbContext context)
         {
@@ -72,11 +74,13 @@ namespace LogisticDashboard.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VesselRouteMap vesselRouteMap)
-
+        public async Task<IActionResult> Create(VesselRouteMap vesselRouteMap, IFormFile ImageFile)
         {
+
             if (ModelState.IsValid)
             {
+                //Upload Picture
+
                 vesselRouteMap.CreatedDate = DateTime.UtcNow;
                 _context.Add(vesselRouteMap);
                 await _context.SaveChangesAsync();
@@ -117,6 +121,8 @@ namespace LogisticDashboard.Web.Controllers
             {
                 try
                 {
+                    //Upload Photo to resources
+
                     vesselRouteMap.LastUpdate = DateTime.UtcNow;
                     _context.Update(vesselRouteMap);
                     await _context.SaveChangesAsync();
@@ -169,7 +175,6 @@ namespace LogisticDashboard.Web.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
 
         private bool VesselRouteMapExists(int id)
         {

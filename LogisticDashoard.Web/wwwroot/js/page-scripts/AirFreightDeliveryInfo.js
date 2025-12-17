@@ -25,11 +25,13 @@ $(async function () {
         autoWidth: true,
         scrollX: true,
         scrollY: true,
+        order: [[0, "desc"]], 
         columnDefs: [
-            { className: "p-1 text-nowrap", target: "_all" }
+            { className: "p-1", target: "_all" }
         ],
         columns: [
             // SHIPMENT DETAILS
+            { data: 'id', title: 'ID', visible: false},
             { data: 'itemCategory', title: 'Item Category' },
             { data: 'shipper', title: 'Shipper' },
             { data: 'awb', title: 'AWB' },

@@ -26,9 +26,9 @@ $(async function () {
         fixedHeader: true,
         autoWidth: true,
         scrollX: true,
-
+        order: [[0, "desc"]], 
         columnDefs: [
-            {className: "p-1 text-nowrap", target: "_all"}
+            {className: "p-1", target: "_all"}
         ],
         columns: [
             // SHIPMENT DETAILS

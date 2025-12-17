@@ -26,37 +26,204 @@
         <img src="@Url.Content("~/resources/icons/LogisticCost.png")" width="75%" />
     </div>
     
-    <div class="d-flex justify-content-center align-items-center gap-3">
-        <div class="border" style ="width: 100%; height: 450px">
-            <div class="d-flex gap-3 align-items-center justify-content-center mt-3">
-                <div>
-                    <img src="@Url.Content("~/resources/icons/LogisticCostIcon.png")" width="80px" />
-                </div>
+    <div class="d-flex flex-column">
 
-                    <div class="misc-color px-3 rounded align-items-center gap-2 d-flex">
-                        <span class="text-light fs-3 fw-bold" style="text-align: center">Courier</span>
+        <div class="d-flex text-end justify-content-end align-items-center gap-2" style="position:relative; top: 21px;">
+            <small class="text-danger fw-bold">PLEASE INPUT CURRENT EXCHANGE <br /> RATE</small>
+            <div class="d-flex">
+                <div><input type="number" id="exchangeRate" style="width: 60px;" /></div>
+                <div><button style="background-color: #000040" class="text-light fw-bold">Calculate</button></div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center gap-3" style="height: 690px">
+
+            <div class="p-4 h-100" style="width: 100%; border: 3px solid var(--misc-color) !important;">
+                <div class="d-flex flex-column gap-3 align-items-center justify-content-start h-100">
+
+                    <div class="d-flex gap-3 align-items-center">
+                        <div>
+                            <img src="@Url.Content("~/resources/icons/LogisticCostIcon.png")" width="80px" />
+                        </div>
+
+                        <div class="retro-glossy rounded text-center p-1">
+                            <span class="text-light fs-3 fw-bold ">Courier</span>
+                        </div>
                     </div>
-            </div>
-            <div>
 
-            </div>
-            <div>
-                TEST
-            </div>
-        </div>
-        <div class="border" style="width: 100%; height: 450px">
-            <div class="d-flex gap-3 align-items-center justify-content-center mt-3">
-                <div>
-                    <img src="@Url.Content("~/resources/icons/LogisticCostIcon.png")" width="80px" />
+                    <div class="d-flex flex-column gap-3">
+                        <div class="text-end">
+                            <span class="fw-bold fs-4">Origin:</span> 
+                            <select class="retro-glossy p-1 rounded" id="courierOrigin" >
+                                <option value="JAPAN">JAPAN</option>
+                                <option value="THAILAND">THAILAND</option>
+                                <option value="SINGAPORE">SINGAPORE</option>
+                                <option value="HONK KONG">HONK KONG</option>
+                                <option value="CHINA">CHINA</option>
+                                <option value="VIETNAM">VIETNAM</option>
+                                <option value="INDONESIA">INDONESIA</option>
+                                <option value="TAIWAN">TAIWAN</option>
+                                <option value="MALAYSIA">MALAYSIA</option>
+                                <option value="USA">USA</option>
+
+                            </select>
+                        </div>
+                        <div class="text-end">
+                            <span class="fw-bold fs-4">Incoterms:</span> <input class="retro-glossy p-1 rounded text-center" id="courierIncoterms" type="text" value="(FOB/FCA/EXW/DAP)" disabled/>
+                        </div>
+                        <div class="text-end">
+                            <span class="fw-bold fs-4">Weight:</span> <input class="retro-glossy p-1 rounded text-center" id="courierWeight" type="number" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column gap-3">
+                        <div class="text-center">
+                            <p class="fw-bold fs-4 mt-5">Result:</p>
+                        </div>
+                        <div>
+                            <input class="retro-glossy p-1 rounded fs-4 text-center fw-bold" id="courierResult" type="text" value="USD:" />
+                        </div>
+                    </div>
+
+                    <div class="w-100 text-start">
+                        <p class="text-danger fw-bold fst-italic">NOTE:</p>
+                        <ol>
+                            <li>Please input the current Exchange Rate.</li>
+                            <li>Shipping will update the <span class="text-decoration-underline">Fuel surcharge rate every Month.</span></li>
+                            <li>Estimated cost is based only on the <span class="text-decoration-underline">normal charges</span></li>
+                            <li><span class="text-decoration-underline">Excludes special cost</span> such as overweight charge, remote pick up, Data entry Sales Intransit, Oversize piece, export Declaration, Etc.</li>
+                            <li>During Pandemic period, DHL implement <span class="text-decoration-underline">Emergency Situation Fee (ESF)</span></li>
+                            <li>For AF, rates are based on nominated rates from Brother Japan.</li>
+                        </ol>
+                    </div>
                 </div>
 
-                <div class="misc-color px-3 rounded align-items-center gap-2 d-flex">
-                    <span class="text-light fs-3 fw-bold" style="text-align: center">AF</span>
-                </div>
             </div>
-            <div>
+
+            <div class="p-4 h-100" style="width: 100%; border: 3px solid var(--misc-color) !important;">
+                <div class="d-flex flex-column gap-3 align-items-center justify-content-start h-100">
+
+                    <div class="d-flex gap-3 align-items-center">
+                        <div>
+                            <img src="@Url.Content("~/resources/icons/LogisticCostIcon.png")" width="80px" />
+                        </div>
+
+                        <div class="retro-glossy rounded text-center p-1">
+                            <span class="text-light fs-3 fw-bold ">AF</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column gap-3">
+                        <div class="text-end">
+                            <span class="fw-bold fs-4">Origin:</span> 
+                            <select class="retro-glossy p-1 rounded text-center" id="afOrigin" type="text">
+                                <option value="HONG KONG (FCA)">HONG KONG (FCA)</option>
+                                <option value="HONG KONG (FOB)">HONG KONG (FOB)</option>
+                                <option value="JAPAN (FOB)">JAPAN (FOB)</option>
+
+                            </select>
+                        </div>
+                        <div class="text-end">
+                            <span class="fw-bold fs-4">Incoterms:</span> <input class="retro-glossy p-1 rounded text-center" id="afIncoterms" type="text" value="(FCA/FOB/CIF)" disabled/>
+                        </div>
+                        <div class="text-end">
+                            <span class="fw-bold fs-4">Weight:</span> <input class="retro-glossy p-1 rounded text-center" id="afWeight" type="number" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column gap-3">
+                        <div class="text-center">
+                            <p class="fw-bold fs-4 mt-5">Result:</p>
+                        </div>
+                        <div>
+                            <input class="retro-glossy p-1 rounded fs-4 text-center fw-bold" id="afResult" type="text" value="USD:" />
+                        </div>
+                    </div>
+
+                    <div class="w-100 text-start">
+                        <p class="fw-bold">INCOTERMS - Definition of Terms</p>
+                        <ul class="list-group">
+                            <li class="fw-bold list-group">Collect Terms - BIPH will shoulder all Freight cost from:</li>
+                            <li class="list-unstyled"><span class="fw-bold">FCA -</span> CFS Warehouse in Origin to BIPH (Freight cost + Local Cost)</li>
+                            <li class="list-unstyled"><span class="fw-bold">FOB -</span> Airport in Origin to BIPH (Freight cost + Local Cost)</li>
+                            <li class="list-unstyled"><span class="fw-bold">EXW -</span> Supplier's door in Origin to BIPH (Freight cost + Local Cost)</li>
+                            <li class="list-unstyled"><span class="fw-bold">Prepaid Term -</span>BIPH will shoulder local cost <span>only from Manila to BIPH.</span></li>
+                            <li class="list-unstyled">Such as CIF MINL / CPT MNL / CIP MNL</li>
+                        </ul>
+                    </div>
+                </div>
 
             </div>
         </div>
-    </div>
+   </div>
 </div>
+
+@section Scripts{
+    <script>
+        $(() => {
+
+            function bindCalculator(weightSelector, originSelector, resultSelector) {
+
+                $(weightSelector + ", " + originSelector).on("change", async function () {
+
+                    let weight = $(weightSelector).val();
+                    let origin = $(originSelector).val();
+
+                    if (weight && origin) {
+                        try {
+                            const result = await $.ajax({
+                                url: `${API_BASE_URL}/api/LogisticCosts/CalculateCost`,
+                                method: "GET",
+                                data: {
+                                    weight: weight,
+                                    origin: origin
+                                }
+                            });
+
+                            $(resultSelector).val(`USD: ${result.totalUSD}`);
+                        }
+                        catch (err) {
+                            console.error("Error:", err);
+                            alert("Invalid Weight")
+                        }
+                    }
+                });
+            }
+
+            $('#uploadInput').on('change', function () {
+                const file = this.files[0];
+
+                if (!file) {
+                    console.warn('No file selected.');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                $.ajax({
+                    url: `${API_BASE_URL}/api/LogisticCosts/Upload`, // 🔥 Replace with your actual API route
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log('Upload success:', response);
+                        // 😎 Do your success handling here (toast, reload, etc.)
+                        alert('Upload success');
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Upload failed:', error);
+                        // 😤 Handle upload errors
+                    }
+                });
+            });
+
+            // Use the SAME function for both
+            bindCalculator("#courierWeight", "#courierOrigin", "#courierResult");
+            bindCalculator("#afWeight", "#afOrigin", "#afResult");
+
+        });
+    </script>
+}

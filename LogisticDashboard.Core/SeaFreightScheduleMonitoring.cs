@@ -82,5 +82,8 @@ namespace LogisticDashboard.Core
         public string Random_Boolean { get; set; }
         public string Final_Remarks { get; set; }
 
+        // ADDITIONAL
+        public string? Vessel_Status_BIPH_Action { get; set; }
+
     }
 }

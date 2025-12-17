@@ -3,8 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using LogisticDashboard.API.Data;
 using LogisticDashboard.API.Controllers;
 using LogisticDashboard.API.Mapping;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 
 builder.Services.AddCors(options =>
@@ -24,12 +26,16 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
 
+var connectionString = builder.Configuration.GetConnectionString("LogisticDashboardAPIContext");
+
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+dataSourceBuilder.EnableDynamicJson();
+var dataSource = dataSourceBuilder.Build();
+
 builder.Services.AddDbContext<LogisticDashboardAPIContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("LogisticDashboardAPIContext")
-        ?? throw new InvalidOperationException("Connection string not found.")
-    )
+    options.UseNpgsql(dataSource)
 );
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

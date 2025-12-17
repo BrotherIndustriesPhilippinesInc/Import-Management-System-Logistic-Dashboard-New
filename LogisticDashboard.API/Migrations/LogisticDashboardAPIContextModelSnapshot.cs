@@ -18,7 +18,7 @@ namespace LogisticDashboard.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.18")
+                .HasAnnotation("ProductVersion", "8.0.22")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -138,6 +138,39 @@ namespace LogisticDashboard.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AirFreightScheduleMonitoring");
+                });
+
+            modelBuilder.Entity("LogisticDashboard.Core.Announcements", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("LogisticDashboard.Core.BerthingStatus", b =>
@@ -372,6 +405,51 @@ namespace LogisticDashboard.API.Migrations
                     b.ToTable("Flowchart");
                 });
 
+            modelBuilder.Entity("LogisticDashboard.Core.ImportDelivery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BIL_No")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("BIPH_Action")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Original_ETA_Port")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Reasons")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Revised_ETA_Port")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Shipper")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ImportDelivery");
+                });
+
             modelBuilder.Entity("LogisticDashboard.Core.ImportPICInformation", b =>
                 {
                     b.Property<int>("Id")
@@ -479,16 +557,37 @@ namespace LogisticDashboard.API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("KGS")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("Value")
-                        .HasColumnType("double precision");
+                    b.Property<string>("Origin")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TotalUSD")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
                     b.ToTable("LogisticCost");
+                });
+
+            modelBuilder.Entity("LogisticDashboard.Core.LogisticCostCourierAF", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("OriginName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogisticCostCourierAF");
                 });
 
             modelBuilder.Entity("LogisticDashboard.Core.ModeOfShipment", b =>
@@ -983,6 +1082,9 @@ namespace LogisticDashboard.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Vessel_Status_BIPH_Action")
+                        .HasColumnType("text");
+
                     b.Property<string>("With_Special_Permit")
                         .IsRequired()
                         .HasColumnType("text");
@@ -1053,6 +1155,9 @@ namespace LogisticDashboard.API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Carrier")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -1062,6 +1167,9 @@ namespace LogisticDashboard.API.Migrations
                     b.Property<string>("DestinationPortName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("Import_Processing_Leadtime")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone");
@@ -1073,7 +1181,16 @@ namespace LogisticDashboard.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("Origin_To_Destination_Port")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PictureLocation")
+                        .HasColumnType("text");
+
                     b.Property<int>("ShipId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("Total_Leadtime")
                         .HasColumnType("integer");
 
                     b.Property<string>("VesselName")

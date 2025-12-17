@@ -24,5 +24,15 @@ namespace LogisticDashboard.Core
 
         public DateTime CreatedDate { get; set; }
         public DateTime? LastUpdate { get; set; }
+
+        public string? PictureLocation { get; set; }
+
+        public string? Carrier { get; set; }
+
+        public int? Origin_To_Destination_Port { get; set; }
+
+        public int? Import_Processing_Leadtime { get; set; }
+
+        public int? Total_Leadtime { get; set; }
     }
 }

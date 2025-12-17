@@ -20,7 +20,7 @@ namespace LogisticDashboard
     public partial class MainForm: Form
     {
         // Constants
-        //http://localhost:5235/
+        //https://localhost:5235/
         //http://apbiphbpswb01:1116/
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;

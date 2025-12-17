@@ -11,9 +11,15 @@
                 <i class="fa-solid fa-ship me-2"></i> Edit Vessel Route Map
             </div>
             <div class="card-body">
-                <form asp-action="Edit">
+                <form id="vesselEditForm" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
                     <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label asp-for="Carrier" class="form-label fw-semibold">Vessel Name</label>
+                        <input asp-for="Carrier" class="form-control" placeholder="Enter carrier name..." />
+                        <span asp-validation-for="Carrier" class="text-danger small"></span>
+                    </div>
 
                     <div class="mb-3">
                         <label asp-for="VesselName" class="form-label fw-semibold">Vessel Name</label>
@@ -25,6 +31,24 @@
                         <label asp-for="ShipId" class="form-label fw-semibold">Ship ID (MarineTraffic)</label>
                         <input asp-for="ShipId" class="form-control" placeholder="Enter ship ID..." />
                         <span asp-validation-for="ShipId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Origin_To_Destination_Port" class="form-label fw-semibold">Origin To Destination Port</label>
+                        <input asp-for="Origin_To_Destination_Port" class="form-control" placeholder="" />
+                        <span asp-validation-for="Origin_To_Destination_Port" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Import_Processing_Leadtime" class="form-label fw-semibold">Import Processing Leadtime</label>
+                        <input asp-for="Import_Processing_Leadtime" class="form-control" placeholder="" />
+                        <span asp-validation-for="Import_Processing_Leadtime" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Total_Leadtime" class="form-label fw-semibold">Total Leadtime</label>
+                        <input asp-for="Total_Leadtime" class="form-control" placeholder="" />
+                        <span asp-validation-for="Total_Leadtime" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">
@@ -53,6 +77,17 @@
                         <span asp-validation-for="OriginPortCoordinates.Longitude" class="text-danger"></span>
                         <span asp-validation-for="DestinationPortCoordinates.Latitude" class="text-danger"></span>
                         <span asp-validation-for="DestinationPortCoordinates.Longitude" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="form-label fw-bold">Upload Image</label>
+                        <input type="file" name="file" class="form-control" />
+                        <span asp-validation-for="PictureLocation" class="text-danger small"></span>
+
+                        @if (!string.IsNullOrEmpty(Model.PictureLocation))
+                        {
+                            <p class="mt-2">Current Image: <img src="~/@Model.PictureLocation" alt="Current Route Map" style="max-height: 100px;" /></p>
+                        }
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
@@ -136,5 +171,37 @@
         destMarker.on('drag', updateLine);
 
         map.fitBounds(routeLine.getBounds(), { padding: [50,50] });
+    </script>
+
+    <script>
+        const editForm = document.getElementById('vesselEditForm');
+
+        editForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Get the ID for the routing parameter
+            const routeId = document.getElementById('Id').value;
+            const formData = new FormData(editForm);
+
+            try {
+                // 💥 Use PUT method and include the ID in the URL
+                const response = await fetch(`${API_BASE_URL}/api/VesselRouteMaps/EditVesselRouteMap/${routeId}`, {
+                    method: 'POST',
+                    // The browser sets the correct multipart/form-data boundary for FormData
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert("Changes saved successfully!");
+                    window.location.href = '/VesselRouteMaps/Index'; // Redirect to index
+                } else {
+                    const errorText = await response.text();
+                    console.error('API Error:', errorText);
+                    alert("Failed to save changes. Check the console.");
+                }
+            } catch (error) {
+                console.error('Network Error:', error);
+            }
+        });
     </script>
 }

@@ -15,15 +15,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.18" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.18">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.22">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Playwright" Version="1.54.0" />
     <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.54.0" />
     <PackageReference Include="Microsoft.Playwright.TestAdapter" Version="1.54.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.22" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
   </ItemGroup>
 
@@ -35,6 +36,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\resources\logo\" />
     <Folder Include="wwwroot\resources\courier\" />
+    <Folder Include="wwwroot\resources\NewFolder\" />
     <Folder Include="wwwroot\resources\ports\" />
   </ItemGroup>
 

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LogisticDashboard.API.Data;
 using LogisticDashboard.Core;
+using OfficeOpenXml;
+using System.Text.RegularExpressions;
 
 namespace LogisticDashboard.API.Controllers
 {
@@ -103,6 +105,141 @@ namespace LogisticDashboard.API.Controllers
         private bool LogisticCostExists(int id)
         {
             return _context.LogisticCost.Any(e => e.Id == id);
+        }
+
+        [HttpPost("Upload")]
+        public async Task<IActionResult> UploadLogisticCost(IFormFile file)
+        {
+            // Fix your license! This property is the correct way in modern EPPlus (5+). 
+            // The method you used might be deprecated or throw a warning.
+            ExcelPackage.License.SetNonCommercialOrganization("BPS");
+
+            // 1. Get the list of expected origins from the DB
+            var allOrigin = await _context.LogisticCostCourierAF.ToListAsync();
+
+            using (var package = new ExcelPackage(file.OpenReadStream()))
+            {
+                // ... (Outer loop and sheet finding logic is unchanged)
+
+                foreach (var originItem in allOrigin)
+                {
+                    string sheetName = originItem.OriginName;
+                    var worksheet = package.Workbook.Worksheets[sheetName];
+
+                    if (worksheet == null || worksheet.Dimension == null)
+                    {
+                        continue;
+                    }
+
+                    int startingRow = 0;
+                    int startColIndex = 0;
+                    int endColIndex = 0;
+
+                    // FIND START ROW
+                    for (int r = 1; r <= worksheet.Dimension.End.Row; r++)
+                    {
+                        var text = worksheet.Cells[r, 1].Text.Trim();
+                        if (text.Equals("KGS", StringComparison.OrdinalIgnoreCase))
+                        {
+                            startingRow = r;
+                            break;
+                        }
+                    }
+
+                    if (startingRow == 0)
+                        continue; // no header found, skip sheet
+
+                    // FIND START COLUMN (Scan Forward)
+                    for (int col = 1; col <= worksheet.Dimension.End.Column; col++)
+                    {
+                        if (!string.IsNullOrWhiteSpace(worksheet.Cells[startingRow, col].Text))
+                        {
+                            startColIndex = col;
+                            break;
+                        }
+                    }
+
+                    // FIND END COLUMN (Scan Backward) - You needed this
+                    for (int col = worksheet.Dimension.End.Column; col >= startColIndex; col--)
+                    {
+                        if (!string.IsNullOrWhiteSpace(worksheet.Cells[startingRow, col].Text))
+                        {
+                            endColIndex = col;
+                            break;
+                        }
+                    }
+
+                    if (startColIndex == 0 || endColIndex == 0)
+                    {
+                        continue; // Header row was empty, skip sheet.
+                    }
+
+                    // --- START OF NEW LOGIC ---
+
+                    // 7. Loop through data rows (starting at 6, below the header)
+                    // End.Row is the last row used anywhere in the sheet.
+                    for (int row = startingRow + 1; row <= worksheet.Dimension.End.Row; row++)
+                    {
+                        // We assume the first column in your dynamic range (startColIndex) 
+                        // holds the primary identifier (e.g., Destination Name).
+                        string kgs = worksheet.Cells[row, startColIndex].Text.Trim();
+
+                        // If the key column is empty, we assume we've hit the end of the data block.
+                        if (string.IsNullOrWhiteSpace(kgs))
+                        {
+                            break;
+                        }
+
+                        string totalUSD = worksheet.Cells[row, endColIndex].Text.Trim();
+                        //Remove any words from the totalUSD string
+                        totalUSD = Regex.Replace(totalUSD, @"[^\d\.]", "", RegexOptions.IgnoreCase);
+
+                        try
+                        {
+                            // 8. Create a new LogisticCost object
+                            var logisticCost = new LogisticCost
+                            {
+                                KGS = Convert.ToString(kgs),
+                                TotalUSD = Convert.ToDecimal(totalUSD),
+                                Origin = originItem.OriginName
+                            };
+
+                            // 9. Add the LogisticCost object to the context
+                        
+                            _context.LogisticCost.Add(logisticCost);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle the exception here
+                            Console.WriteLine($"Error adding LogisticCost: {ex.Message}");
+                            //show the variable before error
+                            Console.WriteLine($"Origin: {originItem.OriginName}");
+                            Console.WriteLine($"KGS: {kgs}");
+                            Console.WriteLine($"TotalUSD: {totalUSD}");
+
+                            throw;
+                        }
+                        
+                    }
+
+                    // --- END OF NEW LOGIC ---
+                }
+
+                //Truncate table before saving
+                await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"LogisticCost\"");
+
+                // 10. Save all changes to the database AFTER processing all sheets
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok("Matching sheets processed and database updated.");
+        }
+
+        [HttpGet("CalculateCost")]
+        public async Task<IActionResult> CalculateCost([FromQuery] string origin,[FromQuery] string weight)
+        {
+            var result = await _context.LogisticCost.Where(l => l.Origin == origin && l.KGS == weight).FirstOrDefaultAsync();
+            return Ok(result);
         }
     }
 }

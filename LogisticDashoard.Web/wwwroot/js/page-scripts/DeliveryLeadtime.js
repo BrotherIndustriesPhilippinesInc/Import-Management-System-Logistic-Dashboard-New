@@ -162,10 +162,19 @@
             leadtimeChart.destroy();
         }
 
+        data.datasets["noOfBL"] = data.datasets["noOfBL"].map(v => Math.round(v));
+        data.datasets["actualAve"] = data.datasets["actualAve"].map(v => Math.round(v));
+        data.datasets["targetMax"] = data.datasets["targetMax"].map(v => Math.round(v));
+        data.datasets["targetMin"] = data.datasets["targetMin"].map(v => Math.round(v));
+
+        data.datasets["noOfBL"] = data.datasets["noOfBL"].map(v => v === 0 ? null : v);
+        data.datasets["actualAve"] = data.datasets["actualAve"].map(v => v === 0 ? null : v);
+
         leadtimeChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: data.labels,
+
                 datasets: [
                     {
                         label: 'No. of BL',
@@ -176,7 +185,6 @@
                         yAxisID: 'y',
                         barThickness: 40, // fixed bar width
                         order: 2,
-
                     },
                     {
                         label: 'Actual (Ave)',
@@ -184,7 +192,7 @@
                         type: 'line',
                         borderColor: 'blue',
                         backgroundColor: 'blue',
-                        tension: 0.3,
+                        tension: 0,
                         borderWidth: 5,
                         yAxisID: 'y',
                         pointRadius: 5,
@@ -221,7 +229,7 @@
                         beginAtZero: true,
                         suggestedMax: 20, // gives room above 14
                         ticks: {
-                            stepSize: 2
+                            stepSize: 2,
                         },
                         title: {
                             display: true,
@@ -242,7 +250,7 @@
                         align: 'top',
                         color: '#000',
                         font: { weight: 'bold' },
-                        formatter: (value) => value
+                        formatter: (value) => value //Math.round(value)
                     },
                 }
             },
