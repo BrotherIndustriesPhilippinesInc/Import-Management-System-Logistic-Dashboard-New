@@ -1,6 +1,8 @@
 ﻿import apiCall from "../helpers/APICall.js";
 
 $(async function () {
+    let uploadDate = await getUploadDateAndTime();
+
     const table = $('#sea-freight-table').DataTable({
         layout: {
             topStart: {
@@ -10,7 +12,7 @@ $(async function () {
 
         },
         ajax: {
-            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings`,
+            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${uploadDate}`,
             method: "GET",
             dataSrc: '',
             error: function (xhr, status, error) {
@@ -117,6 +119,10 @@ $(async function () {
     $('#uploadInput').on('change', function () {
         const file = this.files[0];
 
+        let user = localStorage.getItem('user');
+        user = JSON.parse(user);
+        let adid = user.EmpNo;
+
         if (!file) {
             console.warn('No file selected.');
             return;
@@ -126,7 +132,7 @@ $(async function () {
         formData.append('file', file);
 
         $.ajax({
-            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/upload`, // 🔥 Replace with your actual API route
+            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/uploadNew?createdBy=${adid}`, // 🔥 Replace with your actual API route
             type: 'POST',
             data: formData,
             processData: false,
@@ -165,10 +171,66 @@ $(async function () {
         table.draw();
     });
 
+    $("#upload-date-time").on("change", function () {
+        const selectedDateTime = $(this).val();
+
+        const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${selectedDateTime}`;
+        table.ajax.url(url).load();
+    });
+
     /*FUNCITONS*/
     async function searchButtons(item_category, status) {
         /*console.log(`CLICKED: ${item_category}, ${status}`);*/
         const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/category_status?item_category=${item_category}&actual_status=${status}`;
         table.ajax.url(url).load();
     }
+
+    async function getUploadDateAndTime() {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/UploadDateTime`,
+                type: 'GET',
+                success: function (response) {
+
+                    const $select = $('#upload-date-time');
+                    $select.empty();
+
+                    if (!response || response.length === 0) {
+                        resolve(null);
+                        return;
+                    }
+
+                    response.forEach((item, index) => {
+                        let date = new Date(item.dateCreated);
+
+                        let display = date.toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true
+                        });
+
+                        let value = date.toISOString();
+
+                        $select.append(
+                            `<option value="${value}">${display}</option>`
+                        );
+                    });
+
+                    // ✅ select FIRST (latest) upload explicitly
+                    const selectedValue = response[0]
+                        ? new Date(response[0].dateCreated).toISOString()
+                        : null;
+
+                    $select.val(selectedValue);
+
+                    resolve(selectedValue);
+                },
+                error: reject
+            });
+        });
+    }
+
 });
