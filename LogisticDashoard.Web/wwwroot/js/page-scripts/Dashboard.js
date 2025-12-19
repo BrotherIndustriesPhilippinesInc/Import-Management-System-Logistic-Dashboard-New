@@ -2,6 +2,10 @@
     let uploadDate = await getUploadDateAndTime();
     let actualDelivery = [];
 
+    $("#refresh").on("click", async function () {
+        await refreshAllCharts(uploadDate);
+    });
+
     //#region vesselTransitDays 
     // Fetch data once
     const vesselTransitRes = await fetch(
@@ -286,9 +290,9 @@
 
     $("#upload-date-time").on('change', function () {
         uploadDate = this.value;
-        vesselTransitChart(uploadDate, vesselTransitData);
+        vesselDelayChart(uploadDate, vesselDelayPerPortData);
         //RESET FILTERS
-        populateVesselCheckboxes(vesselTransitData);
+        populateVesselDelayCheckboxes(vesselDelayPerPortData);
     });
 
     // Populate filters
@@ -328,7 +332,6 @@
 
 
     //#endregion
-
 
 });
 
@@ -1068,3 +1071,24 @@ function populateVesselDelayCheckboxes(data) {
 }
 
 //#endregion
+
+async function refreshAllCharts(uploadDate) {
+    const [
+        vesselTransitData,
+        otdAchievementData,
+        averageProcessingData,
+        vesselDelayPerPortData
+    ] = await Promise.all([
+        fetch(`${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselTransitDays?createdDateTime=${uploadDate}`).then(r => r.json()),
+        fetch(`${API_BASE_URL}/api/SeaFreightScheduleMonitorings/OtdAchievementRate?createdDateTime=${uploadDate}`).then(r => r.json()),
+        fetch(`${API_BASE_URL}/api/SeaFreightScheduleMonitorings/AverageProcessingLeadtimePerForwarder?createdDateTime=${uploadDate}`).then(r => r.json()),
+        fetch(`${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselDelayPerPort?createdDateTime=${uploadDate}`).then(r => r.json())
+    ]);
+
+    vesselTransitChart(uploadDate, vesselTransitData);
+    otdAchievementPieChart(uploadDate, [otdAchievementData[0]]);
+    otdAchievementPieChart2(uploadDate, [otdAchievementData[1]]);
+    averageProcessingChart(uploadDate, averageProcessingData);
+    averageProcessingChart2(uploadDate, averageProcessingData);
+    vesselDelayChart(uploadDate, vesselDelayPerPortData);
+}
