@@ -44,8 +44,6 @@ namespace LogisticDashboard.API.Controllers
             return Ok(result);
         }
 
-
-
         // GET: api/SeaFreightScheduleMonitorings/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SeaFreightScheduleMonitoring>> GetSeaFreightScheduleMonitoring(string id)
@@ -495,6 +493,96 @@ namespace LogisticDashboard.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("AverageProcessingLeadtimePerForwarder")]
+        public async Task<IActionResult> AverageProcessingLeadtimePerForwarder(
+            [FromQuery] DateTime createdDateTime,
+            [FromQuery] string? actualDelivery = null)
+        {
+            var start = createdDateTime.ToUniversalTime().Date;
+            var end = start.AddDays(1);
+
+            var rawData = await _context.SeaFreightScheduleMonitoring
+                .Where(x =>
+                    x.DateCreated.HasValue &&
+                    x.DateCreated.Value >= start &&
+                    x.DateCreated.Value < end
+                )
+                .ToListAsync();
+
+            var validData = rawData
+                .Select(x => new
+                {
+                    Trucker = x.Trucker.Trim(),
+                    PortOfDischarge = x.Port_Of_Discharge.Trim(),
+                    ModeOfShipment = x.Mode_Of_Shipment.Trim(),
+                    ActualDelivery = x.Actual_Delivery?.Trim(),
+                    Days = int.TryParse(x.Actual_Leadtime_ATA_Port_ATA_BIPH_exclude_weekend, out var d) ? d : (int?)null
+                })
+                .Where(x => x.Days.HasValue && x.Days.Value >= 0 &&
+                            (string.IsNullOrEmpty(actualDelivery) || x.ActualDelivery == actualDelivery));
+
+            var result = validData
+                .GroupBy(x => new { x.Trucker, x.PortOfDischarge, x.ModeOfShipment, x.ActualDelivery })
+                .Select(g => new
+                {
+                    trucker = g.Key.Trucker,
+                    portOfDischarge = g.Key.PortOfDischarge,
+                    modeOfShipment = g.Key.ModeOfShipment,
+                    actualDelivery = g.Key.ActualDelivery,
+                    averageProcessingLeadtime = Math.Round(g.Average(x => x.Days!.Value), 2)
+                })
+                .ToList();
+
+            return Ok(result);
+        }
+
+        [HttpGet("ActualDelivery")]
+        public async Task<IActionResult> ActualDelivery()
+        {
+            var data = await _context.SeaFreightScheduleMonitoring
+                .Select(x => new { x.Actual_Delivery })
+                .Distinct()
+                .ToListAsync();
+
+            return Ok(data);
+        }
+
+        [HttpGet("VesselDelayPerPort")]
+        public async Task<IActionResult> VesselDelayPerPort([FromQuery] DateTime createdDateTime)
+        {
+            var utcDate = createdDateTime.ToUniversalTime();
+            var nextTick = utcDate.AddMilliseconds(1);
+
+            // Fetch raw data
+            var rawData = await _context.SeaFreightScheduleMonitoring
+                .Where(x => x.DateCreated.HasValue
+                         && x.DateCreated.Value >= utcDate
+                         && x.DateCreated.Value < nextTick)
+                .ToListAsync();
+
+            // Trim text fields and group by port + mode
+            var result = rawData
+                .Select(x => new
+                {
+                    PortOfDischarge = x.Port_Of_Discharge?.Trim(),
+                    ModeOfShipment = x.Mode_Of_Shipment?.Trim(),
+                    VesselStatus = x.Vessel_Status?.Trim()
+                })
+                .GroupBy(x => new { x.PortOfDischarge, x.ModeOfShipment })
+                .Select(g => new
+                {
+                    PortOfDischarge = g.Key.PortOfDischarge,
+                    ModeOfShipment = g.Key.ModeOfShipment,
+                    DelayCount = g.Count(x => x.VesselStatus == "DELAY"),
+                    OnTimeCount = g.Count(x => x.VesselStatus == "ON-TIME"),
+                    Total = g.Count(),
+                    DelayPct = Math.Round(g.Count(x => x.VesselStatus == "DELAY") * 100.0 / g.Count(), 2),
+                    OnTimePct = Math.Round(g.Count(x => x.VesselStatus == "ON-TIME") * 100.0 / g.Count(), 2)
+                })
+                .ToList();
+
+            return Ok(result);
+        }
 
 
     }

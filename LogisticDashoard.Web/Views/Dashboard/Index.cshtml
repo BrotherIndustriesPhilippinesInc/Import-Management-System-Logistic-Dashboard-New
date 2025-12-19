@@ -25,7 +25,7 @@
     </button>
 </div>
 
-<div class="d-flex gap-2 flex-wrap">
+<div class="d-flex gap-2 flex-wrap justify-content-around">
     <div class="dashboard-containers p-3" style="width: 800px;">
         <div class="filters-container" style="display: flex; gap: 40px; margin-bottom: 20px;">
 
@@ -91,7 +91,107 @@
         </div>
 
 
-        <canvas id="otd-achievement-rate"></canvas>
+        <canvas id="otd-achievement-rate2"></canvas>
+    </div>
+
+    <div class="dashboard-containers p-3" style="width: 800px;">
+        <div class="filters-container" style="display: flex; gap: 40px; margin-bottom: 20px;">
+            <!-- Actual Delivery Filter -->
+            <div id="average-processing-actual-delivery-filter" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Actual Delivery ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Type of Packaging Filter -->
+            <div id="average-processing-type-of-packaging-filter" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Type Of Packaging ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Type of Trucker Filter -->
+            <div id="average-processing-trucker-filter" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Trucker ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Type of Port of Discharge Filter -->
+            <div id="average-processing-port-of-discharge-filter" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Port of Discharge ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <canvas id="average-processing"></canvas>
+    </div>
+
+    <div class="dashboard-containers p-3" style="width: 800px;">
+        <div class="filters-container" style="display: flex; gap: 40px; margin-bottom: 20px;">
+            <!-- Actual Delivery Filter -->
+            <div id="average-processing-actual-delivery-filter2" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Actual Delivery ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Type of Packaging Filter -->
+            <div id="average-processing-type-of-packaging-filter2" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Type Of Packaging ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Type of Trucker Filter -->
+            <div id="average-processing-trucker-filter2" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Trucker ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Type of Port of Discharge Filter -->
+            <div id="average-processing-port-of-discharge-filter2" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Port of Discharge ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <canvas id="average-processing2"></canvas>
+    </div>
+
+    <div class="dashboard-containers p-3" style="width: 800px;">
+        <div class="filters-container" style="display: flex; gap: 40px; margin-bottom: 20px;">
+            <!-- Actual Port of Discharge Filter -->
+            <div id="vessel-delay-per-port-port-of-discharge-filter" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Actual Delivery ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Type of Mode of Shipment Filter -->
+            <div id="vessel-delay-per-port-mode-of-shipment-filter" class="filter-group" style="flex: 1;">
+                <label class="filter-label" style="cursor: pointer;">Type Of Packaging ⬇</label>
+                <div class="checkboxes" style="max-height: 120px; overflow-y: auto; padding: 5px; border: 1px solid #ccc; border-radius: 6px;">
+                    <!-- checkboxes inserted dynamically -->
+                </div>
+            </div>
+
+            
+        </div>
+
+        <canvas id="vessel-delay-per-port"></canvas>
     </div>
 
 </div>
