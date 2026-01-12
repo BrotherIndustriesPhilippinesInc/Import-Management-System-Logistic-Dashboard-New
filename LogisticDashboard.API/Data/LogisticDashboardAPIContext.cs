@@ -39,5 +39,9 @@ namespace LogisticDashboard.API.Data
         public DbSet<LogisticDashboard.Core.LogisticCostCourierAF> LogisticCostCourierAF { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.ImportDelivery> ImportDelivery { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.Announcements> Announcements { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportDashboards> ImportDashboards { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportDeliveryDashboards> ImportDeliveryDashboards { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportPortUtilization> ImportPortUtilization { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportBerthingStatus> ImportBerthingStatus { get; set; } = default!;
     }
 }
