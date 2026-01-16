@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LogisticDashboard.API.Data;
 using LogisticDashboard.Core;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace LogisticDashboard.API.Controllers
 {
@@ -44,7 +45,7 @@ namespace LogisticDashboard.API.Controllers
 
         // PUT: api/ImportDashboards/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> PutImportDashboards(int id, ImportDashboards importDashboards)
         {
             if (id != importDashboards.Id)
@@ -56,6 +57,12 @@ namespace LogisticDashboard.API.Controllers
 
             try
             {
+                importDashboards.Original_ETA_Port =
+                DateTime.SpecifyKind(importDashboards.Original_ETA_Port, DateTimeKind.Utc);
+
+                importDashboards.Revised_ETA_Port =
+                DateTime.SpecifyKind(importDashboards.Revised_ETA_Port, DateTimeKind.Utc);
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -70,7 +77,7 @@ namespace LogisticDashboard.API.Controllers
                 }
             }
 
-            return NoContent();
+            return CreatedAtAction("GetImportDashboards", new { id = importDashboards.Id }, importDashboards);
         }
 
         // POST: api/ImportDashboards
@@ -78,6 +85,12 @@ namespace LogisticDashboard.API.Controllers
         [HttpPost]
         public async Task<ActionResult<ImportDashboards>> PostImportDashboards(ImportDashboards importDashboards)
         {
+            importDashboards.Original_ETA_Port =
+            DateTime.SpecifyKind(importDashboards.Original_ETA_Port, DateTimeKind.Utc);
+
+            importDashboards.Revised_ETA_Port =
+            DateTime.SpecifyKind(importDashboards.Revised_ETA_Port, DateTimeKind.Utc);
+
             _context.ImportDashboards.Add(importDashboards);
             await _context.SaveChangesAsync();
 
@@ -85,7 +98,7 @@ namespace LogisticDashboard.API.Controllers
         }
 
         // DELETE: api/ImportDashboards/5
-        [HttpDelete("{id}")]
+        [HttpPost("Delete/{id}")]
         public async Task<IActionResult> DeleteImportDashboards(int id)
         {
             var importDashboards = await _context.ImportDashboards.FindAsync(id);
@@ -97,7 +110,7 @@ namespace LogisticDashboard.API.Controllers
             _context.ImportDashboards.Remove(importDashboards);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { status = 200, message = "Record deleted successfully." });
         }
 
         private bool ImportDashboardsExists(int id)

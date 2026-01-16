@@ -109,8 +109,6 @@ namespace LogisticDashboard.API.Controllers
             return Ok(new { message = $"{list.Count} records created for {request.CalendarYear} - {request.PortName}" });
         }
 
-
-
         // DELETE: api/BerthingStatus/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBerthingStatus(int id)
@@ -200,5 +198,22 @@ namespace LogisticDashboard.API.Controllers
             return Ok(ports);
         }
 
+        [HttpGet("distinct-ports")]
+        public async Task<ActionResult<IEnumerable<PortsYearsDTO>>> GetDistinctPortsWithYears()
+        {
+            var ports = await _context.BerthingStatus
+                .GroupBy(p => p.PortName)
+                .Select(g => new PortsYearsDTO
+                {
+                    Name = g.Key,
+                    Years = g.Select(r => r.Year)
+                             .Distinct()
+                             .OrderBy(y => y)
+                             .ToList()
+                })
+                .ToListAsync();
+
+            return Ok(ports);
+        }
     }
 }

@@ -56,6 +56,13 @@ namespace LogisticDashboard.API.Controllers
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+            importDelivery.Original_ETA_Port =
+            DateTime.SpecifyKind(importDelivery.Original_ETA_Port, DateTimeKind.Utc);
+
+            importDelivery.Revised_ETA_Port =
+            DateTime.SpecifyKind(importDelivery.Revised_ETA_Port, DateTimeKind.Utc);
+
+
             if (original == null)
                 return NotFound();
 

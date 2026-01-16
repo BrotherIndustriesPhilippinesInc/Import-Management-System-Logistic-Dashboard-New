@@ -44,7 +44,7 @@ namespace LogisticDashboard.API.Controllers
 
         // PUT: api/ImportDeliveryDashboards/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> PutImportDeliveryDashboards(int id, ImportDeliveryDashboards importDeliveryDashboards)
         {
             if (id != importDeliveryDashboards.Id)
@@ -56,6 +56,13 @@ namespace LogisticDashboard.API.Controllers
 
             try
             {
+                importDeliveryDashboards.Original_ETA_Port =
+                DateTime.SpecifyKind(importDeliveryDashboards.Original_ETA_Port, DateTimeKind.Utc);
+
+                importDeliveryDashboards.Revised_ETA_Port =
+                DateTime.SpecifyKind(importDeliveryDashboards.Revised_ETA_Port, DateTimeKind.Utc);
+
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -70,7 +77,7 @@ namespace LogisticDashboard.API.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new { status = 200, message = "Record updated successfully." });
         }
 
         // POST: api/ImportDeliveryDashboards
@@ -78,6 +85,13 @@ namespace LogisticDashboard.API.Controllers
         [HttpPost]
         public async Task<ActionResult<ImportDeliveryDashboards>> PostImportDeliveryDashboards(ImportDeliveryDashboards importDeliveryDashboards)
         {
+            importDeliveryDashboards.Original_ETA_Port =
+                DateTime.SpecifyKind(importDeliveryDashboards.Original_ETA_Port, DateTimeKind.Utc);
+
+            importDeliveryDashboards.Revised_ETA_Port =
+            DateTime.SpecifyKind(importDeliveryDashboards.Revised_ETA_Port, DateTimeKind.Utc);
+
+
             _context.ImportDeliveryDashboards.Add(importDeliveryDashboards);
             await _context.SaveChangesAsync();
 
@@ -85,7 +99,7 @@ namespace LogisticDashboard.API.Controllers
         }
 
         // DELETE: api/ImportDeliveryDashboards/5
-        [HttpDelete("{id}")]
+        [HttpPost("Delete/{id}")]
         public async Task<IActionResult> DeleteImportDeliveryDashboards(int id)
         {
             var importDeliveryDashboards = await _context.ImportDeliveryDashboards.FindAsync(id);

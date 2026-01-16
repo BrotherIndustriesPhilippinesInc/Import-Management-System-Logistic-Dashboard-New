@@ -94,6 +94,7 @@ header {
     padding: 8px;
    
     border-spacing: 4px;
+    text-align: center;
 }
 
 .filter-inputs input{

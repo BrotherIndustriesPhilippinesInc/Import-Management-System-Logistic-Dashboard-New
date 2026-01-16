@@ -410,7 +410,7 @@ $(async function () {
     }
 
     async function addPort(portName, year) {
-        await getData(`Ports/${portName}/${year}`).then(data => {
+        await getData(`Ports/SpecificPorts/${portName}/${year}`).then(data => {
             swal.fire({
                 icon: "success",
                 title: "Port saved successfully!",
@@ -419,7 +419,9 @@ $(async function () {
             }).then(() => {
                 // reload AFTER swal closes
                 location.reload();
-            });
+            }).catch(error =>
+                console.log(error)
+            );
         });
     }
 

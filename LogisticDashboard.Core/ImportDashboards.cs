@@ -11,12 +11,12 @@ namespace LogisticDashboard.Core
         public int Id { get; set; }
         public string BLNo { get; set; }
         public string Shipper { get; set; }
-        public string Original_ETA_Port { get; set; }
-        public string Revised_ETA_Port { get; set; }
+        public DateTime Original_ETA_Port { get; set; }
+        public DateTime Revised_ETA_Port { get; set; }
         public string Reasons { get; set; }
         public string BIPH_Action { get; set; }
         public string Criteria { get; set; }
-        public string Action { get; set; }
+        public string? Action { get; set; }
     }
 
     public class ImportDeliveryDashboards
@@ -24,49 +24,68 @@ namespace LogisticDashboard.Core
         public int Id { get; set; }
         public string BLNo { get; set; }
         public string Shipper { get; set; }
-        public string Original_ETA_Port { get; set; }
-        public string Revised_ETA_Port { get; set; }
+        public DateTime Original_ETA_Port { get; set; }
+        public DateTime Revised_ETA_Port { get; set; }
         public string Reasons { get; set; }
         public string BIPH_Action { get; set; }
         public string Criteria { get; set; }
-        public string Action { get; set; }
+        public string? Action { get; set; }
     }
 
-    public class ImportPortUtilization
+    public class ImportPortUtilizationManila
     {
         public int Id { get; set; }
-        public int PortId { get; set; }
-        //relationship
-        public Ports Port { get; set; }
-
         public string BLNo { get; set; }
         public string Shipper { get; set; }
-        public string Original_ETA_Port { get; set; }
-        public string Revised_ETA_Port { get; set; }
+        public DateTime Original_ETA_Port { get; set; }
+        public DateTime Revised_ETA_Port { get; set; }
         public string Reasons { get; set; }
         public string BIPH_Action { get; set; }
         public string Criteria { get; set; }
-
-        public string Action { get; set; }
+        public string? Action { get; set; }
 
     }
 
-    public class ImportBerthingStatus
+    public class ImportPortUtilizationBatangas
     {
         public int Id { get; set; }
-        public int PortId { get; set; }
-        //relationship
-        public Ports Port { get; set; }
-
         public string BLNo { get; set; }
         public string Shipper { get; set; }
-        public string Original_ETA_Port { get; set; }
-        public string Revised_ETA_Port { get; set; }
+        public DateTime Original_ETA_Port { get; set; }
+        public DateTime Revised_ETA_Port { get; set; }
         public string Reasons { get; set; }
         public string BIPH_Action { get; set; }
         public string Criteria { get; set; }
-
-        public string Action { get; set; }
+        public string? Action { get; set; }
 
     }
+
+    public class ImportBerthingStatusManila
+    {
+        public int Id { get; set; }
+        public string BLNo { get; set; }
+        public string Shipper { get; set; }
+        public DateTime Original_ETA_Port { get; set; }
+        public DateTime Revised_ETA_Port { get; set; }
+        public string Reasons { get; set; }
+        public string BIPH_Action { get; set; }
+        public string Criteria { get; set; }
+        public string? Action { get; set; }
+
+    }
+
+    public class ImportBerthingStatusBatangas
+    {
+        public int Id { get; set; }
+        public string BLNo { get; set; }
+        public string Shipper { get; set; }
+        public DateTime Original_ETA_Port { get; set; }
+        public DateTime Revised_ETA_Port { get; set; }
+        public string Reasons { get; set; }
+        public string BIPH_Action { get; set; }
+        public string Criteria { get; set; }
+        public string? Action { get; set; }
+
+    }
+
 }

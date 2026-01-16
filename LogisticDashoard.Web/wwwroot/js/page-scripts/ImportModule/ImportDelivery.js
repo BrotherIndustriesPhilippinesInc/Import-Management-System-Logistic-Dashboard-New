@@ -1,32 +1,32 @@
 ﻿import apiCall from "./../../helpers/APICall.js";
 
-let vesselStatusModal = "";
+let importDeliveryModal = "";
 
-export async function VesselStatus() {
-    let data = await fetch(`${API_BASE_URL}/api/ImportDashboards/`);
+export async function ImportDelivery() {
+    let data = await fetch(`${API_BASE_URL}/api/ImportDeliveryDashboards/`);
     let response = await data.json();
     let filteredData = [];
 
     //destroy table
-    $('#vessel-status-table').DataTable().destroy();
-    const vessel_status_table = $('#vessel-status-table').DataTable({
+    $('#import-delivery-table').DataTable().destroy();
+    const import_delivery_table = $('#import-delivery-table').DataTable({
         layout: {
             topStart: {
                 buttons: ['colvis', {
                     text: 'Create New',
                     className: 'create-new-button btn btn-primary',
                     action: function (e, dt, node, config) {
-                        vesselStatusModal = "create";
+                        importDeliveryModal = "create";
 
-                        $("#vesselStatus-bilNo").val('');
-                        $("#vesselStatus-shipper").val('');
-                        $("#vesselStatus-originalETA").val('');
-                        $("#vesselStatus-revisedETA").val('');
-                        $("#vesselStatus-reasons").val('');
-                        $("#vesselStatus-actions").val('');
-                        $("#vesselStatus-criteria").val('');
+                        $("#importDelivery-bilNo").val('');
+                        $("#importDelivery-shipper").val('');
+                        $("#importDelivery-originalETA").val('');
+                        $("#importDelivery-revisedETA").val('');
+                        $("#importDelivery-reasons").val('');
+                        $("#importDelivery-actions").val('');
+                        $("#importDelivery-criteria").val('');
 
-                        $('#VesselStatusModal').modal('show');
+                        $('#ImportDeliveryModal').modal('show');
                     }
                 }]
             },
@@ -82,83 +82,83 @@ export async function VesselStatus() {
             //ACTIONS 
             {
                 data: null, orderable: false, searchable: false, render: function (data, type, row) {
-                    return `<button class="btn btn-secondary edit-vessel-status" data-id="${row.id}">Edit</button>
-                            <button class="btn btn-danger delete-vessel-status" data-id="${row.id}">Delete</button>`;
+                    return `<button class="btn btn-secondary edit-import-delivery" data-id="${row.id}">Edit</button>
+                            <button class="btn btn-danger delete-import-delivery" data-id="${row.id}">Delete</button>`;
                 }
             }
 
         ]
     });
 
-    return vessel_status_table;
+    return import_delivery_table;
 }
 
-async function VesselStatusCreateUpdate(id="") {
+async function ImportDeliveryCreateUpdate(id = "") {
 
     let data = {
-        "blNo": $("#vesselStatus-bilNo").val(),
-        "shipper": $("#vesselStatus-shipper").val(),
-        "original_ETA_Port": $("#vesselStatus-originalETA").val(),
-        "revised_ETA_Port": $("#vesselStatus-revisedETA").val(),
-        "reasons": $("#vesselStatus-reasons").val(),
-        "bipH_Action": $("#vesselStatus-actions").val(),
-        "criteria": $("#vesselStatus-criteria").val()
+        "blNo": $("#importDelivery-bilNo").val(),
+        "shipper": $("#importDelivery-shipper").val(),
+        "original_ETA_Port": $("#importDelivery-originalETA").val(),
+        "revised_ETA_Port": $("#importDelivery-revisedETA").val(),
+        "reasons": $("#importDelivery-reasons").val(),
+        "bipH_Action": $("#importDelivery-actions").val(),
+        "criteria": $("#importDelivery-criteria").val()
     };
 
     if (id) {
         data.id = id;
     }
 
-    if (vesselStatusModal == "create") {
+    if (importDeliveryModal == "create") {
         delete data.id;
-        await apiCall(`${API_BASE_URL}/api/ImportDashboards`, "POST", data)
+        await apiCall(`${API_BASE_URL}/api/ImportDeliveryDashboards`, "POST", data)
             .then((response) => {
                 swal.fire({
                     icon: 'success',
                     title: 'Success',
-                    text: 'Vessel Status Created Successfully',
+                    text: 'Import Delivery Created Successfully',
                     showConfirmButton: false,
                     timer: 1500
                 });
             })
             .then((response) => {
-                $('#VesselStatusModal').modal('hide');
-                $("#vesselStatus-bilNo").val('');
-                $("#vesselStatus-shipper").val('');
-                $("#vesselStatus-originalETA").val('');
-                $("#vesselStatus-revisedETA").val('');
-                $("#vesselStatus-reasons").val('');
-                $("#vesselStatus-actions").val('');
-                $("#vesselStatus-criteria").val('');
+                $('#ImportDeliveryModal').modal('hide');
+                $("#importDelivery-bilNo").val('');
+                $("#importDelivery-shipper").val('');
+                $("#importDelivery-originalETA").val('');
+                $("#importDelivery-revisedETA").val('');
+                $("#importDelivery-reasons").val('');
+                $("#importDelivery-actions").val('');
+                $("#importDelivery-criteria").val('');
 
-                VesselStatus();
+                ImportDelivery();
             })
             .catch((error) => {
                 console.error("API Call Failed:", error.message);
             });
     } else {
-        await apiCall(`${API_BASE_URL}/api/ImportDashboards/${id}`, "POST", data)
+        await apiCall(`${API_BASE_URL}/api/ImportDeliveryDashboards/${id}`, "POST", data)
             .then((response) => {
                 swal.fire({
                     icon: 'success',
                     title: 'Success',
-                    text: 'Vessel Status Updated Successfully',
+                    text: 'Import Delivery Updated Successfully',
                     showConfirmButton: false,
                     timer: 1500
                 });
             })
             .then((response) => {
-                $('#VesselStatusModal').modal('hide');
+                $('#ImportDeliveryModal').modal('hide');
 
-                $("#vesselStatus-bilNo").val('');
-                $("#vesselStatus-shipper").val('');
-                $("#vesselStatus-originalETA").val('');
-                $("#vesselStatus-revisedETA").val('');
-                $("#vesselStatus-reasons").val('');
-                $("#vesselStatus-actions").val('');
-                $("#vesselStatus-criteria").val('');
+                $("#importDelivery-bilNo").val('');
+                $("#importDelivery-shipper").val('');
+                $("#importDelivery-originalETA").val('');
+                $("#importDelivery-revisedETA").val('');
+                $("#importDelivery-reasons").val('');
+                $("#importDelivery-actions").val('');
+                $("#importDelivery-criteria").val('');
 
-                VesselStatus();
+                ImportDelivery();
             })
             .catch((error) => {
                 console.error("API Call Failed:", error.message);
@@ -167,55 +167,55 @@ async function VesselStatusCreateUpdate(id="") {
 
 }
 
-async function VesselStatusEdit(id) {
-    vesselStatusModal = "edit";
+async function ImportDeliveryEdit(id) {
+    importDeliveryModal = "edit";
 
-    let data = await apiCall(`${API_BASE_URL}/api/ImportDashboards/${id}`, "GET");
-    $("#vesselStatus-bilNo").val(data.blNo);
-    $("#vesselStatus-shipper").val(data.shipper);
-    $("#vesselStatus-originalETA").val(
+    let data = await apiCall(`${API_BASE_URL}/api/ImportDeliveryDashboards/${id}`, "GET");
+    $("#importDelivery-bilNo").val(data.blNo);
+    $("#importDelivery-shipper").val(data.shipper);
+    $("#importDelivery-originalETA").val(
         data.original_ETA_Port?.split("T")[0]
     );
 
-    $("#vesselStatus-revisedETA").val(
+    $("#importDelivery-revisedETA").val(
         data.revised_ETA_Port?.split("T")[0]
     );
-    $("#vesselStatus-reasons").val(data.reasons);
-    $("#vesselStatus-actions").val(data.bipH_Action);
-    $("#vesselStatus-criteria").val(data.criteria);
-    $("#VesselStatusModal").modal("show");
+    $("#importDelivery-reasons").val(data.reasons);
+    $("#importDelivery-actions").val(data.bipH_Action);
+    $("#importDelivery-criteria").val(data.criteria);
+    $("#ImportDeliveryModal").modal("show");
 }
 
-async function VesselStatusDelete(id) {
-    await apiCall(`${API_BASE_URL}/api/ImportDashboards/Delete/${id}`, "POST")
+async function ImportDeliveryDelete(id) {
+    await apiCall(`${API_BASE_URL}/api/ImportDeliveryDashboards/Delete/${id}`, "POST")
         .then((response) => {
             swal.fire({
                 icon: 'success',
                 title: 'Success',
-                text: 'Vessel Status Deleted Successfully',
+                text: 'Import Delivery Deleted Successfully',
                 showConfirmButton: false,
                 timer: 1500
             });
         })
         .then((response) => {
-            VesselStatus();
+            ImportDelivery();
         })
         .catch((error) => {
             console.error("API Call Failed:", error.message);
         });
 }
 
-$("#createVesselStatusButton").on("click", async function () {
-    await VesselStatusCreateUpdate($("#vessel_status_id").val());
+$("#createImportDeliveryButton").on("click", async function () {
+    await ImportDeliveryCreateUpdate($("#import_delivery_id").val());
 });
 
-$(document).on("click", ".edit-vessel-status", async function () {
+$(document).on("click", ".edit-import-delivery", async function () {
     const id = $(this).data("id");
-    $("#vessel_status_id").val(id);
-    await VesselStatusEdit(id);
+    $("#import_delivery_id").val(id);
+    await ImportDeliveryEdit(id);
 });
 
-$(document).on("click", ".delete-vessel-status", async function () {
+$(document).on("click", ".delete-import-delivery", async function () {
     const id = $(this).data("id");
 
     swal.fire({
@@ -228,7 +228,7 @@ $(document).on("click", ".delete-vessel-status", async function () {
         confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
         if (result.isConfirmed) {
-            await VesselStatusDelete(id);
+            await ImportDeliveryDelete(id);
         }
     });
 });

@@ -339,7 +339,7 @@ $(async function () {
     }
 
     async function getBerthYear() {
-        const data = await getData("Ports/distinct-ports");
+        const data = await getData("BerthingStatus/distinct-ports");
 
         //const selectRoute = $("#port");
         //selectRoute.empty();

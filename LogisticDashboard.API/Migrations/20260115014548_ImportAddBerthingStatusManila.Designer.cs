@@ -4,6 +4,7 @@ using LogisticDashboard.API.Data;
 using LogisticDashboard.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LogisticDashboard.API.Migrations
 {
     [DbContext(typeof(LogisticDashboardAPIContext))]
-    partial class LogisticDashboardAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20260115014548_ImportAddBerthingStatusManila")]
+    partial class ImportAddBerthingStatusManila
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -403,48 +406,6 @@ namespace LogisticDashboard.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Flowchart");
-                });
-
-            modelBuilder.Entity("LogisticDashboard.Core.ImportBerthingStatusBatangas", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BIPH_Action")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("BLNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Criteria")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Original_ETA_Port")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Reasons")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Revised_ETA_Port")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Shipper")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ImportBerthingStatusBatangas");
                 });
 
             modelBuilder.Entity("LogisticDashboard.Core.ImportBerthingStatusManila", b =>

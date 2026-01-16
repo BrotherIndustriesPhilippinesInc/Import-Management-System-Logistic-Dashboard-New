@@ -41,7 +41,10 @@ namespace LogisticDashboard.API.Data
         public DbSet<LogisticDashboard.Core.Announcements> Announcements { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.ImportDashboards> ImportDashboards { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.ImportDeliveryDashboards> ImportDeliveryDashboards { get; set; } = default!;
-        public DbSet<LogisticDashboard.Core.ImportPortUtilization> ImportPortUtilization { get; set; } = default!;
-        public DbSet<LogisticDashboard.Core.ImportBerthingStatus> ImportBerthingStatus { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportPortUtilizationManila> ImportPortUtilizationManila { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportPortUtilizationBatangas> ImportPortUtilizationBatangas { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportBerthingStatusManila> ImportBerthingStatusManila { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportBerthingStatusBatangas> ImportBerthingStatusBatangas { get; set; } = default!;
+
     }
 }

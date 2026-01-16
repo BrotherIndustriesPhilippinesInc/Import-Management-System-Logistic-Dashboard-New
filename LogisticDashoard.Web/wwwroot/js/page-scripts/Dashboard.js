@@ -386,7 +386,7 @@ async function getUploadDateAndTime() {
 
 //#region vesselTransitChart
 async function vesselTransitChart(uploadDate, dataOverride = null) {
-    const data = dataOverride || await (async () => {
+    const data = /*dataOverride ||*/ await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselTransitDays?createdDateTime=${uploadDate}`
         );
@@ -500,7 +500,7 @@ function getCheckedValues(container) {
 
 //#region OTD Achievement Rate
 async function otdAchievementPieChart(uploadDate, dataOverride = null) {
-    const data = dataOverride || await (async () => {
+    const data = /*dataOverride ||*/ await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/OtdAchievementRate?createdDateTime=${uploadDate}`
         );
@@ -588,7 +588,7 @@ function applyTruckerFilterAndRender(uploadDate, fullData) {
 
 //#region OTD Achievement Rate2
 async function otdAchievementPieChart2(uploadDate, dataOverride = null) {
-    const data = dataOverride || await (async () => {
+    const data = /*dataOverride ||*/ await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/OtdAchievementRate?createdDateTime=${uploadDate}`
         );
@@ -676,7 +676,7 @@ function applyTruckerFilterAndRender2(uploadDate, fullData) {
 
 //#region Average Processing Leadtime per forwarder
 async function averageProcessingChart(uploadDate, dataOverride = null) {
-    const data = dataOverride || await (async () => {
+    const data = /*dataOverride ||*/ await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/AverageProcessingLeadtimePerForwarder?createdDateTime=${uploadDate}`
         );
@@ -816,7 +816,7 @@ function populateAverageProcessingCheckboxes(data) {
 
 //#region Average Processing Leadtime per forwarder2
 async function averageProcessingChart2(uploadDate, dataOverride = null) {
-    const data = dataOverride || await (async () => {
+    const data = /*dataOverride ||*/ await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/AverageProcessingLeadtimePerForwarder?createdDateTime=${uploadDate}`
         );
@@ -956,7 +956,7 @@ function populateAverageProcessingCheckboxes2(data) {
 
 //#region Vessel Delay Per Port
 async function vesselDelayChart(uploadDate, dataOverride = null) {
-    const data = dataOverride || await (async () => {
+    const data = /*dataOverride ||*/ await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselDelayPerPort?createdDateTime=${uploadDate}`
         );
