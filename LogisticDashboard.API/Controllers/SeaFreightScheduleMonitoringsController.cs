@@ -239,7 +239,15 @@ namespace LogisticDashboard.API.Controllers
             await file.CopyToAsync(stream);
             using var package = new ExcelPackage(stream);
 
-            var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+            var worksheet = package.Workbook.Worksheets
+                    .FirstOrDefault(w => w.Name.Contains("SHIPMENT", StringComparison.OrdinalIgnoreCase));
+
+            if (worksheet == null)
+            {
+                // Always handle nulls, unless you want your app to crash
+                throw new Exception("No worksheet with 'SHIPMENT' in the name was found!");
+            }
+
             if (worksheet == null)
                 return BadRequest("No worksheet found in Excel.");
 

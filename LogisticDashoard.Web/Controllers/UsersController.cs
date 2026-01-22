@@ -117,7 +117,8 @@ namespace LogisticDashboard.Web.Controllers
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete([FromQuery] int? portalId)
+        [HttpGet]
+        public async Task<IActionResult> Delete([FromQuery] int? portalId, [FromQuery] string? employeeNumber)
         {
             if (portalId == null)
             {

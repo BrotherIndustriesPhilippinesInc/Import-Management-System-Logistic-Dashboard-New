@@ -23,24 +23,27 @@ namespace LogisticDashboard.API.Controllers
         }
 
         // GET: api/AirFreightScheduleMonitorings
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AirFreightScheduleMonitoring>>> GetAirFreightScheduleMonitoring()
-        {
-            return await _context.AirFreightScheduleMonitoring.OrderByDescending(x => x.Id).ToListAsync();
-        }
 
         // GET: api/AirFreightScheduleMonitorings/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AirFreightScheduleMonitoring>> GetAirFreightScheduleMonitoring(int id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AirFreightScheduleMonitoring>>> GetAirFreightScheduleMonitoringByDateTime([FromQuery] DateTime createdDateTime)
         {
-            var airFreightScheduleMonitoring = await _context.AirFreightScheduleMonitoring.FindAsync(id);
+            // 1. Ensure input is UTC
+            var utcDate = createdDateTime.ToUniversalTime();
 
-            if (airFreightScheduleMonitoring == null)
-            {
-                return NotFound();
-            }
+            // 2. Create a small buffer (e.g., within the same millisecond or second)
+            // If you want exact millisecond match, we look for:
+            // Time >= Input AND Time < Input + 1ms
+            var nextTick = utcDate.AddMilliseconds(1);
 
-            return airFreightScheduleMonitoring;
+            var result = await _context.AirFreightScheduleMonitoring
+                .Where(x => x.DateCreated.HasValue
+                         && x.DateCreated.Value >= utcDate
+                         && x.DateCreated.Value < nextTick) // Range check
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
+
+            return Ok(result);
         }
 
         // PUT: api/AirFreightScheduleMonitorings/5
@@ -107,7 +110,7 @@ namespace LogisticDashboard.API.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadExcel(IFormFile file)
+        public async Task<IActionResult> UploadExcel(IFormFile file, string createdBy)
         {
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded!");
@@ -188,6 +191,9 @@ namespace LogisticDashboard.API.Controllers
                 existing.Import_Remarks = worksheet.Cells[row, startCol + 24].Text;
                 existing.System_Update = worksheet.Cells[row, startCol + 25].Text;
 
+                existing.CreatedBy = createdBy;
+                existing.DateCreated = DateTime.UtcNow;
+
                 await _context.SaveChangesAsync(); // per row, or move outside for batch
             }
 
@@ -227,6 +233,121 @@ namespace LogisticDashboard.API.Controllers
             }
 
             return results;
+        }
+
+
+        [HttpPost("uploadNew")]
+        public async Task<IActionResult> UploadExcelNew(IFormFile file, string createdBy)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded!");
+
+            using var stream = new MemoryStream();
+            await file.CopyToAsync(stream);
+            using var package = new ExcelPackage(stream);
+
+            var worksheet = package.Workbook.Worksheets
+                    .FirstOrDefault(w => w.Name.Contains("SHIPMENT", StringComparison.OrdinalIgnoreCase));
+
+            if (worksheet == null)
+            {
+                // Always handle nulls, unless you want your app to crash
+                throw new Exception("No worksheet with 'SHIPMENT' in the name was found!");
+            }
+
+            if (worksheet == null)
+                return BadRequest("No worksheet found in Excel.");
+
+            int startRow = 17;
+            int startCol = 2;
+            int rowCount = worksheet.Dimension.Rows;
+
+            var newRecords = new List<AirFreightScheduleMonitoring>();
+
+            DateTime dateTimeNow = DateTime.UtcNow;
+
+            for (int row = startRow; row <= rowCount; row++)
+            {
+                bool rowHasData = false;
+                for (int col = startCol; col <= startCol + 28; col++)
+                {
+                    if (!string.IsNullOrWhiteSpace(worksheet.Cells[row, col].Text))
+                    {
+                        rowHasData = true;
+                        break;
+                    }
+                }
+
+                if (!rowHasData)
+                    continue;
+
+                //var containerNo = worksheet.Cells[row, startCol + 10].Text;
+                //if (string.IsNullOrWhiteSpace(containerNo))
+                //    continue;
+
+                
+
+                var entity = new AirFreightScheduleMonitoring
+                {
+                    //SHIPMENT DETAILS
+                    ItemCategory = worksheet.Cells[row, startCol].Text,
+                    Shipper = worksheet.Cells[row, startCol + 1].Text,
+                    //Origin = worksheet.Cells[row, startCol + 2].Text,
+                    AWB = worksheet.Cells[row, startCol + 2].Text,
+                    Forwarder_Courier = worksheet.Cells[row, startCol + 3].Text,
+                    Broker = worksheet.Cells[row, startCol + 4].Text,
+                    Flight_Detail = worksheet.Cells[row, startCol + 5].Text,
+                    Invoice_No = worksheet.Cells[row, startCol + 6].Text,
+                    Freight_Term = worksheet.Cells[row, startCol + 7].Text,
+                    No_Of_Pkgs = worksheet.Cells[row, startCol + 8].Text,
+
+                    //FLIGHT STATUS
+                    Original_ETD = worksheet.Cells[row, startCol + 9].Text,
+                    ATD = worksheet.Cells[row, startCol + 10].Text,
+                    Original_ETA = worksheet.Cells[row, startCol + 11].Text,
+                    Latest_ETA = worksheet.Cells[row, startCol + 12].Text,
+                    ATA = (worksheet.Cells[row, startCol + 13].Value as DateTime?)?.ToString("yyyy-MM-dd") ?? "",
+                    Flight_Status_Remarks = worksheet.Cells[row, startCol + 14].Text,
+
+                    //PERMITS
+                    Import_Permit_Status = worksheet.Cells[row, startCol + 15].Text,
+                    Have_Arrangement = worksheet.Cells[row, startCol + 16].Text,
+                    With_Special_Permit = worksheet.Cells[row, startCol + 17].Text,
+
+                    //DELIVERY & STATUS
+                    ATA_Port_BIPH_Leadtime = worksheet.Cells[row, startCol + 18].Text,
+                    ETA_BIPH_Manual_Computation = worksheet.Cells[row, startCol + 19].Text,
+                    Requested_Del_Date_To_Ship = worksheet.Cells[row, startCol + 20].Text,
+                    Earliest_Shortage_Date = worksheet.Cells[row, startCol + 21].Text,
+                    Actual_Del = worksheet.Cells[row, startCol + 22].Text,
+                    Status = worksheet.Cells[row, startCol + 23].Text,
+                    Import_Remarks = worksheet.Cells[row, startCol + 24].Text,
+                    System_Update = worksheet.Cells[row, startCol + 25].Text,
+
+                    CreatedBy = createdBy,
+                    DateCreated = dateTimeNow,
+                };
+
+                newRecords.Add(entity);
+            }
+
+            await _context.AirFreightScheduleMonitoring.AddRangeAsync(newRecords);
+            await _context.SaveChangesAsync();
+
+            return Ok($"Imported {newRecords.Count} records successfully.");
+        }
+
+        [HttpGet("UploadDateTime")]
+        public async Task<IActionResult> UploadDateTime()
+        {
+            //get distinct unique date and time
+            var airFreightDeliveryInfo = await _context.AirFreightScheduleMonitoring
+                .Select(x => new { x.DateCreated })
+                .Distinct()
+                .OrderByDescending(x => x.DateCreated)
+                .ToListAsync();
+
+            return Ok(airFreightDeliveryInfo);
         }
 
     }

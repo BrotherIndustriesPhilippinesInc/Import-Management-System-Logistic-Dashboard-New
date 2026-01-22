@@ -114,8 +114,6 @@ $(async function () {
     var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
     /*EVENTS*/
-
-
     $('#uploadInput').on('change', function () {
         const file = this.files[0];
 

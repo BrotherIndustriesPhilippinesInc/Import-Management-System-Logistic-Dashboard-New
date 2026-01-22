@@ -59,11 +59,11 @@
                     className: "text-center" // optional: center the icon
                 },
                 {
-                    data: "id",
+                    data: null,
                     orderable: false,
-                    render: function (data) {
+                    render: function (data, type, row) {
                         return `
-                                <a href="/Users/Delete?portalId=${data}" asp-user-id="${data}" class="btn btn-danger">Delete</a>
+                                <a href="/Users/Delete?portalId=${row.id}&employeeNumber=${row.employeeNumber}" asp-user-id="${row.employeeNumber}" class="btn btn-danger">Delete</a>
                         `;
                     },
                     className: "text-center" // optional: center the buttons

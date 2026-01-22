@@ -1,32 +1,91 @@
 ﻿$(async function () {
+    // 1. INITIALIZE VARIABLES
+    // We use 'let' so we can overwrite them when the date changes!
     let uploadDate = await getUploadDateAndTime();
     let actualDelivery = [];
 
-    $("#refresh").on("click", async function () {
-        await refreshAllCharts(uploadDate);
-    });
+    let vesselTransitData = [];
+    let otdAchievementData = [];
+    let averageProcessingData = [];
+    let vesselDelayPerPortData = [];
 
-    //#region vesselTransitDays 
-    // Fetch data once
-    const vesselTransitRes = await fetch(
-        `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselTransitDays?createdDateTime=${uploadDate}`
-    );
-    const vesselTransitData = await vesselTransitRes.json();
+    // ---------------------------------------------------------
+    // MASTER DATA FUNCTIONS
+    // ---------------------------------------------------------
 
-    $("#upload-date-time").on('change', function () {
-        uploadDate = this.value;
+    // Function to fetch ALL data for the current date
+    async function fetchAllData() {
+        // Use Promise.all for speed (fetches in parallel)
+        const [vesselRes, otdRes, avgRes, delayRes] = await Promise.all([
+            fetch(`${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselTransitDays?createdDateTime=${uploadDate}`),
+            fetch(`${API_BASE_URL}/api/SeaFreightScheduleMonitorings/OtdAchievementRate?createdDateTime=${uploadDate}`),
+            fetch(`${API_BASE_URL}/api/SeaFreightScheduleMonitorings/AverageProcessingLeadtimePerForwarder?createdDateTime=${uploadDate}&actualDelivery=${actualDelivery}`),
+            fetch(`${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselDelayPerPort?createdDateTime=${uploadDate}`)
+        ]);
+
+        vesselTransitData = await vesselRes.json();
+        otdAchievementData = await otdRes.json();
+        averageProcessingData = await avgRes.json();
+        vesselDelayPerPortData = await delayRes.json();
+    }
+
+    // Function to update ALL Charts and Reset ALL Filters
+    function updateAllChartsAndFilters() {
+        // 1. Vessel Transit
         vesselTransitChart(uploadDate, vesselTransitData);
-        //RESET FILTERS
         populateVesselCheckboxes(vesselTransitData);
+
+        // 2. OTD Achievement (Chart 1 & 2)
+        populateTruckerCheckboxes(otdAchievementData);
+        populateTruckerCheckboxes2(otdAchievementData);
+
+        // Default render: Chart 1 gets index 0, Chart 2 gets index 1
+        if (otdAchievementData.length > 0) {
+            otdAchievementPieChart(uploadDate, [otdAchievementData[0]]);
+        }
+        if (otdAchievementData.length > 1) {
+            otdAchievementPieChart2(uploadDate, [otdAchievementData[1]]);
+        }
+
+        // 3. Average Processing (Chart 1 & 2)
+        averageProcessingChart(uploadDate, averageProcessingData);
+        populateAverageProcessingCheckboxes(averageProcessingData);
+
+        averageProcessingChart2(uploadDate, averageProcessingData);
+        populateAverageProcessingCheckboxes2(averageProcessingData);
+
+        // 4. Vessel Delay
+        vesselDelayChart(uploadDate, vesselDelayPerPortData);
+        populateVesselDelayCheckboxes(vesselDelayPerPortData);
+    }
+
+    // ---------------------------------------------------------
+    // INITIAL LOAD
+    // ---------------------------------------------------------
+    await fetchAllData();
+    updateAllChartsAndFilters();
+
+    // ---------------------------------------------------------
+    // GLOBAL EVENTS
+    // ---------------------------------------------------------
+
+    // ONE listener to rule them all. When date changes, everything updates.
+    $("#upload-date-time").on('change', async function () {
+        uploadDate = this.value;
+        await fetchAllData();         // Get fresh data
+        updateAllChartsAndFilters();  // Redraw everything
     });
 
-    // Populate filters
-    populateVesselCheckboxes(vesselTransitData);
+    $("#refresh").on("click", async function () {
+        await fetchAllData();
+        updateAllChartsAndFilters();
+    });
 
-    // Initial chart
-    vesselTransitChart(uploadDate, vesselTransitData);
+    // ---------------------------------------------------------
+    // INDIVIDUAL FILTER LISTENERS
+    // ---------------------------------------------------------
 
-    // Filter events
+    // --- Vessel Transit Filters ---
     $('#vessel-transit-origin-filter, #vessel-transit-carrier-filter, #vessel-transit-mode-filter').on('change', function () {
         const selectedOrigins = getCheckedValues($('#vessel-transit-origin-filter'));
         const selectedCarriers = getCheckedValues($('#vessel-transit-carrier-filter'));
@@ -37,304 +96,107 @@
             selectedCarriers.includes(x.carrier_Forwarded) &&
             selectedModes.includes(x.mode_Of_Shipment)
         );
-
         vesselTransitChart(uploadDate, filteredData);
     });
 
-    // Toggle Origin filter
-    $('#vessel-transit-origin-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    // Toggle Carrier filter
-    $('#vessel-transit-carrier-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    $('#vessel-transit-mode-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    //#endregion
-
-    //#region OTD Achievement Rate
-    const otdAchievementRes = await fetch(
-        `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/OtdAchievementRate?createdDateTime=${uploadDate}`
-    );
-    const otdAchievementData = await otdAchievementRes.json();
-
-    populateTruckerCheckboxes(otdAchievementData);
-
-    // FORCE first selection render
-    const first = otdAchievementData[0];
-    otdAchievementPieChart(uploadDate, [first]);
-
-
+    // --- OTD 1 Filter ---
     $('#otd-trucker-filter').on('change', 'input[name="otd-trucker"]', function () {
         const selected = $('#otd-trucker-filter input[name="otd-trucker"]:checked').val();
-
         if (!selected) return;
-
-        const filtered = otdAchievementData.filter(x =>
-            x.trucker === selected
-        );
-
+        const filtered = otdAchievementData.filter(x => x.trucker === selected);
         otdAchievementPieChart(uploadDate, filtered);
     });
 
-
-
-    $('#otd-trucker-filter .filter-label').on('click', function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text((_, old) =>
-            old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇')
-        );
-    });
-
-    $('#upload-date-time').on('change', function () {
-        uploadDate = this.value;
-        populateTruckerCheckboxes(otdAchievementData);
-        otdAchievementPieChart(uploadDate, otdAchievementData);
-    });
-
-    //#endregion
-
-    //#region OTD Achievement Rate2
-    populateTruckerCheckboxes2(otdAchievementData);
-
-    // FORCE second selection render
-    const second = otdAchievementData[1];
-    otdAchievementPieChart2(uploadDate, [second]);
-
-
+    // --- OTD 2 Filter ---
     $('#otd-trucker-filter2').on('change', 'input[name="otd-trucker2"]', function () {
         const selected = $('#otd-trucker-filter2 input[name="otd-trucker2"]:checked').val();
-
         if (!selected) return;
-
-        const filtered = otdAchievementData.filter(x =>
-            x.trucker === selected
-        );
-
+        const filtered = otdAchievementData.filter(x => x.trucker === selected);
         otdAchievementPieChart2(uploadDate, filtered);
     });
 
-
-
-    $('#otd-trucker-filter2 .filter-label').on('click', function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text((_, old) =>
-            old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇')
-        );
-    });
-
-    $('#upload-date-time').on('change', function () {
-        uploadDate = this.value;
-        populateTruckerCheckboxes2(otdAchievementData);
-        otdAchievementPieChart2(uploadDate, otdAchievementData);
-    });
-
-    //#endregion
-
-    //#region Average Processing Leadtime per forwarder
-    
-    const averageProcessingRes = await fetch(
-        `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/AverageProcessingLeadtimePerForwarder?createdDateTime=${uploadDate}&actualDelivery=${actualDelivery}`
-    );
-    const averageProcessingData = await averageProcessingRes.json();
-
-    $("#upload-date-time").on('change', function () {
-        uploadDate = this.value;
-        averageProcessingChart(uploadDate, averageProcessingData);
-        //RESET FILTERS
-        populateAverageProcessingCheckboxes(averageProcessingData);
-    });
-
-    populateAverageProcessingCheckboxes(averageProcessingData);
-
-    averageProcessingChart(uploadDate, averageProcessingData);
-
-    // Filter events
+    // --- Average Processing 1 Filter ---
     $('#average-processing-actual-delivery-filter, #average-processing-type-of-packaging-filter, #average-processing-trucker-filter, #average-processing-port-of-discharge-filter').on('change', function () {
-        const selectedActualDeliveries = getCheckedValues($('#average-processing-actual-delivery-filter'));
-        const selectedTypeOfPackagings = getCheckedValues($('#average-processing-type-of-packaging-filter'));
+        const selectedActual = getCheckedValues($('#average-processing-actual-delivery-filter'));
+        const selectedPkg = getCheckedValues($('#average-processing-type-of-packaging-filter'));
         const selectedTruckers = getCheckedValues($('#average-processing-trucker-filter'));
         const selectedPorts = getCheckedValues($('#average-processing-port-of-discharge-filter'));
 
         const filteredData = averageProcessingData.filter(x =>
-            selectedActualDeliveries.includes(x.actualDelivery) &&
-            selectedTypeOfPackagings.includes(x.modeOfShipment) &&
+            selectedActual.includes(x.actualDelivery) &&
+            selectedPkg.includes(x.modeOfShipment) &&
             selectedTruckers.includes(x.trucker) &&
             selectedPorts.includes(x.portOfDischarge)
         );
-
         averageProcessingChart(uploadDate, filteredData);
     });
 
-    // Toggle Actual Delivery filter
-    $('#average-processing-actual-delivery-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    // Toggle Type of Packaging filter
-    $('#average-processing-type-of-packaging-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    // Toggle Trucker filter
-    $('#average-processing-trucker-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    // Toggle Port of Discharge
-    $('#average-processing-port-of-discharge-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-
-
-    //#endregion
-
-    //#region Average Processing Leadtime per forwarder2
-    $("#upload-date-time").on('change', function () {
-        uploadDate = this.value;
-        averageProcessingChart2(uploadDate, averageProcessingData);
-        //RESET FILTERS
-        populateAverageProcessingCheckboxes2(averageProcessingData);
-    });
-
-    populateAverageProcessingCheckboxes2(averageProcessingData);
-
-    averageProcessingChart2(uploadDate, averageProcessingData);
-
-    // Filter events
+    // --- Average Processing 2 Filter ---
     $('#average-processing-actual-delivery-filter2, #average-processing-type-of-packaging-filter2, #average-processing-trucker-filter2, #average-processing-port-of-discharge-filter2').on('change', function () {
-        const selectedActualDeliveries = getCheckedValues($('#average-processing-actual-delivery-filter2'));
-        const selectedTypeOfPackagings = getCheckedValues($('#average-processing-type-of-packaging-filter2'));
+        const selectedActual = getCheckedValues($('#average-processing-actual-delivery-filter2'));
+        const selectedPkg = getCheckedValues($('#average-processing-type-of-packaging-filter2'));
         const selectedTruckers = getCheckedValues($('#average-processing-trucker-filter2'));
         const selectedPorts = getCheckedValues($('#average-processing-port-of-discharge-filter2'));
 
         const filteredData = averageProcessingData.filter(x =>
-            selectedActualDeliveries.includes(x.actualDelivery) &&
-            selectedTypeOfPackagings.includes(x.modeOfShipment) &&
+            selectedActual.includes(x.actualDelivery) &&
+            selectedPkg.includes(x.modeOfShipment) &&
             selectedTruckers.includes(x.trucker) &&
             selectedPorts.includes(x.portOfDischarge)
         );
-
         averageProcessingChart2(uploadDate, filteredData);
     });
 
-    // Toggle Actual Delivery filter
-    $('#average-processing-actual-delivery-filter2 .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    // Toggle Type of Packaging filter
-    $('#average-processing-type-of-packaging-filter2 .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    // Toggle Trucker filter
-    $('#average-processing-trucker-filter2 .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-    // Toggle Port of Discharge
-    $('#average-processing-port-of-discharge-filter2 .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
-
-
-
-    //#endregion
-
-    //#region Vessel Delay Per Port 
-    // Fetch data once
-    const vesselDelayPerPortRes = await fetch(
-        `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselDelayPerPort?createdDateTime=${uploadDate}`
-    );
-    const vesselDelayPerPortData = await vesselDelayPerPortRes.json();
-
-    $("#upload-date-time").on('change', function () {
-        uploadDate = this.value;
-        vesselDelayChart(uploadDate, vesselDelayPerPortData);
-        //RESET FILTERS
-        populateVesselDelayCheckboxes(vesselDelayPerPortData);
-    });
-
-    // Populate filters
-    populateVesselDelayCheckboxes(vesselDelayPerPortData);
-
-    // Initial chart
-    vesselDelayChart(uploadDate, vesselDelayPerPortData);
-
-    // Filter events
+    // --- Vessel Delay Filter ---
     $('#vessel-delay-per-port-port-of-discharge-filter, #vessel-delay-per-port-mode-of-shipment-filter').on('change', function () {
-        const selectedPortOfDischarge = getCheckedValues($('#vessel-delay-per-port-port-of-discharge-filter'));
+        const selectedPort = getCheckedValues($('#vessel-delay-per-port-port-of-discharge-filter'));
         const selectedModes = getCheckedValues($('#vessel-delay-per-port-mode-of-shipment-filter'));
 
         const filteredData = vesselDelayPerPortData.filter(x =>
-            selectedPortOfDischarge.includes(x.portOfDischarge) &&
+            selectedPort.includes(x.portOfDischarge) &&
             selectedModes.includes(x.modeOfShipment)
         );
-
         vesselDelayChart(uploadDate, filteredData);
     });
 
-    // Toggle Origin filter
-    $('#vessel-delay-per-port-port-of-discharge-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
+    // ---------------------------------------------------------
+    // UI ACCORDION HANDLERS (Cosmetic)
+    // ---------------------------------------------------------
+    // Helper to toggle checkbox visibility
+    function setupAccordion(selector) {
+        $(selector).click(function () {
+            $(this).siblings('.checkboxes').slideToggle(200);
+            $(this).text(function (i, old) {
+                return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
+            });
         });
-    });
+    }
 
-    // Toggle Carrier filter
-    $('#vessel-delay-per-port-mode-of-shipment-filter .filter-label').click(function () {
-        $(this).siblings('.checkboxes').slideToggle(200);
-        $(this).text(function (i, old) {
-            return old.includes('⬇') ? old.replace('⬇', '⬆') : old.replace('⬆', '⬇');
-        });
-    });
+    setupAccordion('#vessel-transit-origin-filter .filter-label');
+    setupAccordion('#vessel-transit-carrier-filter .filter-label');
+    setupAccordion('#vessel-transit-mode-filter .filter-label');
 
+    setupAccordion('#otd-trucker-filter .filter-label');
+    setupAccordion('#otd-trucker-filter2 .filter-label');
 
-    //#endregion
+    setupAccordion('#average-processing-actual-delivery-filter .filter-label');
+    setupAccordion('#average-processing-type-of-packaging-filter .filter-label');
+    setupAccordion('#average-processing-trucker-filter .filter-label');
+    setupAccordion('#average-processing-port-of-discharge-filter .filter-label');
+
+    setupAccordion('#average-processing-actual-delivery-filter2 .filter-label');
+    setupAccordion('#average-processing-type-of-packaging-filter2 .filter-label');
+    setupAccordion('#average-processing-trucker-filter2 .filter-label');
+    setupAccordion('#average-processing-port-of-discharge-filter2 .filter-label');
+
+    setupAccordion('#vessel-delay-per-port-port-of-discharge-filter .filter-label');
+    setupAccordion('#vessel-delay-per-port-mode-of-shipment-filter .filter-label');
 
 });
 
+// ---------------------------------------------------------
+// GLOBAL HELPER FUNCTIONS (Keep these outside the main block)
+// ---------------------------------------------------------
 
 async function getUploadDateAndTime() {
     return new Promise((resolve, reject) => {
@@ -342,7 +204,6 @@ async function getUploadDateAndTime() {
             url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/UploadDateTime`,
             type: 'GET',
             success: function (response) {
-
                 const $select = $('#upload-date-time');
                 $select.empty();
 
@@ -351,32 +212,18 @@ async function getUploadDateAndTime() {
                     return;
                 }
 
-                response.forEach((item, index) => {
+                response.forEach((item) => {
                     let date = new Date(item.dateCreated);
-
                     let display = date.toLocaleString('en-US', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: true
+                        year: 'numeric', month: '2-digit', day: '2-digit',
+                        hour: '2-digit', minute: '2-digit', hour12: true
                     });
-
                     let value = date.toISOString();
-
-                    $select.append(
-                        `<option value="${value}">${display}</option>`
-                    );
+                    $select.append(`<option value="${value}">${display}</option>`);
                 });
 
-                // ✅ select FIRST (latest) upload explicitly
-                const selectedValue = response[0]
-                    ? new Date(response[0].dateCreated).toISOString()
-                    : null;
-
+                const selectedValue = response[0] ? new Date(response[0].dateCreated).toISOString() : null;
                 $select.val(selectedValue);
-
                 resolve(selectedValue);
             },
             error: reject
@@ -384,9 +231,13 @@ async function getUploadDateAndTime() {
     });
 }
 
+function getCheckedValues(container) {
+    return container.find('input[type=checkbox]:checked').map((i, el) => el.value).get();
+}
+
 //#region vesselTransitChart
 async function vesselTransitChart(uploadDate, dataOverride = null) {
-    const data = /*dataOverride ||*/ await (async () => {
+    const data = dataOverride || await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselTransitDays?createdDateTime=${uploadDate}`
         );
@@ -493,14 +344,11 @@ function populateVesselCheckboxes(data) {
     });
 }
 
-function getCheckedValues(container) {
-    return container.find('input[type=checkbox]:checked').map((i, el) => el.value).get();
-}
 //#endregion
 
 //#region OTD Achievement Rate
 async function otdAchievementPieChart(uploadDate, dataOverride = null) {
-    const data = /*dataOverride ||*/ await (async () => {
+    const data = dataOverride || await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/OtdAchievementRate?createdDateTime=${uploadDate}`
         );
@@ -588,7 +436,7 @@ function applyTruckerFilterAndRender(uploadDate, fullData) {
 
 //#region OTD Achievement Rate2
 async function otdAchievementPieChart2(uploadDate, dataOverride = null) {
-    const data = /*dataOverride ||*/ await (async () => {
+    const data = dataOverride || await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/OtdAchievementRate?createdDateTime=${uploadDate}`
         );
@@ -676,7 +524,7 @@ function applyTruckerFilterAndRender2(uploadDate, fullData) {
 
 //#region Average Processing Leadtime per forwarder
 async function averageProcessingChart(uploadDate, dataOverride = null) {
-    const data = /*dataOverride ||*/ await (async () => {
+    const data = dataOverride || await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/AverageProcessingLeadtimePerForwarder?createdDateTime=${uploadDate}`
         );
@@ -816,7 +664,7 @@ function populateAverageProcessingCheckboxes(data) {
 
 //#region Average Processing Leadtime per forwarder2
 async function averageProcessingChart2(uploadDate, dataOverride = null) {
-    const data = /*dataOverride ||*/ await (async () => {
+    const data = dataOverride || await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/AverageProcessingLeadtimePerForwarder?createdDateTime=${uploadDate}`
         );
@@ -956,7 +804,7 @@ function populateAverageProcessingCheckboxes2(data) {
 
 //#region Vessel Delay Per Port
 async function vesselDelayChart(uploadDate, dataOverride = null) {
-    const data = /*dataOverride ||*/ await (async () => {
+    const data = dataOverride || await (async () => {
         const res = await fetch(
             `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/VesselDelayPerPort?createdDateTime=${uploadDate}`
         );

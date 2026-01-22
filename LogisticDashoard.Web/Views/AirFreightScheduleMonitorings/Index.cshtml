@@ -73,6 +73,12 @@
             <div class="d-flex flex-column gap-1">
                 <div class="d-flex gap-2 justify-content-end">
                     <div>
+                        <span class="sub-label d-inline">UPLOAD DATE & TIME:</span>
+                        <select id="upload-date-time">
+                            @* <option value="value">text</option> *@
+                        </select>
+                    </div>
+                    <div>
                         <span class="sub-label d-inline">START DATE:</span>
                         <input id="start-date" type="date" />
                     </div>
@@ -87,8 +93,10 @@
             <thead>
                 <tr>
                     <!-- SHIPMENT DETAILS -->
+                    <th class="shipment-details">ID</th>
                     <th class="shipment-details">Item Category</th>
                     <th class="shipment-details">Shipper</th>
+                    @* <th class="shipment-details">Origin</th> *@
                     <th class="shipment-details">AWB</th>
                     <th class="shipment-details">Forwarder / Courier</th>
                     <th class="shipment-details">Broker</th>

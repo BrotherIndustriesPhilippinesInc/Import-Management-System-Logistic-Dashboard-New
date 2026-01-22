@@ -14,6 +14,7 @@ namespace LogisticDashboard.Core
         public int Id { get; set; }
         public string ItemCategory { get; set; }
         public string Shipper { get; set; }
+        //public string Origin { get; set; }
         public string AWB { get; set; }
         public string Forwarder_Courier { get; set; }
         public string Broker { get; set; }
@@ -46,6 +47,12 @@ namespace LogisticDashboard.Core
         public string Status { get; set; }
         public string Import_Remarks { get; set; }
         public string System_Update { get; set; }
+
+        public DateTime? DateCreated { get; set; }
+        public string? CreatedBy { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+        public string? UpdatedBy { get; set; }
 
     }
 }

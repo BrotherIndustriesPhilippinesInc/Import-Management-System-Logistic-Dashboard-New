@@ -288,7 +288,7 @@ namespace LogisticDashboard.API.Controllers
                 "http://apbiphbpswb01:80/PortalAPI/api/SystemApproverLists/Delete",
                 jsonContent
             );
-
+            Console.WriteLine(response.RequestMessage);
             return response.IsSuccessStatusCode;
         }
 
@@ -296,7 +296,7 @@ namespace LogisticDashboard.API.Controllers
         private async Task<PortalUser?> GetPortalUserAsync(string employeeNumber)
         {
             var response = await _httpClient.GetAsync(
-                $"http://apbiphbpswb01:80/PortalAPI/api/SystemApproverLists/SearchEmployee/{employeeNumber}"
+                $"http://apbiphbpswb01:80/PortalAPI/api/SystemApproverLists/SearchEmployee?employeeNumber={employeeNumber}&systemID=77"
             );
 
             if (!response.IsSuccessStatusCode)
