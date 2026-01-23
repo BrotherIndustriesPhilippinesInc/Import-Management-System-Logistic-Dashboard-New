@@ -2,6 +2,97 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class="fixed-bottom text-center">
+    <table class="home-table border-1">
+        <thead>
+            <tr>
+                <th class="align-middle" scope="col" rowspan="2">PRIORITY <br /> LEVEL</th>
+                <th scope="col" colspan="2">VESSEL DELAY</th>
+                <th scope="col" colspan="2">IMPORT DELIVERY</th>
+                <th scope="col" colspan="2">PORT STATUS (YARD UTILIZATION)</th>
+                <th scope="col" colspan="2">PORT STATUS (BERTHING STATUS)</th>
+            </tr>
+
+            <tr>
+                <th scope="col">CONDITION</th>
+                <th scope="col">RULES</th>
+                <th scope="col">CONDITION</th>
+                <th scope="col">RULES</th>
+                <th scope="col">MANILA NORTH</th>
+                <th scope="col">BATANGAS</th>
+                <th scope="col">MANILA NORTH</th>
+                <th scope="col">BATANGAS</th>
+            </tr>
+        </thead>
+        <tbody class="text-start">
+            <tr>
+                <td class="normal-background text-light">Normal Condition</td>
+                <td>0 - 2 days delay based on average Vessel transit LT</td>
+                <td>
+                    <ol class="m-0">
+                        <li>SHIP share to MP vessel schedule update </li>
+                        <li>MP check possible parts shortage</li>
+                    </ol>
+                </td>
+                <td>1 - 2 days delay based on average customs clearance LT</td>
+                <td>
+                    <ol class="m-0">
+                        <li>SHIP share to MP customs update</li>
+                        <li>MP check possible parts shortage</li>
+                    </ol>
+                </td>
+                <td>below 85% Yard Utilization Ratio</td>
+                <td>below 80% Yard Utilization Ratio</td>
+                <td>below 8 vessel waiting to berth</td>
+                <td>below 3 vessel waiting to berth</td>
+            </tr>
+
+            <tr>
+                <td class="serious-background text-light">Critical Condition</td>
+                <td>3 - 6 days delay based on average Vessel transit LT</td>
+                <td>
+                    <ol class="m-0">
+                        <li>MP check possible parts shortage</li>
+                        <li>LC / Production conduct stocks investigation</li>
+                        <li>PC revise production plan</li>
+                        <li>MP request AF</li>
+                    </ol>
+                </td>
+                <td>3 - 6 days delay based on average customs clearance LT</td>
+                <td>
+                    <ol class="m-0">
+                        <li>MP check possible parts shortage</li>
+                        <li>LC / Production conduct stocks investigation</li>
+                        <li>PC revise production plan</li>
+                        <li>MP request AF</li>
+                    </ol>
+                </td>
+                <td>below 86% - 96% Yard Utilization Ratio</td>
+                <td>below 81% - 90% Yard Utilization Ratio</td>
+                <td>below 9 - 12 vessel waiting to berth</td>
+                <td>below 4 - 7 vessel waiting to berth</td>
+            </tr>
+
+            <tr>
+                <td class="critical-background text-light">Critical Condition</td>
+                <td>7 days delay</td>
+                <td>
+                    Production line will stop even above MID action already implemented
+                </td>
+                <td>6 days above delay</td>
+                <td>
+                    Production line will stop even above MID action already implemented
+                </td>
+                <td>above 97% Yard Utilization Ratio</td>
+                <td>above 91% Yard Utilization Ratio</td>
+                <td>below 13 vessel waiting to berth</td>
+                <td>below 8 vessel waiting to berth</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
 <div class="w-100">
     <div class="w-100 d-flex mt-5">
         <div class="w-100 d-flex flex-column">
@@ -555,8 +646,6 @@
 
     ")
 })
-
-
 
 @section Scripts {
     <script type="module" src="~/js/page-scripts/ImportModule/Loader.js"></script>

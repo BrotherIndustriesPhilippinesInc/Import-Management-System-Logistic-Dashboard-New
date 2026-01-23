@@ -239,8 +239,12 @@ namespace LogisticDashboard.API.Controllers
             await file.CopyToAsync(stream);
             using var package = new ExcelPackage(stream);
 
-            var worksheet = package.Workbook.Worksheets
-                    .FirstOrDefault(w => w.Name.Contains("SHIPMENT", StringComparison.OrdinalIgnoreCase));
+            //Worksheet with name "SHIPMENT"
+            //var worksheet = package.Workbook.Worksheets
+            //        .FirstOrDefault(w => w.Name.Contains("SHIPMENT", StringComparison.OrdinalIgnoreCase));
+
+            //Worksheet at index 0
+            var worksheet = package.Workbook.Worksheets.FirstOrDefault();
 
             if (worksheet == null)
             {

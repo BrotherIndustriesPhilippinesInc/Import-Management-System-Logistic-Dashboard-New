@@ -236,10 +236,20 @@ namespace LogisticDashboard.API.Controllers
         }
 
         [HttpGet("CalculateCost")]
-        public async Task<IActionResult> CalculateCost([FromQuery] string origin,[FromQuery] string weight)
+        public async Task<IActionResult> CalculateCost([FromQuery] string origin, [FromQuery] string weight)
         {
-            var result = await _context.LogisticCost.Where(l => l.Origin == origin && l.KGS == weight).FirstOrDefaultAsync();
-            return Ok(result);
+            if (!decimal.TryParse(weight, out decimal parsedWeight))
+            {
+                return BadRequest("Weight must be a valid number.");
+            }
+
+            // Standardize to 2 decimal places for the DB query if your KGS column is a string
+            string formattedWeight = parsedWeight.ToString("0.00");
+
+            var result = await _context.LogisticCost
+                .FirstOrDefaultAsync(l => l.Origin == origin && l.KGS == formattedWeight);
+
+            return result == null ? NotFound() : Ok(result);
         }
     }
 }
