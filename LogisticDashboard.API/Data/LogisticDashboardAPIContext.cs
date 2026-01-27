@@ -45,6 +45,7 @@ namespace LogisticDashboard.API.Data
         public DbSet<LogisticDashboard.Core.ImportPortUtilizationBatangas> ImportPortUtilizationBatangas { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.ImportBerthingStatusManila> ImportBerthingStatusManila { get; set; } = default!;
         public DbSet<LogisticDashboard.Core.ImportBerthingStatusBatangas> ImportBerthingStatusBatangas { get; set; } = default!;
+        public DbSet<LogisticDashboard.Core.ImportPortStatus> ImportPortStatus { get; set; } = default!;
 
     }
 }

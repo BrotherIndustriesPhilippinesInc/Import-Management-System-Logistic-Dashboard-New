@@ -257,7 +257,7 @@ async function vesselTransitChart(uploadDate, dataOverride = null) {
                 const match = data.find(
                     x => x.origin === origin && x.carrier_Forwarded === carrier
                 );
-                return match ? Number(match.transit_Days_ATD_ATA) : 0;
+                return match ? Math.round(Number(match.transit_Days_ATD_ATA)) : 0;
             }),
             backgroundColor: color,
             borderWidth: 0
@@ -359,7 +359,7 @@ async function otdAchievementPieChart(uploadDate, dataOverride = null) {
 
     // ONLY ONE TRUCKER SHOULD BE HERE
     const trucker = data[0];
-    const achieved = trucker.achievementRate;
+    const achieved = Math.round(Number(trucker.achievementRate));
     const notAchieved = 100 - achieved;
 
     if (window.otdChartInstance) window.otdChartInstance.destroy();
@@ -390,7 +390,7 @@ async function otdAchievementPieChart(uploadDate, dataOverride = null) {
                     },
                     legend: { position: 'right', labels: { color: '#000' } },
                     datalabels: {
-                        formatter: v => v === 0 ? '' : `${v.toFixed(2)}%`,
+                        formatter: v => v === 0 ? '' : `${v}%`,
                         color: '#000',
                         font: { weight: 'bold' }
                     }
@@ -447,7 +447,7 @@ async function otdAchievementPieChart2(uploadDate, dataOverride = null) {
 
     // ONLY ONE TRUCKER SHOULD BE HERE
     const trucker = data[0];
-    const achieved = trucker.achievementRate;
+    const achieved = Math.round(Number(trucker.achievementRate));
     const notAchieved = 100 - achieved;
 
     if (window.otdChartInstance2) window.otdChartInstance2.destroy();
@@ -478,7 +478,7 @@ async function otdAchievementPieChart2(uploadDate, dataOverride = null) {
                     },
                     legend: { position: 'right', labels: { color: '#000' } },
                     datalabels: {
-                        formatter: v => v === 0 ? '' : `${v.toFixed(2)}%`,
+                        formatter: v => v === 0 ? '' : `${v}%`,
                         color: '#000',
                         font: { weight: 'bold' }
                     }
@@ -550,8 +550,8 @@ async function averageProcessingChart(uploadDate, dataOverride = null) {
                 );
                 if (!items.length) return 0;
                 // average across all items for this trucker+port
-                return Math.round(items.reduce((sum, x) => sum + x.averageProcessingLeadtime, 0) / items.length * 100) / 100;
-            }),
+                return Math.round(items.reduce((sum, x) => sum + x.averageProcessingLeadtime, 0) / items.length );
+            }), 
 
             backgroundColor: color,
             borderWidth: 0
@@ -690,7 +690,7 @@ async function averageProcessingChart2(uploadDate, dataOverride = null) {
                 );
                 if (!items.length) return 0;
                 // average across all items for this trucker+port
-                return Math.round(items.reduce((sum, x) => sum + x.averageProcessingLeadtime, 0) / items.length * 100) / 100;
+                return Math.round(items.reduce((sum, x) => sum + x.averageProcessingLeadtime, 0) / items.length);
             }),
 
             backgroundColor: color,
@@ -816,8 +816,8 @@ async function vesselDelayChart(uploadDate, dataOverride = null) {
         `${x.portOfDischarge} (${x.modeOfShipment})`
     );
 
-    const delayData = data.map(x => x.delayPct);
-    const onTimeData = data.map(x => x.onTimePct);
+    const delayData = data.map(x => Math.round(x.delayPct));
+    const onTimeData = data.map(x => Math.round(x.onTimePct));
 
     if (window.vesselDelayChartInstance)
         window.vesselDelayChartInstance.destroy();

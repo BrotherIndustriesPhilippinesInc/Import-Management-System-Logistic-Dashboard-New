@@ -11,17 +11,18 @@
     <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="EPPlus" Version="8.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.22">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.23">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.22" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.23" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LogisticDashboard.Core\LogisticDashboard.Core.csproj" />
+    <ProjectReference Include="..\LogisticDashoard.Web\LogisticDashboard.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

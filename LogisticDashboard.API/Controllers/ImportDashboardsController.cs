@@ -63,6 +63,21 @@ namespace LogisticDashboard.API.Controllers
                 importDashboards.Revised_ETA_Port =
                 DateTime.SpecifyKind(importDashboards.Revised_ETA_Port, DateTimeKind.Utc);
 
+                int numberOfDaysDelayed = (importDashboards.Revised_ETA_Port - importDashboards.Original_ETA_Port).Days;
+
+                if (numberOfDaysDelayed >= 0 && numberOfDaysDelayed <= 2)
+                {
+                    importDashboards.Criteria = "Normal";
+                }
+                else if (numberOfDaysDelayed >= 3 && numberOfDaysDelayed <= 6)
+                {
+                    importDashboards.Criteria = "Critical";
+                }
+                else if (numberOfDaysDelayed >= 7)
+                {
+                    importDashboards.Criteria = "Serious";
+                }
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -91,7 +106,20 @@ namespace LogisticDashboard.API.Controllers
             importDashboards.Revised_ETA_Port =
             DateTime.SpecifyKind(importDashboards.Revised_ETA_Port, DateTimeKind.Utc);
 
-            _context.ImportDashboards.Add(importDashboards);
+            int numberOfDaysDelayed = (importDashboards.Revised_ETA_Port - importDashboards.Original_ETA_Port).Days;
+
+            if (numberOfDaysDelayed >= 0 && numberOfDaysDelayed <= 2)
+            {
+                importDashboards.Criteria = "Normal";
+            }else if (numberOfDaysDelayed >= 3 && numberOfDaysDelayed <= 6)
+            {
+                importDashboards.Criteria = "Critical";
+            }else if (numberOfDaysDelayed >= 7)
+            {
+                importDashboards.Criteria = "Serious";
+            }
+
+                _context.ImportDashboards.Add(importDashboards);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetImportDashboards", new { id = importDashboards.Id }, importDashboards);

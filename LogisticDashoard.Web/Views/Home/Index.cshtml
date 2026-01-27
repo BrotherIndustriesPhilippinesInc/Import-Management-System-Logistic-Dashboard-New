@@ -2,7 +2,554 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="fixed-bottom text-center">
+<div class="w-100 mt-5">
+    <div class="w-100 d-flex justify-content-end">
+        
+        <button class="sea-freight-controls d-flex align-items-end" id="savePortStatus" type="button">
+            <img src="@Url.Content("~/resources/icons/file-arrow-up-solid-full.svg")" alt="save" width="32" height="32" />
+            Save
+        </button>
+    </div>
+    <div class="w-100 d-flex">
+        <div class="w-100 d-flex flex-column">
+            <table class="filter-table w-100 fw-bold">
+                <tr class="home-bg text-white no-wrap">
+                    <th class="text-center" style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 50px;
+                    ">
+                        <iconify-icon class="home-icon" icon="tabler:ship" width="32" height="32"></iconify-icon>
+                        <span class="home-header" style="vertical-align: middle">VESSEL UPDATES</span>
+                    </th>
+                    <th class="text-center">
+                        <img src="~/resources/logo/Bureau_of_Customs.svg" width="32px" />
+                        <span class="home-header">IMPORT DELIVERY</span>
+                    </th>
+                    <th class="text-center" colspan="2">
+                        <span><iconify-icon class="home-icon" icon="roentgen:crane" width="32" height="32"></iconify-icon></span>
+                        <div class="d-inline-block home-header">PHIL. PORT UPDATE <br /> (PORT UTILIZATION)</div>
+                    </th>
+                    <th class="text-center" colspan="2">
+                        <span><iconify-icon class="home-icon" icon="roentgen:crane" width="32" height="32"></iconify-icon></span>
+                        <div class="d-inline-block home-header">PHIL. PORT UPDATE <br /> (BERTHING STATUS)</div>
+                    </th>
+                    <th class="text-center" style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 50px;">
+                        <span><iconify-icon icon="mingcute:announcement-fill" width="32" height="32" style="color: #C00000; transform: rotate(-30deg)" ></iconify-icon></span>
+                        <div class="d-inline-block home-header">ANNOUNCEMENT</div>
+                    </th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center fw-bold home-header">Manila North</td>
+                    <td class="text-center fw-bold home-header">Batangas</td>
+                    <td class="text-center fw-bold home-header">Manila North</td>
+                    <td class="text-center fw-bold home-header">Batangas</td>
+                    <td class="border-1" rowspan="4" style="vertical-align: top;">
+                        <div class="d-flex gap-2 mb-2 justify-content-end">
+                            <a href="/Announcements/Create" class="btn btn-primary p-1" data-bs-toggle="modal" data-bs-target="#announcementCreateModal">
+                                Create
+                            </a>
+                            <a href="/Announcements/Index"  class="btn btn-warning p-1">
+                                Edit
+                            </a>
+                        </div>
+                        <div class="d-flex flex-column gap-2 align-items-center" id="announcement-container" style="height: 120px; overflow-y: auto;">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Normal" type="checkbox" /><label for="vesselUpdates_Normal">Normal</label></td>
+                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Normal" type="checkbox" /><label for="importDelivery_Normal">Normal</label></td>
+                    <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Normal" type="checkbox" /><label for="philPortUpdate_Manila_North_Normal">Normal</label></td>
+                    <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Normal" type="checkbox" /><label for="philPortUpdate_Batangas_Normal">Normal</label></td>
+                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Normal" type="checkbox" /><label for="berthingStatus_Manila_North_Normal">Normal</label></td>
+                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Normal" type="checkbox" /><label for="berthingStatus_Batangas_Normal">Normal</label></td>
+                </tr>
+                <tr>
+                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Critical" type="checkbox" /><label for="vesselUpdates_Critical">Critical</label></td>
+                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Critical" type="checkbox" /><label for="importDelivery_Critical">Critical</label></td>
+                    <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Critical" type="checkbox" /><label for="philPortUpdate_Manila_North_Critical">Critical</label></td>
+                    <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Critical" type="checkbox" /><label for="philPortUpdate_Batangas_Critical">Critical</label></td>
+                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Critical" type="checkbox" /><label for="berthingStatus_Manila_North_Critical">Critical</label></td>
+                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Critical" type="checkbox" /><label for="berthingStatus_Batangas_Critical">Critical</label></td>
+                </tr>
+                <tr>
+                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Serious" type="checkbox" /><label for="vesselUpdates_Serious">Serious</label></td>
+                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Serious" type="checkbox" /><label for="importDelivery_Serious">Serious</label></td>
+                    <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Serious" type="checkbox" /><label for="philPortUpdate_Manila_North_Serious">Serious</label></td>
+                    <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Serious" type="checkbox" /><label for="philPortUpdate_Batangas_Serious">Serious</label></td>
+                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Serious" type="checkbox" /><label for="berthingStatus_Manila_North_Serious">Serious</label></td>
+                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Serious" type="checkbox" /><label for="berthingStatus_Batangas_Serious">Serious</label></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="fst-italic">
+    <p><h5 class="home-header">Note:</h5> For full details, please see SF delivery info</p>
+</div>
+
+<div class="mb-5">
+    <table id="vessel-status-table" class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th class="text-center import-landing-table-header" colspan="9" >Vessel Status</th>
+            </tr>
+            <tr>
+                <th class="text-center import-landing-table-header">ID</th>
+                <th class="text-center import-landing-table-header">BL no.</th>
+                <th class="text-center import-landing-table-header">Shipper</th>
+                <th class="text-center import-landing-table-header">Original ETA Port</th>
+                <th class="text-center import-landing-table-header">Revised ETA Port</th>
+                <th class="text-center import-landing-table-header">Reasons</th>
+                <th class="text-center import-landing-table-header">BIPH Action</th>
+                <th class="text-center import-landing-table-header">Criteria</th>
+                <th class="text-center import-landing-table-header"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="mb-5">
+    <table id="import-delivery-table" class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th class="text-center import-landing-table-header" colspan="9">Import Delivery</th>
+            </tr>
+            <tr>
+                <th class="text-center import-landing-table-header">ID</th>
+                <th class="text-center import-landing-table-header">BL no.</th>
+                <th class="text-center import-landing-table-header">Shipper</th>
+                <th class="text-center import-landing-table-header">Original ETA Port</th>
+                <th class="text-center import-landing-table-header">Revised ETA Port</th>
+                <th class="text-center import-landing-table-header">Reasons</th>
+                <th class="text-center import-landing-table-header">BIPH Action</th>
+                <th class="text-center import-landing-table-header">Criteria</th>
+                <th class="text-center import-landing-table-header"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@* <div class="mb-5">
+    <table id="port-utilization-manila-table" class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th class="text-center import-landing-table-header" colspan="9">Port Utilization - Manila North (MICT) </th>
+            </tr>
+            <tr>
+                <th class="text-center import-landing-table-header">ID</th>
+                <th class="text-center import-landing-table-header">BL no.</th>
+                <th class="text-center import-landing-table-header">Shipper</th>
+                <th class="text-center import-landing-table-header">Original ETA Port</th>
+                <th class="text-center import-landing-table-header">Revised ETA Port</th>
+                <th class="text-center import-landing-table-header">Reasons</th>
+                <th class="text-center import-landing-table-header">BIPH Action</th>
+                <th class="text-center import-landing-table-header">Criteria</th>
+                <th class="text-center import-landing-table-header"></th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
+<div class="mb-5">
+    <table id="port-utilization-batangas-table" class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th class="text-center import-landing-table-header" colspan="9">Port Utilization - Batangas Port (POB) </th>
+            </tr>
+            <tr>
+                <th class="text-center import-landing-table-header">ID</th>
+                <th class="text-center import-landing-table-header">BL no.</th>
+                <th class="text-center import-landing-table-header">Shipper</th>
+                <th class="text-center import-landing-table-header">Original ETA Port</th>
+                <th class="text-center import-landing-table-header">Revised ETA Port</th>
+                <th class="text-center import-landing-table-header">Reasons</th>
+                <th class="text-center import-landing-table-header">BIPH Action</th>
+                <th class="text-center import-landing-table-header">Criteria</th>
+                <th class="text-center import-landing-table-header"></th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
+<div class="mb-5">
+    <table id="berthing-status-manila-table" class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th class="text-center import-landing-table-header" colspan="9">Berthing Status - Manila North (MICT) </th>
+            </tr>
+            <tr>
+                <th class="text-center import-landing-table-header">ID</th>
+                <th class="text-center import-landing-table-header">BL no.</th>
+                <th class="text-center import-landing-table-header">Shipper</th>
+                <th class="text-center import-landing-table-header">Original ETA Port</th>
+                <th class="text-center import-landing-table-header">Revised ETA Port</th>
+                <th class="text-center import-landing-table-header">Reasons</th>
+                <th class="text-center import-landing-table-header">BIPH Action</th>
+                <th class="text-center import-landing-table-header">Criteria</th>
+                <th class="text-center import-landing-table-header"></th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
+<div class="mb-5">
+    <table id="berthing-status-batangas-table" class="table table-bordered border-dark">
+        <thead>
+            <tr>
+                <th class="text-center import-landing-table-header" colspan="9">Berthing Status - Batangas Port (POB) </th>
+            </tr>
+            <tr>
+                <th class="text-center import-landing-table-header">ID</th>
+                <th class="text-center import-landing-table-header">BL no.</th>
+                <th class="text-center import-landing-table-header">Shipper</th>
+                <th class="text-center import-landing-table-header">Original ETA Port</th>
+                <th class="text-center import-landing-table-header">Revised ETA Port</th>
+                <th class="text-center import-landing-table-header">Reasons</th>
+                <th class="text-center import-landing-table-header">BIPH Action</th>
+                <th class="text-center import-landing-table-header">Criteria</th>
+                <th class="text-center import-landing-table-header"></th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+ *@
+@* MODALS *@
+<div class="modal fade" id="announcementCreateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create Announcement</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <input type="hidden" name="announcement-id" id="announcement-id"  />
+
+                <div class="mb-3">
+                    <label for="title" class="col-form-label">Title</label>
+                    <input type="text" class="form-control" id="announcement-title" name="title">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="col-form-label">Description</label>
+                    <textarea type="text" class="form-control" id="announcement-description" name="description"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="createAnnouncement">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("GenericModal", new GenericModalViewModel
+{
+    ModalId = "VesselStatusModal",
+    Title = "Vessel Status",
+    SaveButtonId = "createVesselStatusButton",
+    Body = Html.Raw(@"
+        <input type='hidden' id='vessel_status_id' />
+
+        <div class='mb-3'>
+            <label>BL no.</label>
+            <input class='form-control' id='vesselStatus-bilNo'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Shipper</label>
+            <input class='form-control' id='vesselStatus-shipper'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Original ETA Port</label>
+            <input type='date' class='form-control' id='vesselStatus-originalETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Revised ETA Port</label>
+            <input type='date' class='form-control' id='vesselStatus-revisedETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Reasons</label>
+            <textarea class='form-control' id='vesselStatus-reasons'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>BIPH Action</label>
+            <textarea class='form-control' id='vesselStatus-actions'></textarea>
+        </div>
+
+        
+
+    ")
+})
+
+@await Html.PartialAsync("GenericModal", new GenericModalViewModel
+{
+    ModalId = "ImportDeliveryModal",
+    Title = "Import Delivery",
+    SaveButtonId = "createImportDeliveryButton",
+    Body = Html.Raw(@"
+        <input type='hidden' id='import_delivery_id' />
+
+        <div class='mb-3'>
+            <label>BL no.</label>
+            <input class='form-control' id='importDelivery-bilNo'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Shipper</label>
+            <input class='form-control' id='importDelivery-shipper'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Original ETA Port</label>
+            <input type='date' class='form-control' id='importDelivery-originalETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Revised ETA Port</label>
+            <input type='date' class='form-control' id='importDelivery-revisedETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Reasons</label>
+            <textarea class='form-control' id='importDelivery-reasons'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>BIPH Action</label>
+            <textarea class='form-control' id='importDelivery-actions'></textarea>
+        </div>
+
+        
+
+    ")
+})
+
+@* @await Html.PartialAsync("GenericModal", new GenericModalViewModel
+{
+    ModalId = "PortUtilizationManilaNorthModal",
+    Title = "Import Delivery",
+    SaveButtonId = "createPortUtilizationManilaNorthButton",
+    Body = Html.Raw(@"
+        <input type='hidden' id='port_utilization_id' />
+
+        <div class='mb-3'>
+            <label>BL no.</label>
+            <input class='form-control' id='PortUtilizationManilaNorth-bilNo'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Shipper</label>
+            <input class='form-control' id='PortUtilizationManilaNorth-shipper'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Original ETA Port</label>
+            <input type='date' class='form-control' id='PortUtilizationManilaNorth-originalETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Revised ETA Port</label>
+            <input type='date' class='form-control' id='PortUtilizationManilaNorth-revisedETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Reasons</label>
+            <textarea class='form-control' id='PortUtilizationManilaNorth-reasons'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>BIPH Action</label>
+            <textarea class='form-control' id='PortUtilizationManilaNorth-actions'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>Criteria</label>
+            <select class='form-select' id='PortUtilizationManilaNorth-criteria' aria-label='Default select example'>
+              <option selected>Select Criteria</option>
+              <option value='normal'>Normal</option>
+              <option value='serious'>Serious</option>
+              <option value='critical'>Critical</option>
+            </select>
+        </div>
+
+    ")
+})
+
+@await Html.PartialAsync("GenericModal", new GenericModalViewModel
+{
+    ModalId = "PortUtilizationBatangasModal",
+    Title = "Import Delivery",
+    SaveButtonId = "createPortUtilizationBatangasButton",
+    Body = Html.Raw(@"
+        <input type='hidden' id='port_utilization_id' />
+
+        <div class='mb-3'>
+            <label>BL no.</label>
+            <input class='form-control' id='PortUtilizationBatangas-bilNo'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Shipper</label>
+            <input class='form-control' id='PortUtilizationBatangas-shipper'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Original ETA Port</label>
+            <input type='date' class='form-control' id='PortUtilizationBatangas-originalETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Revised ETA Port</label>
+            <input type='date' class='form-control' id='PortUtilizationBatangas-revisedETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Reasons</label>
+            <textarea class='form-control' id='PortUtilizationBatangas-reasons'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>BIPH Action</label>
+            <textarea class='form-control' id='PortUtilizationBatangas-actions'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>Criteria</label>
+            <select class='form-select' id='PortUtilizationBatangas-criteria' aria-label='Default select example'>
+              <option selected>Select Criteria</option>
+              <option value='normal'>Normal</option>
+              <option value='serious'>Serious</option>
+              <option value='critical'>Critical</option>
+            </select>
+        </div>
+
+    ")
+})
+
+@await Html.PartialAsync("GenericModal", new GenericModalViewModel
+{
+    ModalId = "BerthingStatusManilaModal",
+    Title = "Berthing Status Manila",
+    SaveButtonId = "createBerthingStatusManilaButton",
+    Body = Html.Raw(@"
+        <input type='hidden' id='port_utilization_id' />
+
+        <div class='mb-3'>
+            <label>BL no.</label>
+            <input class='form-control' id='BerthingStatusManila-bilNo'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Shipper</label>
+            <input class='form-control' id='BerthingStatusManila-shipper'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Original ETA Port</label>
+            <input type='date' class='form-control' id='BerthingStatusManila-originalETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Revised ETA Port</label>
+            <input type='date' class='form-control' id='BerthingStatusManila-revisedETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Reasons</label>
+            <textarea class='form-control' id='BerthingStatusManila-reasons'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>BIPH Action</label>
+            <textarea class='form-control' id='BerthingStatusManila-actions'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>Criteria</label>
+            <select class='form-select' id='BerthingStatusManila-criteria' aria-label='Default select example'>
+              <option selected>Select Criteria</option>
+              <option value='normal'>Normal</option>
+              <option value='serious'>Serious</option>
+              <option value='critical'>Critical</option>
+            </select>
+        </div>
+
+    ")
+})
+
+@await Html.PartialAsync("GenericModal", new GenericModalViewModel
+{
+    ModalId = "BerthingStatusBatangasModal",
+    Title = "Berthing Status Batangas",
+    SaveButtonId = "createBerthingStatusBatangasButton",
+    Body = Html.Raw(@"
+        <input type='hidden' id='port_utilization_id' />
+
+        <div class='mb-3'>
+            <label>BL no.</label>
+            <input class='form-control' id='BerthingStatusBatangas-bilNo'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Shipper</label>
+            <input class='form-control' id='BerthingStatusBatangas-shipper'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Original ETA Port</label>
+            <input type='date' class='form-control' id='BerthingStatusBatangas-originalETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Revised ETA Port</label>
+            <input type='date' class='form-control' id='BerthingStatusBatangas-revisedETA'>
+        </div>
+
+        <div class='mb-3'>
+            <label>Reasons</label>
+            <textarea class='form-control' id='BerthingStatusBatangas-reasons'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>BIPH Action</label>
+            <textarea class='form-control' id='BerthingStatusBatangas-actions'></textarea>
+        </div>
+
+        <div class='mb-3'>
+            <label>Criteria</label>
+            <select class='form-select' id='BerthingStatusBatangas-criteria' aria-label='Default select example'>
+              <option selected>Select Criteria</option>
+              <option value='normal'>Normal</option>
+              <option value='serious'>Serious</option>
+              <option value='critical'>Critical</option>
+            </select>
+        </div>
+
+    ")
+})
+ *@
+
+
+<div class="text-center">
     <table class="home-table border-1">
         <thead>
             <tr>
@@ -93,559 +640,6 @@
     </table>
 </div>
 
-<div class="w-100">
-    <div class="w-100 d-flex mt-5">
-        <div class="w-100 d-flex flex-column">
-            <table class="filter-table w-100 fw-bold">
-                <tr class="home-bg text-white no-wrap">
-                    <th class="text-center" style="
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            height: 50px;
-                    ">
-                        <iconify-icon class="home-icon" icon="tabler:ship" width="32" height="32"></iconify-icon>
-                        <span class="home-header" style="vertical-align: middle">VESSEL UPDATES</span>
-                    </th>
-                    <th class="text-center">
-                        <img src="~/resources/logo/Bureau_of_Customs.svg" width="32px" />
-                        <span class="home-header">IMPORT DELIVERY</span>
-                    </th>
-                    <th class="text-center" colspan="2">
-                        <span><iconify-icon class="home-icon" icon="roentgen:crane" width="32" height="32"></iconify-icon></span>
-                        <div class="d-inline-block home-header">PHIL. PORT UPDATE <br /> (PORT UTILIZATION)</div>
-                    </th>
-                    <th class="text-center" colspan="2">
-                        <span><iconify-icon class="home-icon" icon="roentgen:crane" width="32" height="32"></iconify-icon></span>
-                        <div class="d-inline-block home-header">PHIL. PORT UPDATE <br /> (BERTHING STATUS)</div>
-                    </th>
-                    <th class="text-center" style="
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            height: 50px;">
-                        <span><iconify-icon icon="mingcute:announcement-fill" width="32" height="32" style="color: #C00000; transform: rotate(-30deg)" ></iconify-icon></span>
-                        <div class="d-inline-block home-header">ANNOUNCEMENT</div>
-                    </th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td class="text-center fw-bold home-header">Manila North</td>
-                    <td class="text-center fw-bold home-header">Batangas</td>
-                    <td class="text-center fw-bold home-header">Manila North</td>
-                    <td class="text-center fw-bold home-header">Batangas</td>
-                    <td class="border-1" rowspan="4" style="vertical-align: top;">
-                        <div class="d-flex gap-2 mb-2 justify-content-end">
-                            <a href="/Announcements/Create" class="btn btn-primary p-1" data-bs-toggle="modal" data-bs-target="#announcementCreateModal">
-                                Create
-                            </a>
-                            <a href="/Announcements/Index"  class="btn btn-warning p-1">
-                                Edit
-                            </a>
-                        </div>
-                        <div class="d-flex flex-column gap-2 align-items-center" id="announcement-container" style="height: 120px; overflow-y: auto;">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Normal" type="checkbox" /><label for="vesselUpdates_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Normal" type="checkbox" /><label for="importDelivery_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start"><input class="manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Normal" type="checkbox" /><label for="philPortUpdate_Manila_North_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start"><input class="batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Normal" type="checkbox" /><label for="philPortUpdate_Batangas_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start"><input class="manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Normal" type="checkbox" /><label for="berthingStatus_Manila_North_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start"><input class="batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Normal" type="checkbox" /><label for="berthingStatus_Batangas_Normal">Normal</label></td>
-                </tr>
-                <tr>
-                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Critical" type="checkbox" /><label for="vesselUpdates_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Critical" type="checkbox" /><label for="importDelivery_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start"><input class="manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Critical" type="checkbox" /><label for="philPortUpdate_Manila_North_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start"><input class="batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Critical" type="checkbox" /><label for="philPortUpdate_Batangas_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start"><input class="manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Critical" type="checkbox" /><label for="berthingStatus_Manila_North_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start"><input class="batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Critical" type="checkbox" /><label for="berthingStatus_Batangas_Critical">Critical</label></td>
-                </tr>
-                <tr>
-                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Serious" type="checkbox" /><label for="vesselUpdates_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Serious" type="checkbox" /><label for="importDelivery_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start"><input class="manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Serious" type="checkbox" /><label for="philPortUpdate_Manila_North_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start"><input class="batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Serious" type="checkbox" /><label for="philPortUpdate_Batangas_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start"><input class="manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Serious" type="checkbox" /><label for="berthingStatus_Manila_North_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start"><input class="batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Serious" type="checkbox" /><label for="berthingStatus_Batangas_Serious">Serious</label></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div class="fst-italic">
-    <p><h5 class="home-header">Note:</h5> For full details, please see SF delivery info</p>
-</div>
-
-<div class="mb-5">
-    <table id="vessel-status-table" class="table table-bordered border-dark">
-        <thead>
-            <tr>
-                <th class="text-center import-landing-table-header" colspan="9" >Vessel Status</th>
-            </tr>
-            <tr>
-                <th class="text-center import-landing-table-header">ID</th>
-                <th class="text-center import-landing-table-header">BIL No.</th>
-                <th class="text-center import-landing-table-header">Shipper</th>
-                <th class="text-center import-landing-table-header">Original ETA Port</th>
-                <th class="text-center import-landing-table-header">Revised ETA Port</th>
-                <th class="text-center import-landing-table-header">Reasons</th>
-                <th class="text-center import-landing-table-header">BIPH Action</th>
-                <th class="text-center import-landing-table-header">Criteria</th>
-                <th class="text-center import-landing-table-header"></th>
-            </tr>
-        </thead>
-    </table>
-</div>
-
-<div class="mb-5">
-    <table id="import-delivery-table" class="table table-bordered border-dark">
-        <thead>
-            <tr>
-                <th class="text-center import-landing-table-header" colspan="9">Import Delivery</th>
-            </tr>
-            <tr>
-                <th class="text-center import-landing-table-header">ID</th>
-                <th class="text-center import-landing-table-header">BIL No.</th>
-                <th class="text-center import-landing-table-header">Shipper</th>
-                <th class="text-center import-landing-table-header">Original ETA Port</th>
-                <th class="text-center import-landing-table-header">Revised ETA Port</th>
-                <th class="text-center import-landing-table-header">Reasons</th>
-                <th class="text-center import-landing-table-header">BIPH Action</th>
-                <th class="text-center import-landing-table-header">Criteria</th>
-                <th class="text-center import-landing-table-header"></th>
-            </tr>
-        </thead>
-    </table>
-</div>
-
-<div class="mb-5">
-    <table id="port-utilization-manila-table" class="table table-bordered border-dark">
-        <thead>
-            <tr>
-                <th class="text-center import-landing-table-header" colspan="9">Port Utilization - Manila North (MICT) </th>
-            </tr>
-            <tr>
-                <th class="text-center import-landing-table-header">ID</th>
-                <th class="text-center import-landing-table-header">BIL No.</th>
-                <th class="text-center import-landing-table-header">Shipper</th>
-                <th class="text-center import-landing-table-header">Original ETA Port</th>
-                <th class="text-center import-landing-table-header">Revised ETA Port</th>
-                <th class="text-center import-landing-table-header">Reasons</th>
-                <th class="text-center import-landing-table-header">BIPH Action</th>
-                <th class="text-center import-landing-table-header">Criteria</th>
-                <th class="text-center import-landing-table-header"></th>
-            </tr>
-        </thead>
-
-    </table>
-</div>
-
-<div class="mb-5">
-    <table id="port-utilization-batangas-table" class="table table-bordered border-dark">
-        <thead>
-            <tr>
-                <th class="text-center import-landing-table-header" colspan="9">Port Utilization - Batangas Port (POB) </th>
-            </tr>
-            <tr>
-                <th class="text-center import-landing-table-header">ID</th>
-                <th class="text-center import-landing-table-header">BIL No.</th>
-                <th class="text-center import-landing-table-header">Shipper</th>
-                <th class="text-center import-landing-table-header">Original ETA Port</th>
-                <th class="text-center import-landing-table-header">Revised ETA Port</th>
-                <th class="text-center import-landing-table-header">Reasons</th>
-                <th class="text-center import-landing-table-header">BIPH Action</th>
-                <th class="text-center import-landing-table-header">Criteria</th>
-                <th class="text-center import-landing-table-header"></th>
-            </tr>
-        </thead>
-
-    </table>
-</div>
-
-<div class="mb-5">
-    <table id="berthing-status-manila-table" class="table table-bordered border-dark">
-        <thead>
-            <tr>
-                <th class="text-center import-landing-table-header" colspan="9">Berthing Status - Manila North (MICT) </th>
-            </tr>
-            <tr>
-                <th class="text-center import-landing-table-header">ID</th>
-                <th class="text-center import-landing-table-header">BIL No.</th>
-                <th class="text-center import-landing-table-header">Shipper</th>
-                <th class="text-center import-landing-table-header">Original ETA Port</th>
-                <th class="text-center import-landing-table-header">Revised ETA Port</th>
-                <th class="text-center import-landing-table-header">Reasons</th>
-                <th class="text-center import-landing-table-header">BIPH Action</th>
-                <th class="text-center import-landing-table-header">Criteria</th>
-                <th class="text-center import-landing-table-header"></th>
-            </tr>
-        </thead>
-
-    </table>
-</div>
-
-<div class="mb-5">
-    <table id="berthing-status-batangas-table" class="table table-bordered border-dark">
-        <thead>
-            <tr>
-                <th class="text-center import-landing-table-header" colspan="9">Berthing Status - Batangas Port (POB) </th>
-            </tr>
-            <tr>
-                <th class="text-center import-landing-table-header">ID</th>
-                <th class="text-center import-landing-table-header">BIL No.</th>
-                <th class="text-center import-landing-table-header">Shipper</th>
-                <th class="text-center import-landing-table-header">Original ETA Port</th>
-                <th class="text-center import-landing-table-header">Revised ETA Port</th>
-                <th class="text-center import-landing-table-header">Reasons</th>
-                <th class="text-center import-landing-table-header">BIPH Action</th>
-                <th class="text-center import-landing-table-header">Criteria</th>
-                <th class="text-center import-landing-table-header"></th>
-            </tr>
-        </thead>
-
-    </table>
-</div>
-
-@* MODALS *@
-<div class="modal fade" id="announcementCreateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Create Announcement</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-
-                <input type="hidden" name="announcement-id" id="announcement-id"  />
-
-                <div class="mb-3">
-                    <label for="title" class="col-form-label">Title</label>
-                    <input type="text" class="form-control" id="announcement-title" name="title">
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="col-form-label">Description</label>
-                    <textarea type="text" class="form-control" id="announcement-description" name="description"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="createAnnouncement">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@await Html.PartialAsync("GenericModal", new GenericModalViewModel
-{
-    ModalId = "VesselStatusModal",
-    Title = "Vessel Status",
-    SaveButtonId = "createVesselStatusButton",
-    Body = Html.Raw(@"
-        <input type='hidden' id='vessel_status_id' />
-
-        <div class='mb-3'>
-            <label>BIL No.</label>
-            <input class='form-control' id='vesselStatus-bilNo'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Shipper</label>
-            <input class='form-control' id='vesselStatus-shipper'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Original ETA Port</label>
-            <input type='date' class='form-control' id='vesselStatus-originalETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Revised ETA Port</label>
-            <input type='date' class='form-control' id='vesselStatus-revisedETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Reasons</label>
-            <textarea class='form-control' id='vesselStatus-reasons'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>BIPH Action</label>
-            <textarea class='form-control' id='vesselStatus-actions'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>Criteria</label>
-            <select class='form-select' id='vesselStatus-criteria' aria-label='Default select example'>
-              <option selected>Select Criteria</option>
-              <option value='normal'>Normal</option>
-              <option value='serious'>Serious</option>
-              <option value='critical'>Critical</option>
-            </select>
-        </div>
-
-    ")
-})
-
-@await Html.PartialAsync("GenericModal", new GenericModalViewModel
-{
-    ModalId = "ImportDeliveryModal",
-    Title = "Import Delivery",
-    SaveButtonId = "createImportDeliveryButton",
-    Body = Html.Raw(@"
-        <input type='hidden' id='import_delivery_id' />
-
-        <div class='mb-3'>
-            <label>BIL No.</label>
-            <input class='form-control' id='importDelivery-bilNo'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Shipper</label>
-            <input class='form-control' id='importDelivery-shipper'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Original ETA Port</label>
-            <input type='date' class='form-control' id='importDelivery-originalETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Revised ETA Port</label>
-            <input type='date' class='form-control' id='importDelivery-revisedETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Reasons</label>
-            <textarea class='form-control' id='importDelivery-reasons'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>BIPH Action</label>
-            <textarea class='form-control' id='importDelivery-actions'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>Criteria</label>
-            <select class='form-select' id='importDelivery-criteria' aria-label='Default select example'>
-              <option selected>Select Criteria</option>
-              <option value='normal'>Normal</option>
-              <option value='serious'>Serious</option>
-              <option value='critical'>Critical</option>
-            </select>
-        </div>
-
-    ")
-})
-
-@await Html.PartialAsync("GenericModal", new GenericModalViewModel
-{
-    ModalId = "PortUtilizationManilaNorthModal",
-    Title = "Import Delivery",
-    SaveButtonId = "createPortUtilizationManilaNorthButton",
-    Body = Html.Raw(@"
-        <input type='hidden' id='port_utilization_id' />
-
-        <div class='mb-3'>
-            <label>BIL No.</label>
-            <input class='form-control' id='PortUtilizationManilaNorth-bilNo'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Shipper</label>
-            <input class='form-control' id='PortUtilizationManilaNorth-shipper'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Original ETA Port</label>
-            <input type='date' class='form-control' id='PortUtilizationManilaNorth-originalETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Revised ETA Port</label>
-            <input type='date' class='form-control' id='PortUtilizationManilaNorth-revisedETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Reasons</label>
-            <textarea class='form-control' id='PortUtilizationManilaNorth-reasons'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>BIPH Action</label>
-            <textarea class='form-control' id='PortUtilizationManilaNorth-actions'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>Criteria</label>
-            <select class='form-select' id='PortUtilizationManilaNorth-criteria' aria-label='Default select example'>
-              <option selected>Select Criteria</option>
-              <option value='normal'>Normal</option>
-              <option value='serious'>Serious</option>
-              <option value='critical'>Critical</option>
-            </select>
-        </div>
-
-    ")
-})
-
-@await Html.PartialAsync("GenericModal", new GenericModalViewModel
-{
-    ModalId = "PortUtilizationBatangasModal",
-    Title = "Import Delivery",
-    SaveButtonId = "createPortUtilizationBatangasButton",
-    Body = Html.Raw(@"
-        <input type='hidden' id='port_utilization_id' />
-
-        <div class='mb-3'>
-            <label>BIL No.</label>
-            <input class='form-control' id='PortUtilizationBatangas-bilNo'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Shipper</label>
-            <input class='form-control' id='PortUtilizationBatangas-shipper'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Original ETA Port</label>
-            <input type='date' class='form-control' id='PortUtilizationBatangas-originalETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Revised ETA Port</label>
-            <input type='date' class='form-control' id='PortUtilizationBatangas-revisedETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Reasons</label>
-            <textarea class='form-control' id='PortUtilizationBatangas-reasons'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>BIPH Action</label>
-            <textarea class='form-control' id='PortUtilizationBatangas-actions'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>Criteria</label>
-            <select class='form-select' id='PortUtilizationBatangas-criteria' aria-label='Default select example'>
-              <option selected>Select Criteria</option>
-              <option value='normal'>Normal</option>
-              <option value='serious'>Serious</option>
-              <option value='critical'>Critical</option>
-            </select>
-        </div>
-
-    ")
-})
-
-@await Html.PartialAsync("GenericModal", new GenericModalViewModel
-{
-    ModalId = "BerthingStatusManilaModal",
-    Title = "Berthing Status Manila",
-    SaveButtonId = "createBerthingStatusManilaButton",
-    Body = Html.Raw(@"
-        <input type='hidden' id='port_utilization_id' />
-
-        <div class='mb-3'>
-            <label>BIL No.</label>
-            <input class='form-control' id='BerthingStatusManila-bilNo'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Shipper</label>
-            <input class='form-control' id='BerthingStatusManila-shipper'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Original ETA Port</label>
-            <input type='date' class='form-control' id='BerthingStatusManila-originalETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Revised ETA Port</label>
-            <input type='date' class='form-control' id='BerthingStatusManila-revisedETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Reasons</label>
-            <textarea class='form-control' id='BerthingStatusManila-reasons'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>BIPH Action</label>
-            <textarea class='form-control' id='BerthingStatusManila-actions'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>Criteria</label>
-            <select class='form-select' id='BerthingStatusManila-criteria' aria-label='Default select example'>
-              <option selected>Select Criteria</option>
-              <option value='normal'>Normal</option>
-              <option value='serious'>Serious</option>
-              <option value='critical'>Critical</option>
-            </select>
-        </div>
-
-    ")
-})
-
-@await Html.PartialAsync("GenericModal", new GenericModalViewModel
-{
-    ModalId = "BerthingStatusBatangasModal",
-    Title = "Berthing Status Batangas",
-    SaveButtonId = "createBerthingStatusBatangasButton",
-    Body = Html.Raw(@"
-        <input type='hidden' id='port_utilization_id' />
-
-        <div class='mb-3'>
-            <label>BIL No.</label>
-            <input class='form-control' id='BerthingStatusBatangas-bilNo'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Shipper</label>
-            <input class='form-control' id='BerthingStatusBatangas-shipper'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Original ETA Port</label>
-            <input type='date' class='form-control' id='BerthingStatusBatangas-originalETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Revised ETA Port</label>
-            <input type='date' class='form-control' id='BerthingStatusBatangas-revisedETA'>
-        </div>
-
-        <div class='mb-3'>
-            <label>Reasons</label>
-            <textarea class='form-control' id='BerthingStatusBatangas-reasons'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>BIPH Action</label>
-            <textarea class='form-control' id='BerthingStatusBatangas-actions'></textarea>
-        </div>
-
-        <div class='mb-3'>
-            <label>Criteria</label>
-            <select class='form-select' id='BerthingStatusBatangas-criteria' aria-label='Default select example'>
-              <option selected>Select Criteria</option>
-              <option value='normal'>Normal</option>
-              <option value='serious'>Serious</option>
-              <option value='critical'>Critical</option>
-            </select>
-        </div>
-
-    ")
-})
 
 @section Scripts {
     <script type="module" src="~/js/page-scripts/ImportModule/Loader.js"></script>

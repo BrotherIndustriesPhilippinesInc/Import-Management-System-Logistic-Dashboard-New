@@ -5,6 +5,7 @@ import { BerthingStatusManila } from "./BerthingStatusManilaNorth.js";
 import { BerthingStatusBatangas } from "./BerthingStatusBatangas.js";
 import { CriteriaControls } from "./CriteriaControls.js";
 import { ImportDelivery } from "./ImportDelivery.js";
+import { GetPortStatuses } from "./ImportPortStatus.js";
 
 $(async function () {
     
@@ -17,4 +18,5 @@ $(async function () {
     
 
     await CriteriaControls();
+    await GetPortStatuses();
 });

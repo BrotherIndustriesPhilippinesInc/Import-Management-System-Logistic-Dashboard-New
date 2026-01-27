@@ -15,7 +15,7 @@ namespace LogisticDashboard.Core
         public DateTime Revised_ETA_Port { get; set; }
         public string Reasons { get; set; }
         public string BIPH_Action { get; set; }
-        public string Criteria { get; set; }
+        public string? Criteria { get; set; }
         public string? Action { get; set; }
     }
 
@@ -28,7 +28,7 @@ namespace LogisticDashboard.Core
         public DateTime Revised_ETA_Port { get; set; }
         public string Reasons { get; set; }
         public string BIPH_Action { get; set; }
-        public string Criteria { get; set; }
+        public string? Criteria { get; set; }
         public string? Action { get; set; }
     }
 

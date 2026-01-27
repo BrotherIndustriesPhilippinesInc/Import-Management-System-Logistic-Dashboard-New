@@ -4,6 +4,7 @@ using LogisticDashboard.API.Data;
 using LogisticDashboard.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LogisticDashboard.API.Migrations
 {
     [DbContext(typeof(LogisticDashboardAPIContext))]
-    partial class LogisticDashboardAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20260127041234_AddImportPortStatus")]
+    partial class AddImportPortStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -685,9 +688,6 @@ namespace LogisticDashboard.API.Migrations
                     b.Property<string>("BerthingStatus")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()

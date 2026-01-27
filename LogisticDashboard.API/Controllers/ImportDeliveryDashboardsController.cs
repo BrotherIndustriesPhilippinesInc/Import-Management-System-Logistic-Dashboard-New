@@ -62,6 +62,20 @@ namespace LogisticDashboard.API.Controllers
                 importDeliveryDashboards.Revised_ETA_Port =
                 DateTime.SpecifyKind(importDeliveryDashboards.Revised_ETA_Port, DateTimeKind.Utc);
 
+                int numberOfDaysDelayed = (importDeliveryDashboards.Revised_ETA_Port - importDeliveryDashboards.Original_ETA_Port).Days;
+
+                if (numberOfDaysDelayed >= 0 && numberOfDaysDelayed <= 2)
+                {
+                    importDeliveryDashboards.Criteria = "Normal";
+                }
+                else if (numberOfDaysDelayed >= 3 && numberOfDaysDelayed <= 6)
+                {
+                    importDeliveryDashboards.Criteria = "Critical";
+                }
+                else if (numberOfDaysDelayed >= 7)
+                {
+                    importDeliveryDashboards.Criteria = "Serious";
+                }
 
                 await _context.SaveChangesAsync();
             }
@@ -91,6 +105,20 @@ namespace LogisticDashboard.API.Controllers
             importDeliveryDashboards.Revised_ETA_Port =
             DateTime.SpecifyKind(importDeliveryDashboards.Revised_ETA_Port, DateTimeKind.Utc);
 
+            int numberOfDaysDelayed = (importDeliveryDashboards.Revised_ETA_Port - importDeliveryDashboards.Original_ETA_Port).Days;
+
+            if (numberOfDaysDelayed >= 0 && numberOfDaysDelayed <= 2)
+            {
+                importDeliveryDashboards.Criteria = "Normal";
+            }
+            else if (numberOfDaysDelayed >= 3 && numberOfDaysDelayed <= 6)
+            {
+                importDeliveryDashboards.Criteria = "Critical";
+            }
+            else if (numberOfDaysDelayed >= 7)
+            {
+                importDeliveryDashboards.Criteria = "Serious";
+            }
 
             _context.ImportDeliveryDashboards.Add(importDeliveryDashboards);
             await _context.SaveChangesAsync();
@@ -111,7 +139,7 @@ namespace LogisticDashboard.API.Controllers
             _context.ImportDeliveryDashboards.Remove(importDeliveryDashboards);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { status = 200, message = "Record deleted successfully." });
         }
 
         private bool ImportDeliveryDashboardsExists(int id)

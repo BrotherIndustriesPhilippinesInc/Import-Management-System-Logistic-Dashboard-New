@@ -1,18 +1,25 @@
 ﻿export async function CriteriaControls() {
     $(".main-checkbox").on("change", function () {
+        let $cell = $(this).closest("td"); // use closest(), it's faster/safer than parents()
+        let text = $cell.find("label").text().trim(); // Get text from LABEL, not the whole TD
+
+        // Define the classes we want to manage
+        const colorClasses = "normal-background critical-background serious-background";
+
+        // Always remove old color classes first so they don't stack
+        $cell.removeClass(colorClasses);
+
         if ($(this).is(":checked")) {
-            //console.log($(this).parents("td").text());
-            if ($(this).parents("td").text() == "Normal") {
-                $(this).parents("td").addClass("normal-background");
-            } else if ($(this).parents("td").text() == "Critical") {
-                $(this).parents("td").addClass("critical-background");
-            } else if ($(this).parents("td").text() == "Serious") {
-                $(this).parents("td").addClass("serious-background");
+            if (text === "Normal") {
+                $cell.addClass("normal-background");
+            } else if (text === "Critical") {
+                $cell.addClass("critical-background");
+            } else if (text === "Serious") {
+                $cell.addClass("serious-background");
             }
-        } else {
-            $(this).parents("td").removeClass();
-            $(this).parents("td").addClass("filter-inputs text-start");
         }
+        // No need for an 'else' to add 'filter-inputs' back 
+        // because we didn't nuke the existing layout classes!
     });
 
     checkboxEvent("vessel_Updates");
@@ -48,7 +55,7 @@ function datatablesCriteriaControls(className) {
             datatablesDataSwitch(className, "#vessel-status-table");
             break;
         case "importDelivery_Updates":
-            //datatablesDataSwitch(className, "#vessel-status-table");
+            datatablesDataSwitch(className, "#import-delivery-table");
             break;
         case "manilaPortUtilization_Updates":
             datatablesDataSwitch(className, "#port-utilization-manila-table");
