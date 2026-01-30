@@ -828,13 +828,12 @@ async function vesselDelayChart(uploadDate, dataOverride = null) {
         return await res.json();
     })();
 
-    // Labels = Port + Mode
-    const labels = data.map(x =>
-        `${x.portOfDischarge} (${x.modeOfShipment})`
-    );
-
+    const labels = data.map(x => `${x.portOfDischarge} (${x.modeOfShipment})`);
     const delayData = data.map(x => Math.round(x.delayPct));
     const onTimeData = data.map(x => Math.round(x.onTimePct));
+
+    // Map the array of remarks. Ensure it defaults to an empty array if null.
+    const remarksData = data.map(x => x.vesselRemarks || []);
 
     if (window.vesselDelayChartInstance)
         window.vesselDelayChartInstance.destroy();
@@ -849,19 +848,38 @@ async function vesselDelayChart(uploadDate, dataOverride = null) {
                     {
                         label: 'Delay %',
                         data: delayData,
-                        backgroundColor: 'hsl(0, 70%, 55%)'
+                        backgroundColor: 'hsl(0, 70%, 55%)',
+                        remarks: remarksData // Attached for tooltip access
                     },
                     {
                         label: 'On-Time %',
                         data: onTimeData,
-                        backgroundColor: 'hsl(120, 60%, 45%)'
+                        backgroundColor: 'hsl(120, 60%, 45%)',
+                        remarks: remarksData
                     }
                 ]
             },
             options: {
-                indexAxis: 'y', // 🔥 THIS makes it horizontal
+                indexAxis: 'y',
                 responsive: true,
                 plugins: {
+                    tooltip: {
+                        callbacks: {
+                            // 🔥 Custom logic for the bulleted list
+                            afterBody: function (context) {
+                                const index = context[0].dataIndex;
+                                const remarksArray = remarksData[index];
+
+                                if (!remarksArray || remarksArray.length === 0) {
+                                    return ['\nRemarks: None'];
+                                }
+
+                                const output = ['\nRemarks:'];
+                                remarksArray.forEach(r => output.push(` • ${r}`));
+                                return output; // Chart.js renders each array item as a new line
+                            }
+                        }
+                    },
                     title: {
                         display: true,
                         text: 'VESSEL DELAY PER PORT',
@@ -870,12 +888,10 @@ async function vesselDelayChart(uploadDate, dataOverride = null) {
                     },
                     legend: {
                         position: 'right',
-                        labels: {
-                            color: '#000'
-                        }
+                        labels: { color: '#000' }
                     },
                     datalabels: {
-                        formatter: v => v === 0 ? '' : `${v}%` ,
+                        formatter: v => v === 0 ? '' : `${v}%`,
                         color: '#000',
                         font: { weight: 'bold' }
                     }
@@ -884,29 +900,14 @@ async function vesselDelayChart(uploadDate, dataOverride = null) {
                     x: {
                         stacked: true,
                         max: 100,
-                        title: {
-                            display: true,
-                            text: 'Percentage (%)',
-                            color: '#000'
-                        },
                         ticks: {
-                            color: '#000',
-                            callback: function (value) {
-                                return value + '%';
-                            }
-                        },
-
+                            callback: v => v + '%',
+                            color: '#000'
+                        }
                     },
                     y: {
                         stacked: true,
-                        title: {
-                            display: false,
-                            text: 'Port + Mode',
-                            color: '#000'
-                        },
-                        ticks: {
-                            color: '#000'
-                        }
+                        ticks: { color: '#000' }
                     }
                 }
             },
@@ -914,7 +915,6 @@ async function vesselDelayChart(uploadDate, dataOverride = null) {
         }
     );
 }
-
 function populateVesselDelayCheckboxes(data) {
     const portContainer = $('#vessel-delay-per-port-port-of-discharge-filter .checkboxes');
     const modeContainer = $('#vessel-delay-per-port-mode-of-shipment-filter .checkboxes');

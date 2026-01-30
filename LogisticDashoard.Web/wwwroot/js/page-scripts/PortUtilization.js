@@ -367,25 +367,45 @@ $(async function () {
     }
 
     function lineChartPortUtilizationUpdate(chart, tableA, tableB) {
-        // Weeks from first column (only filtered rows)
-        let weeks = tableA.column(0, { search: 'applied' }).data().toArray();
+        // 1. Get the actual data objects for the filtered rows
+        const filteredDataA = tableA.rows({ search: 'applied' }).data().toArray();
+        const filteredDataB = tableB.rows({ search: 'applied' }).data().toArray();
 
-        // Utilization data (only filtered rows)
-        let utilizationA = tableA.column(3, { search: 'applied' }).data().toArray();
-        let utilizationB = tableB.column(3, { search: 'applied' }).data().toArray();
+        // 2. Helper to format dates like "Aug 01"
+        const formatDate = (dateStr) => {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit'
+            });
+        };
 
-        chart.data.labels = weeks;
+        // 3. Generate the multi-line labels: ["Week 1", "Dec 28 - Jan 03"]
+        const labels = filteredDataA.map(row => {
+            const weekLabel = `Week ${row.week}`;
+            const dateRange = (row.startDate && row.endDate)
+                ? `${formatDate(row.startDate)} - ${formatDate(row.endDate)}`
+                : '';
+            return [weekLabel, dateRange]; // This array creates the line break
+        });
+
+        // 4. Extract utilization data
+        const utilizationA = filteredDataA.map(row => row.overall_Yard_Utilization);
+        const utilizationB = filteredDataB.map(row => row.overall_Yard_Utilization);
+
+        // 5. Update the chart
+        chart.data.labels = labels;
         chart.data.datasets[0].data = utilizationA;
         chart.data.datasets[1].data = utilizationB;
 
         chart.options.plugins.title.text = [
-            $("#routeName").text(),
+            $("#routeName").text() || "Port Summary", // Fallback if text is empty
             'Overall Yard Utilization'
         ];
 
         chart.update();
     }
-
     function assignYear() {
         const selectYear = $("#year");
         selectYear.empty();

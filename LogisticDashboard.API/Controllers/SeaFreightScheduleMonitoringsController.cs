@@ -562,40 +562,43 @@ namespace LogisticDashboard.API.Controllers
         [HttpGet("VesselDelayPerPort")]
         public async Task<IActionResult> VesselDelayPerPort([FromQuery] DateTime createdDateTime)
         {
-            var utcDate = createdDateTime.ToUniversalTime();
-            var nextTick = utcDate.AddMilliseconds(1);
+            var startDate = createdDateTime.ToUniversalTime().Date;
+            var endDate = startDate.AddDays(1);
 
-            // Fetch raw data
             var rawData = await _context.SeaFreightScheduleMonitoring
                 .Where(x => x.DateCreated.HasValue
-                         && x.DateCreated.Value >= utcDate
-                         && x.DateCreated.Value < nextTick)
+                         && x.DateCreated.Value >= startDate
+                         && x.DateCreated.Value < endDate)
                 .ToListAsync();
 
-            // Trim text fields and group by port + mode
             var result = rawData
                 .Select(x => new
                 {
-                    PortOfDischarge = x.Port_Of_Discharge?.Trim(),
-                    ModeOfShipment = x.Mode_Of_Shipment?.Trim(),
-                    VesselStatus = x.Vessel_Status?.Trim()
+                    PortOfDischarge = x.Port_Of_Discharge?.Trim() ?? "N/A",
+                    ModeOfShipment = x.Mode_Of_Shipment?.Trim() ?? "N/A",
+                    VesselStatus = x.Vessel_Status?.Trim().ToUpper(),
+                    VesselRemarks = x.Vessel_Remarks?.Trim()
                 })
                 .GroupBy(x => new { x.PortOfDischarge, x.ModeOfShipment })
                 .Select(g => new
                 {
-                    PortOfDischarge = g.Key.PortOfDischarge,
-                    ModeOfShipment = g.Key.ModeOfShipment,
+                    g.Key.PortOfDischarge,
+                    g.Key.ModeOfShipment,
                     DelayCount = g.Count(x => x.VesselStatus == "DELAY"),
                     OnTimeCount = g.Count(x => x.VesselStatus == "ON-TIME"),
                     Total = g.Count(),
-                    DelayPct = Math.Round(g.Count(x => x.VesselStatus == "DELAY") * 100.0 / g.Count(), 2),
-                    OnTimePct = Math.Round(g.Count(x => x.VesselStatus == "ON-TIME") * 100.0 / g.Count(), 2)
+                    DelayPct = g.Count() == 0 ? 0 : Math.Round(g.Count(x => x.VesselStatus == "DELAY") * 100.0 / g.Count(), 2),
+                    OnTimePct = g.Count() == 0 ? 0 : Math.Round(g.Count(x => x.VesselStatus == "ON-TIME") * 100.0 / g.Count(), 2),
+
+                    // 🔥 CHANGED: Return as a List (JSON Array) instead of a string
+                    VesselRemarks = g.Select(x => x.VesselRemarks)
+                                     .Where(r => !string.IsNullOrWhiteSpace(r))
+                                     .Distinct()
+                                     .ToList()
                 })
                 .ToList();
 
             return Ok(result);
         }
-
-
     }
 }

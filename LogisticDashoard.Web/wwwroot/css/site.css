@@ -616,3 +616,8 @@ td.dtfc-fixed-start{
         width: 50% !important;
     }
 }
+
+.leadTime-btn.active {
+    background-color: #348BD6;
+    color: white !important;
+}

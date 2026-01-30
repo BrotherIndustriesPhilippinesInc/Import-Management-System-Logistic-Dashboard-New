@@ -158,4 +158,14 @@
 
 @section Scripts {
     <script type="module" src="@Url.Content("~/js/page-scripts/DeliveryLeadtime.js")"></script>
+
+    <script>
+        const leadTimeButtons = $(".leadTime-btn");
+
+        //Change color of the clicked button and clear others
+        leadTimeButtons.on("click", function () {
+            leadTimeButtons.removeClass("active");
+            $(this).addClass("active");
+        });
+    </script>
 }
