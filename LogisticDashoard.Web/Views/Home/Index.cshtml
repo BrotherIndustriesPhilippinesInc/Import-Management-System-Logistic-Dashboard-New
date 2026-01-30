@@ -10,88 +10,102 @@
             Save
         </button>
     </div>
-    <div class="w-100 d-flex">
-        <div class="w-100 d-flex flex-column">
-            <table class="filter-table w-100 fw-bold">
-                <tr class="home-bg text-white no-wrap">
-                    <th class="text-center" style="
+    <div class="p-0 m-0 w-100">
+        <div class="row">
+            <!--Table-->
+            <div class="col">
+                <div class="w-100 d-flex flex-column">
+                    <table class="filter-table w-100 fw-bold">
+                        <tr class="home-bg text-white no-wrap">
+                            <th class="text-center" style="
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             height: 50px;
                     ">
-                        <iconify-icon class="home-icon" icon="tabler:ship" width="32" height="32"></iconify-icon>
-                        <span class="home-header" style="vertical-align: middle">VESSEL UPDATES</span>
-                    </th>
-                    <th class="text-center">
-                        <img src="~/resources/logo/Bureau_of_Customs.svg" width="32px" />
-                        <span class="home-header">IMPORT DELIVERY</span>
-                    </th>
-                    <th class="text-center" colspan="2">
-                        <span><iconify-icon class="home-icon" icon="roentgen:crane" width="32" height="32"></iconify-icon></span>
-                        <div class="d-inline-block home-header">PHIL. PORT UPDATE <br /> (PORT UTILIZATION)</div>
-                    </th>
-                    <th class="text-center" colspan="2">
-                        <span><iconify-icon class="home-icon" icon="roentgen:crane" width="32" height="32"></iconify-icon></span>
-                        <div class="d-inline-block home-header">PHIL. PORT UPDATE <br /> (BERTHING STATUS)</div>
-                    </th>
-                    <th class="text-center" style="
+                                <iconify-icon class="home-icon" icon="tabler:ship" width="32" height="32"></iconify-icon>
+                                <span class="home-header" style="vertical-align: middle">VESSEL UPDATES</span>
+                            </th>
+                            <th class="text-center">
+                                <img src="~/resources/logo/Bureau_of_Customs.svg" width="32px" />
+                                <span class="home-header">IMPORT DELIVERY</span>
+                            </th>
+                            <th class="text-center" colspan="2">
+                                <span><iconify-icon class="home-icon" icon="roentgen:crane" width="32" height="32"></iconify-icon></span>
+                                <div class="d-inline-block home-header">PHIL. PORT UPDATE <br /> (PORT UTILIZATION)</div>
+                            </th>
+                            <th class="text-center" colspan="2">
+                                <span><iconify-icon class="home-icon" icon="roentgen:crane" width="32" height="32"></iconify-icon></span>
+                                <div class="d-inline-block home-header">PHIL. PORT UPDATE <br /> (BERTHING STATUS)</div>
+                            </th>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="text-center fw-bold home-header">Manila North</td>
+                            <td class="text-center fw-bold home-header">Batangas</td>
+                            <td class="text-center fw-bold home-header">Manila North</td>
+                            <td class="text-center fw-bold home-header">Batangas</td>
+
+                        </tr>
+                        <tr>
+                            <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Normal" type="checkbox" /><label for="vesselUpdates_Normal">Normal</label></td>
+                            <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Normal" type="checkbox" /><label for="importDelivery_Normal">Normal</label></td>
+                            <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Normal" type="checkbox" /><label for="philPortUpdate_Manila_North_Normal">Normal</label></td>
+                            <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Normal" type="checkbox" /><label for="philPortUpdate_Batangas_Normal">Normal</label></td>
+                            <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Normal" type="checkbox" /><label for="berthingStatus_Manila_North_Normal">Normal</label></td>
+                            <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Normal" type="checkbox" /><label for="berthingStatus_Batangas_Normal">Normal</label></td>
+                        </tr>
+                        <tr>
+                            <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Critical" type="checkbox" /><label for="vesselUpdates_Critical">Critical</label></td>
+                            <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Critical" type="checkbox" /><label for="importDelivery_Critical">Critical</label></td>
+                            <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Critical" type="checkbox" /><label for="philPortUpdate_Manila_North_Critical">Critical</label></td>
+                            <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Critical" type="checkbox" /><label for="philPortUpdate_Batangas_Critical">Critical</label></td>
+                            <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Critical" type="checkbox" /><label for="berthingStatus_Manila_North_Critical">Critical</label></td>
+                            <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Critical" type="checkbox" /><label for="berthingStatus_Batangas_Critical">Critical</label></td>
+                        </tr>
+                        <tr>
+                            <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Serious" type="checkbox" /><label for="vesselUpdates_Serious">Serious</label></td>
+                            <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Serious" type="checkbox" /><label for="importDelivery_Serious">Serious</label></td>
+                            <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Serious" type="checkbox" /><label for="philPortUpdate_Manila_North_Serious">Serious</label></td>
+                            <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Serious" type="checkbox" /><label for="philPortUpdate_Batangas_Serious">Serious</label></td>
+                            <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Serious" type="checkbox" /><label for="berthingStatus_Manila_North_Serious">Serious</label></td>
+                            <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Serious" type="checkbox" /><label for="berthingStatus_Batangas_Serious">Serious</label></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--Announcement-->
+            <div class="col-3 col-xxl-6 px-0" style="padding-top: 4px;">
+                <div class="text-center " style="
+                            background-color: lightgray;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             height: 50px;">
-                        <span><iconify-icon icon="mingcute:announcement-fill" width="32" height="32" style="color: #C00000; transform: rotate(-30deg)" ></iconify-icon></span>
-                        <div class="d-inline-block home-header">ANNOUNCEMENT</div>
-                    </th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td class="text-center fw-bold home-header">Manila North</td>
-                    <td class="text-center fw-bold home-header">Batangas</td>
-                    <td class="text-center fw-bold home-header">Manila North</td>
-                    <td class="text-center fw-bold home-header">Batangas</td>
-                    <td class="border-1" rowspan="4" style="vertical-align: top;">
-                        <div class="d-flex gap-2 mb-2 justify-content-end">
-                            <a href="/Announcements/Create" class="btn btn-primary p-1" data-bs-toggle="modal" data-bs-target="#announcementCreateModal">
-                                Create
-                            </a>
-                            <a href="/Announcements/Index"  class="btn btn-warning p-1">
-                                Edit
-                            </a>
-                        </div>
-                        <div class="d-flex flex-column gap-2 align-items-center" id="announcement-container" style="height: 120px; overflow-y: auto;">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Normal" type="checkbox" /><label for="vesselUpdates_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Normal" type="checkbox" /><label for="importDelivery_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Normal" type="checkbox" /><label for="philPortUpdate_Manila_North_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Normal" type="checkbox" /><label for="philPortUpdate_Batangas_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Normal" type="checkbox" /><label for="berthingStatus_Manila_North_Normal">Normal</label></td>
-                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Normal" type="checkbox" /><label for="berthingStatus_Batangas_Normal">Normal</label></td>
-                </tr>
-                <tr>
-                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Critical" type="checkbox" /><label for="vesselUpdates_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Critical" type="checkbox" /><label for="importDelivery_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Critical" type="checkbox" /><label for="philPortUpdate_Manila_North_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Critical" type="checkbox" /><label for="philPortUpdate_Batangas_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Critical" type="checkbox" /><label for="berthingStatus_Manila_North_Critical">Critical</label></td>
-                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Critical" type="checkbox" /><label for="berthingStatus_Batangas_Critical">Critical</label></td>
-                </tr>
-                <tr>
-                    <td class="filter-inputs text-start"><input class="vessel_Updates main-checkbox" id="vesselUpdates_Serious" type="checkbox" /><label for="vesselUpdates_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start"><input class="importDelivery_Updates main-checkbox" id="importDelivery_Serious" type="checkbox" /><label for="importDelivery_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start portUtil-manila"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" manilaPortUtilization_Updates main-checkbox" id="philPortUpdate_Manila_North_Serious" type="checkbox" /><label for="philPortUpdate_Manila_North_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start portUtil"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="PortUtilizationStatus" /><input class=" batangasPortUtilization_Updates main-checkbox" id="philPortUpdate_Batangas_Serious" type="checkbox" /><label for="philPortUpdate_Batangas_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Manila North (MICT)" /><input type="hidden" value="BerthingStatus" /><input class=" manilaBerthStatus_Updates main-checkbox" id="berthingStatus_Manila_North_Serious" type="checkbox" /><label for="berthingStatus_Manila_North_Serious">Serious</label></td>
-                    <td class="filter-inputs text-start berthStatus"><input type="hidden" value="Batangas (POB)" /><input type="hidden" value="BerthingStatus" /><input class=" batangasBerthStatus_Updates main-checkbox" id="berthingStatus_Batangas_Serious" type="checkbox" /><label for="berthingStatus_Batangas_Serious">Serious</label></td>
-                </tr>
-            </table>
+                    <span><iconify-icon icon="mingcute:announcement-fill" width="32" height="32" style="color: #C00000; transform: rotate(-30deg)"></iconify-icon></span>
+                    <div class="d-inline-block home-header fw-bold">ANNOUNCEMENTS</div>
+                </div>
+
+                <div class="border-1" rowspan="4" style="vertical-align: top;">
+                    <div class="d-flex gap-2 mb-2 justify-content-end">
+                        <a href="/Announcements/Create" class="btn btn-primary p-1" data-bs-toggle="modal" data-bs-target="#announcementCreateModal">
+                            Create
+                        </a>
+                        <a href="/Announcements/Index" class="btn btn-warning p-1">
+                            Edit
+                        </a>
+                    </div>
+                    <div class="d-flex flex-column gap-2 align-items-center" id="announcement-container" style="height: 120px; overflow-y: auto;">
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
+   </div>
 </div>
+
 
 <div class="fst-italic">
     <p><h5 class="home-header">Note:</h5> For full details, please see SF delivery info</p>
@@ -548,7 +562,6 @@
 })
  *@
 
-
 <div class="text-center">
     <table class="home-table border-1">
         <thead>
@@ -647,6 +660,10 @@
         $(async function(){
 
             await getAnnouncements();
+
+            $("#createAnnouncement").on("click", async function (){
+                await createAnnouncement();
+            });
         });
         async function getAnnouncements(){
             let announcements = await fetch(`${API_BASE_URL}/api/Announcements`)
@@ -670,7 +687,7 @@
 
                 let html = `
                 
-                    <div class="card border-primary mb-2" style="width: 100%; max-width: 350px;">
+                    <div class="card border-primary mb-2" style="width: 100%;">
                         <div class="d-flex justify-content-between card-header"><p class="card-text"><small class="text-muted">${date}</small></p></div>
                         <div class="card-body">
                             <p>${title} </p>
@@ -680,6 +697,32 @@
 
                 $('#announcement-container').append(html);
             });
+        }
+
+        async function createAnnouncement(){
+            let result = fetch(`${API_BASE_URL}/api/Announcements`, { 
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: $("#announcement-title").val(),
+                    description: $("#announcement-description").val()
+                })
+                    
+            });
+
+            if(result){
+                swal.fire({
+                    icon: "success",
+                    title: "Announcement Created",
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(() => {
+                    window.location.href = "/";
+                });
+            }
+
         }
     </script>
 }

@@ -328,11 +328,28 @@ function populateVesselCheckboxes(data) {
     modeContainer.empty();
 
     const origins = [...new Set(data.map(x => x.origin))];
+
+
     const carriers = [...new Set(data.map(x => x.carrier_Forwarded))];
     const modes = [...new Set(data.map(x => x.mode_Of_Shipment))];
 
+    const countryMap = {
+        'CAM': 'CAMBODIA',
+        'CN': 'CHINA',
+        'JPN': 'JAPAN',
+        'THAI': 'THAILAND',
+        'SP': 'SINGAPORE',
+        'HK': 'HONG KONG'
+    };
+
     origins.forEach(o => {
-        originContainer.append(`<label style="margin-right: 10px;"><input type="checkbox" value="${o}" checked> ${o}</label>`);
+        const fullName = countryMap[o] || o;
+
+        originContainer.append(`
+            <label style="margin-right: 10px;" title="${fullName}">
+                <input type="checkbox" value="${o}" checked> ${o}
+            </label>
+        `);
     });
 
     carriers.forEach(c => {
@@ -375,7 +392,7 @@ async function otdAchievementPieChart(uploadDate, dataOverride = null) {
                     data: [achieved, notAchieved],
                     backgroundColor: [
                         'hsl(219, 49%, 45%)',
-                        'hsl(224, 42%, 69%)'
+                        'hsl(360, 60%, 49%)'
                     ],
                     borderWidth: 1
                 }]
@@ -462,8 +479,8 @@ async function otdAchievementPieChart2(uploadDate, dataOverride = null) {
                 datasets: [{
                     data: [achieved, notAchieved],
                     backgroundColor: [
-                        'hsl(96, 42%, 47%)',
-                        'hsl(209, 58%, 59%)'
+                        'hsl(219, 49%, 45%)',
+                        'hsl(360, 60%, 49%)'
                     ],
                     borderWidth: 1
                 }]
@@ -538,9 +555,10 @@ async function averageProcessingChart(uploadDate, dataOverride = null) {
     const ports = [...new Set(data.map(x => x.portOfDischarge))];
 
     // SAME DATASET LOGIC
+    const portColors = ['#4472C4', '#ED7D31'];
     const datasets = ports.map((port, index) => {
         const hue = Math.round((360 / ports.length) * index);
-        const color = `hsl(${hue}, 65%, 50%)`;
+        const color = portColors[index % portColors.length];
 
         return {
             label: port,
@@ -549,8 +567,7 @@ async function averageProcessingChart(uploadDate, dataOverride = null) {
                     x => x.portOfDischarge === port && x.trucker === trucker
                 );
                 if (!items.length) return 0;
-                // average across all items for this trucker+port
-                return Math.round(items.reduce((sum, x) => sum + x.averageProcessingLeadtime, 0) / items.length );
+                return Math.round(items.reduce((sum, x) => sum + x.averageProcessingLeadtime, 0) / items.length);
             }), 
 
             backgroundColor: color,
@@ -579,7 +596,7 @@ async function averageProcessingChart(uploadDate, dataOverride = null) {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'AVERAGE PROCESSING LEAD TIME',
+                        text: 'AVERAGE PROCESSING LEAD TIME PER FORWARDER ATA PORT - ATA BIPH',
                         font: { size: 18, weight: 'bold' },
                         color: '#000',
                     },

@@ -5,7 +5,6 @@ export async function GetPortStatuses() {
     await LoadPortStatuses();
 }
 
-
 $("#savePortStatus").on("click", async function () {
     // 1. Define the ports we expect to scrape. 
     // Ideally, this comes from a config or the server, but we'll map IDs manually here based on your requirement.

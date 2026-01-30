@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LogisticDashboard.Core\LogisticDashboard.Core.csproj" />
-    <ProjectReference Include="..\LogisticDashoard.Web\LogisticDashboard.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>

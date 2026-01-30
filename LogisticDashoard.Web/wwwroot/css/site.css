@@ -604,3 +604,15 @@ td.dtfc-fixed-start{
     font-weight: 400 !important;
     padding: 4px;
 }
+
+/* Mobile first: Start at 25% */
+.custom-width {
+    width: 25% !important;
+}
+
+/* At the Medium breakpoint (768px), switch to 50% */
+@media (min-width: 768px) {
+    .custom-width {
+        width: 50% !important;
+    }
+}
