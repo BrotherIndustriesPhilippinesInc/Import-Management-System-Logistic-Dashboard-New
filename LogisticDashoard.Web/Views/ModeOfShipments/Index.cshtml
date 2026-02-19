@@ -129,7 +129,7 @@
     <script>
         $(async function () {
             try {
-                const response = await fetch("https://localhost:7019/api/ModeOfShipments/get_picture", {
+                const response = await fetch("http://apbiphbpswb01:1117/api/ModeOfShipments/get_picture", {
                     method: "GET"
                 });
 
@@ -140,10 +140,10 @@
 
                 // Example: display the images
                 if (data.fclProcessFlow_Image_Link)
-                    $("#fclImage").attr("src", "https://localhost:7019/" + data.fclProcessFlow_Image_Link);
+                    $("#fclImage").attr("src", "http://apbiphbpswb01:1117" + "/" + data.fclProcessFlow_Image_Link);
 
                 if (data.lclProcessFlow_Image_Link)
-                    $("#lclImage").attr("src", "https://localhost:7019/" + data.lclProcessFlow_Image_Link);
+                    $("#lclImage").attr("src", "http://apbiphbpswb01:1117" + "/" + data.lclProcessFlow_Image_Link);
 
             } catch (error) {
                 console.error("Error loading mode of shipments:", error);
@@ -162,7 +162,7 @@
             formData.append("file", file);
 
             try {
-                const response = await fetch(`https://localhost:7019/api/ModeOfShipments/upload?type=${type}`, {
+                const response = await fetch(`http://apbiphbpswb01:1117/api/ModeOfShipments/upload?type=${type}`, {
                     method: "POST",
                     body: formData
                 });

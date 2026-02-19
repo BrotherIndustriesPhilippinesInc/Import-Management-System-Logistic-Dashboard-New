@@ -232,26 +232,23 @@ namespace LogisticDashboard.API.Controllers
         [HttpPost("uploadNew")]
         public async Task<IActionResult> UploadExcelNew(IFormFile file, string createdBy)
         {
+            // 1. Basic Validation
             if (file == null || file.Length == 0)
                 return BadRequest("No file uploaded!");
 
+            // 2. Parse the Excel File
+            // We use a list to hold the data in memory before touching the database.
+            var newRecords = new List<SeaFreightScheduleMonitoring>();
+
+            // Capture the time ONCE at the start so all records have the exact same timestamp.
+            DateTime dateTimeNow = DateTime.UtcNow;
+
+            // Use 'using' declarations to automatically dispose of streams/packages even if errors occur.
             using var stream = new MemoryStream();
             await file.CopyToAsync(stream);
             using var package = new ExcelPackage(stream);
 
-            //Worksheet with name "SHIPMENT"
-            //var worksheet = package.Workbook.Worksheets
-            //        .FirstOrDefault(w => w.Name.Contains("SHIPMENT", StringComparison.OrdinalIgnoreCase));
-
-            //Worksheet at index 0
             var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-
-            if (worksheet == null)
-            {
-                // Always handle nulls, unless you want your app to crash
-                throw new Exception("No worksheet with 'SHIPMENT' in the name was found!");
-            }
-
             if (worksheet == null)
                 return BadRequest("No worksheet found in Excel.");
 
@@ -259,12 +256,10 @@ namespace LogisticDashboard.API.Controllers
             int startCol = 2;
             int rowCount = worksheet.Dimension.Rows;
 
-            var newRecords = new List<SeaFreightScheduleMonitoring>();
-
-            DateTime dateTimeNow = DateTime.UtcNow;
-
+            // 3. Loop through rows and build the list
             for (int row = startRow; row <= rowCount; row++)
             {
+                // Check if the row is empty (optimization)
                 bool rowHasData = false;
                 for (int col = startCol; col <= startCol + 55; col++)
                 {
@@ -275,16 +270,14 @@ namespace LogisticDashboard.API.Controllers
                     }
                 }
 
-                if (!rowHasData)
-                    continue;
+                if (!rowHasData) continue;
 
                 var containerNo = worksheet.Cells[row, startCol + 10].Text;
-                if (string.IsNullOrWhiteSpace(containerNo))
-                    continue;
+                if (string.IsNullOrWhiteSpace(containerNo)) continue;
 
                 var entity = new SeaFreightScheduleMonitoring
                 {
-                    // SHIPMENT DETAILS
+                    // --- SHIPMENT DETAILS ---
                     ItemCategory = worksheet.Cells[row, startCol].Text,
                     Shipper = worksheet.Cells[row, startCol + 1].Text,
                     Origin = worksheet.Cells[row, startCol + 2].Text,
@@ -298,7 +291,7 @@ namespace LogisticDashboard.API.Controllers
                     Container_No = containerNo,
                     Trucker = worksheet.Cells[row, startCol + 11].Text,
 
-                    // VESSEL STATUS
+                    // --- VESSEL STATUS ---
                     Original_ETD = worksheet.Cells[row, startCol + 12].Text,
                     ATD = worksheet.Cells[row, startCol + 13].Text,
                     Original_ETA = worksheet.Cells[row, startCol + 14].Value?.ToString() ?? "",
@@ -314,11 +307,11 @@ namespace LogisticDashboard.API.Controllers
                     Vessel_Status = worksheet.Cells[row, startCol + 23].Text,
                     Vessel_Remarks = worksheet.Cells[row, startCol + 24].Text,
 
-                    // SPECIAL REQUIREMENTS
+                    // --- SPECIAL REQUIREMENTS ---
                     Have_Job_Operation = worksheet.Cells[row, startCol + 25].Text,
                     With_Special_Permit = worksheet.Cells[row, startCol + 26].Text,
 
-                    // DELIVERY
+                    // --- DELIVERY ---
                     Based_On_BERTH_BIPH_Leadtime = worksheet.Cells[row, startCol + 27].Text,
                     ETA_BIPH = worksheet.Cells[row, startCol + 28].Text,
                     Orig_RDD = worksheet.Cells[row, startCol + 29].Text,
@@ -330,7 +323,7 @@ namespace LogisticDashboard.API.Controllers
                     BERTH_Leadtime = worksheet.Cells[row, startCol + 34].Text,
                     Actual_Leadtime_ATA_Port_ATA_BIPH_exclude_weekend = worksheet.Cells[row, startCol + 35].Text,
 
-                    // SHIPMENT PROCESS
+                    // --- SHIPMENT PROCESS ---
                     Step_1 = worksheet.Cells[row, startCol + 36].Text,
                     Step_2 = worksheet.Cells[row, startCol + 37].Text,
                     Step_3 = worksheet.Cells[row, startCol + 38].Text,
@@ -340,7 +333,7 @@ namespace LogisticDashboard.API.Controllers
                     Actual_Status = worksheet.Cells[row, startCol + 42].Text,
                     Shipment_Processing_Remarks = worksheet.Cells[row, startCol + 43].Text,
 
-                    // BOBTAIL / DETENTION
+                    // --- BOBTAIL / DETENTION ---
                     Bobtail_Date = worksheet.Cells[row, startCol + 44].Text,
                     Requested_Pick_Up_Date = worksheet.Cells[row, startCol + 45].Text,
                     Date_Return_of_Empty_Cntr = worksheet.Cells[row, startCol + 46].Text,
@@ -348,7 +341,7 @@ namespace LogisticDashboard.API.Controllers
                     No_of_Days_with_Detention_Estimate_Only = worksheet.Cells[row, startCol + 48].Text,
                     No_of_Days_of_Free_Time = worksheet.Cells[row, startCol + 49].Text,
 
-                    // MP / PURCHASING
+                    // --- MP / PURCHASING ---
                     Requested_Del_Date_To_Ship = worksheet.Cells[row, startCol + 50].Text,
                     Priority_Container = worksheet.Cells[row, startCol + 51].Text,
                     Earliest_Shortage_Date = worksheet.Cells[row, startCol + 52].Text,
@@ -365,10 +358,48 @@ namespace LogisticDashboard.API.Controllers
                 newRecords.Add(entity);
             }
 
-            await _context.SeaFreightScheduleMonitoring.AddRangeAsync(newRecords);
-            await _context.SaveChangesAsync();
+            if (newRecords.Count == 0)
+                return BadRequest("Excel file was empty or contained no valid rows.");
 
-            return Ok($"Imported {newRecords.Count} records successfully.");
+            // 4. DATABASE UPDATE WITH TRANSACTION (The important part!)
+
+            // Define the range for "Today".
+            // Note: Since you are in the Philippines, 'dateTimeNow.Date' (which is UTC) might be yesterday's date
+            // if you upload in the morning. Ensure this aligns with your business logic.
+            var startOfDay = dateTimeNow.Date;
+            var endOfDay = startOfDay.AddDays(1);
+
+            // Start a transaction to ensure atomicity (All or Nothing)
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                // A. Delete existing records for this specific day range
+                // ExecuteDeleteAsync is efficient and happens directly on the DB.
+                int deletedCount = await _context.SeaFreightScheduleMonitoring
+                    .Where(x => x.DateCreated >= startOfDay && x.DateCreated < endOfDay)
+                    .ExecuteDeleteAsync();
+
+                // B. Insert the new records
+                await _context.SeaFreightScheduleMonitoring.AddRangeAsync(newRecords);
+                await _context.SaveChangesAsync();
+
+                // C. Commit the transaction
+                // If we reach this line, everything above was successful.
+                await transaction.CommitAsync();
+
+                return Ok($"Imported {newRecords.Count} records successfully. (Replaced {deletedCount} existing records for {startOfDay:yyyy-MM-dd}).");
+            }
+            catch (Exception ex)
+            {
+                // D. Rollback on error
+                // If anything fails (DB constraint, connection drop), the delete is undone.
+                await transaction.RollbackAsync();
+
+                // Log this error properly in your real app logger!
+                // _logger.LogError(ex, "Failed to upload excel");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // DELETE: api/SeaFreightScheduleMonitorings/5

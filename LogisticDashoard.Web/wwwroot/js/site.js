@@ -2,3 +2,6 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+setInterval(() => {
+    document.getElementById("currentTime").innerHTML = new Date().toLocaleString();
+}, 1000);

@@ -91,5 +91,7 @@ namespace LogisticDashboard.Core
         public DateTime? UpdatedDate { get; set; }
         public string? UpdatedBy { get; set; }
 
+        
+
     }
 }

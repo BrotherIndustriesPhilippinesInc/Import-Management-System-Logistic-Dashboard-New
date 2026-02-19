@@ -21,5 +21,6 @@ namespace LogisticDashboard.Core
         public string DestinationCustoms { get; set; }
         public string DestinationTrucking { get; set; }
         public string Buyer { get; set; }
+
     }
 }

@@ -5,6 +5,33 @@
 
     var roleList = new[] { "SELLER", "BUYER (BIPH)" };
     
+    var tooltips = new Dictionary<string, string>
+    {
+        { "EXW Ex-Works", @"
+*Seller is responsible in making the goods.
+*Buyer bears the full risk from the door of Shipper including the export customs clearance in place of Origin, until the final destination (buyer door).
+        " },
+        { "FCA Free Carrier (Place)", @"
+*Seller is responsible to deliver the cargo to the point of destination.
+*Buyer bears the full risk from point of destination (Origin) including the export customs clearance, until the final destination (buyer door)."
+        },
+        { "FOB Free On Board", @"
+*Seller is responsible to deliver the cargo loaded on board the ship and clear export declaration in Origin.
+*Buyer bears the risk from Port of Origin until final destination (Buyer door).
+" },
+        { "CIF Cost, Insurance and Freight", @"
+*Seller is responsible to deliver the cargo until the Port of discharge. (including the insurance of cargo)
+*Buyer bears the risk from Port of discharge until final destination (buyer door).
+" },
+        { "DDU/DAP Delivered at Place", @"*Seller delivers goods to buyer, but Buyer pays import duties and clearance.
+" },
+        { "DDP Delivered Duty Paid", @"
+*Seller bears all the risk from Origin to final destination (buyer door).
+*If via Courier under DDU or DAP, treatment is same with CIF term.
+*If via FW under DAP, BIPH will shoulder Import processing fee, Shipper responsibility is Freight and delivery charges from MNL to BIPH.
+" },
+        // ... add the rest ...
+    };
 }
 
 <div class="mt-4">
@@ -85,7 +112,12 @@
                         @(modelList.IndexOf(item) == 0 ? "COLLECT" : "PREPAID")
                     </th>
 
-                    <td class="code">@item.Code</td>
+                    <td class="code"
+                        data-bs-toggle="tooltip"
+                        title="@(tooltips.ContainsKey(item.Code) ? tooltips[item.Code] : "No description")">
+                        @item.Code
+                    </td>
+
                     <td>
                         @Html.DropDownList("Seller_" + item.Id, new SelectList(roleList, item.Seller), new { @class = "form-control" })
                     </td>
@@ -118,7 +150,11 @@
             else
             {
                 <tr>
-                    <td class="code">@item.Code</td>
+                    <td class="code"
+                        data-bs-toggle="tooltip"
+                        title="@(tooltips.ContainsKey(item.Code) ? tooltips[item.Code] : "No description")">
+                        @item.Code
+                    </td>
                     <td>
                         @Html.DropDownList("Seller_" + item.Id, new SelectList(roleList, item.Seller), new { @class = "form-control" })
                     </td>

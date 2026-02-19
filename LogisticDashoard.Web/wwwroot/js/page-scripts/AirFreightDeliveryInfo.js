@@ -48,8 +48,34 @@ $(async function () {
             // FLIGHT STATUS
             { data: 'original_ETD', title: 'Original ETD', visible: false },
             { data: 'atd', title: 'ATD', visible: false },
-            { data: 'original_ETA', title: 'Original ETA', visible: false },
-            { data: 'latest_ETA', title: 'Latest ETA', visible: false },
+            {
+                data: 'original_ETA',
+                title: 'Original ETA',
+                visible: true, // Making it visible so you can actually see your work
+                render: function (data, type, row) {
+                    if (type === 'display' && data) {
+                        const date = new Date(data);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = date.toLocaleString('en-US', { month: 'short' });
+                        return `${day}-${month}`;
+                    }
+                    return data;
+                }
+            },
+            {
+                data: 'latest_ETA',
+                title: 'latest ETA',
+                visible: true, // Making it visible so you can actually see your work
+                render: function (data, type, row) {
+                    if (type === 'display' && data) {
+                        const date = new Date(data);
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = date.toLocaleString('en-US', { month: 'short' });
+                        return `${day}-${month}`;
+                    }
+                    return data;
+                }
+            },
             { data: 'ata', title: 'ATA'},
             { data: 'flight_Status_Remarks', title: 'Flight Status Remarks', visible: false },
 
