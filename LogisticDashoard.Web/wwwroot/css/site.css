@@ -621,3 +621,7 @@ td.dtfc-fixed-start{
     background-color: #348BD6;
     color: white !important;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}

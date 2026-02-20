@@ -243,11 +243,9 @@ namespace LogisticDashboard.API.Controllers
                 return BadRequest("Weight must be a valid number.");
             }
 
-            // Standardize to 2 decimal places for the DB query if your KGS column is a string
-            string formattedWeight = parsedWeight.ToString("0.00");
-
+            // Notice we compare the parsedWeight directly to the converted DB column
             var result = await _context.LogisticCost
-                .FirstOrDefaultAsync(l => l.Origin == origin && l.KGS == formattedWeight);
+                .FirstOrDefaultAsync(l => l.Origin == origin && Convert.ToDecimal(l.KGS) == parsedWeight);
 
             return result == null ? NotFound() : Ok(result);
         }

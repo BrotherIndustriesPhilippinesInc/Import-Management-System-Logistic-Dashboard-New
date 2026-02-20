@@ -112,7 +112,7 @@
                         @(modelList.IndexOf(item) == 0 ? "COLLECT" : "PREPAID")
                     </th>
 
-                    <td class="code"
+                    <td class="code cursor-pointer"
                         data-bs-toggle="tooltip"
                         title="@(tooltips.ContainsKey(item.Code) ? tooltips[item.Code] : "No description")">
                         @item.Code
@@ -150,7 +150,7 @@
             else
             {
                 <tr>
-                    <td class="code"
+                    <td class="code cursor-pointer"
                         data-bs-toggle="tooltip"
                         title="@(tooltips.ContainsKey(item.Code) ? tooltips[item.Code] : "No description")">
                         @item.Code

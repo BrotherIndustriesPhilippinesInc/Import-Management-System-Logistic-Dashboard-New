@@ -139,29 +139,15 @@ namespace LogisticDashboard.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,ShippingInstructionName,FileLinkEnglish,FileLinkJapanese,Type,LastUpdated,UpdatedBy")] ShippingInstruction shippingInstruction)
         {
-            if (id != shippingInstruction.Id)
-            {
-                return NotFound();
-            }
+            if (id != shippingInstruction.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(shippingInstruction);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ShippingInstructionExists(shippingInstruction.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                // FIX: Force the DateTime to be recognized as UTC
+                shippingInstruction.LastUpdated = DateTime.SpecifyKind(shippingInstruction.LastUpdated, DateTimeKind.Utc);
+
+                _context.Update(shippingInstruction);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(shippingInstruction);
