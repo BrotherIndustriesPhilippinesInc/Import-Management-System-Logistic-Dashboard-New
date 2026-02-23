@@ -144,7 +144,7 @@
     <link href="~/lib/datatables/datatables.css" rel="stylesheet" />
 
     <script src="~/js/helpers/config.js"></script>
-    <script type="module" src="~/js/helpers/loadUser.js"></script>
+    
 
     @* SWEET ALERT *@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -162,5 +162,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script defer type="module" src="~/js/helpers/loadUser.js"></script>
 </body>
 </html>

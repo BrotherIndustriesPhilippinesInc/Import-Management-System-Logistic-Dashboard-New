@@ -146,13 +146,19 @@ namespace LogisticDashboard
 
         private async void WebViewPanel_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e)
         {
+            
+        }
+
+        private async void WebViewPanel_NavigationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs e)
+        {
             Dictionary<string, string> post = new Dictionary<string, string> {
                 { "id_number", UserIdNumber.ToString() }
             };
 
-            JObject data = await apiHandler.APIPostCall("http://apbiphbpsts01:8080/homs/api/user/getUser.php", post);
+            JObject data = await apiHandler.APIGetCall($"http://apbiphbpswb01:80/PortalAPI/api/SystemApproverLists/SearchEmployee?employeeNumber={UserIdNumber.ToString()}&systemID=77");
 
-            await webViewFunctions.ExecuteJavascript($"localStorage.setItem(\"user\", JSON.stringify({data["data"]}));");
+
+            await webViewFunctions.ExecuteJavascript($"localStorage.setItem(\"user\", JSON.stringify({data}));");
         }
     }
 }

@@ -7,7 +7,7 @@
 <h1>Vessel Route Maps</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
+    <a id="vesselRouteMapCreate" class="btn btn-primary" asp-action="Create">Create New</a>
 </div>
 
 <div class="card shadow">
@@ -33,8 +33,8 @@
                             data-name="@item.VesselName">
                         Live View
                     </button>
-                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-sm btn-warning vesselRouteMapControl" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-sm btn-danger vesselRouteMapControl" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </div>
             </li>
         }

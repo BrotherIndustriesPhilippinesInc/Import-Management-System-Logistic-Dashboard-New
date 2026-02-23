@@ -60,7 +60,7 @@
     <script>
         $(async function () {
             try {
-                const response = await fetch("https://localhost:7019/api/ContainerVisualizations/get_picture", {
+                const response = await fetch(`${API_BASE_URL}/api/ContainerVisualizations/get_picture`, {
                     method: "GET"
                 });
 
@@ -71,7 +71,7 @@
 
                 // Example: display the images
                 if (data.container_Image_Link)
-                    $("#containerImage").attr("src", "https://localhost:7019/" + data.container_Image_Link);
+                    $("#containerImage").attr("src", `${API_BASE_URL}/` + data.container_Image_Link);
 
 
             } catch (error) {
@@ -90,7 +90,7 @@
                 formData.append('file', file);
 
                 $.ajax({
-                    url: `https://localhost:7019/api/ContainerVisualizations/upload`, // 🔥 Replace with your actual API route
+                    url: `${API_BASE_URL}/api/ContainerVisualizations/upload`, // 🔥 Replace with your actual API route
                     type: 'POST',
                     data: formData,
                     processData: false,

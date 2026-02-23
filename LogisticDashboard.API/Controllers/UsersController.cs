@@ -13,6 +13,7 @@ using static LogisticDashboard.API.Controllers.UsersController;
 using System.Text;
 using PortalAPI.DTO;
 using System.Text.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace LogisticDashboard.API.Controllers
@@ -24,12 +25,6 @@ namespace LogisticDashboard.API.Controllers
         private readonly LogisticDashboardAPIContext _context;
 
         private readonly HttpClient _httpClient;
-
-        public UsersController(LogisticDashboardAPIContext context, HttpClient httpClient)
-        {
-            _context = context;
-            _httpClient = httpClient;
-        }
 
         public class DataTableResponse<T>
         {
@@ -61,6 +56,14 @@ namespace LogisticDashboard.API.Controllers
             public string EmployeeNumber { get; set; }
             public bool IsAdmin { get; set; } // comes from local db
         }
+
+
+        public UsersController(LogisticDashboardAPIContext context, HttpClient httpClient)
+        {
+            _context = context;
+            _httpClient = httpClient;
+        }
+
 
         // GET: api/Users
         [HttpGet]
@@ -293,7 +296,7 @@ namespace LogisticDashboard.API.Controllers
         }
 
         [HttpGet("GetPortalUser")]
-        private async Task<PortalUser?> GetPortalUserAsync(string employeeNumber)
+        public async Task<PortalUser?> GetPortalUserAsync(string employeeNumber)
         {
             var response = await _httpClient.GetAsync(
                 $"http://apbiphbpswb01:80/PortalAPI/api/SystemApproverLists/SearchEmployee?employeeNumber={employeeNumber}&systemID=77"
@@ -307,6 +310,46 @@ namespace LogisticDashboard.API.Controllers
             var portalUser = JsonConvert.DeserializeObject<PortalUser>(json);
 
             return portalUser;
+        }
+
+        [HttpGet("GetPortalUserCredentials")]
+        public async Task<ActionResult<Users>> GetPortalUserCredentialsAsync(string employeeNumber)
+        {
+            var response = await _httpClient.GetAsync(
+                $"http://apbiphbpswb01:80/PortalAPI/api/SystemApproverLists/SearchEmployee?employeeNumber={employeeNumber}&systemID=77"
+            );
+
+            if (!response.IsSuccessStatusCode)
+                return NotFound("User not found in Portal API.");
+
+            // 1. Read the raw JSON string instead of trying to bind it to a class
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrEmpty(jsonString))
+                return BadRequest("Empty response from Portal API.");
+
+            // 2. Use Newtonsoft to parse dynamically. No PortalUser class needed!
+            dynamic dynamicJson = JObject.Parse(jsonString);
+
+            // Note: The property name here MUST match the exact casing in the JSON (e.g., portalId vs PortalId)
+            int extractedPortalId = dynamicJson.id;
+
+            // 3. Look up the user in YOUR local database using the extracted ID
+            var localUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.PortalId == extractedPortalId);
+
+            // 4. Return the local user (which naturally contains your IsAdmin flag)
+            if (localUser != null)
+            {
+                return Ok(localUser);
+            }
+
+            // Optional: If they aren't in your DB yet, return a default mapped object
+            return Ok(new Users
+            {
+                PortalId = extractedPortalId,
+                IsAdmin = false // Default to false if we don't have them in _context
+            });
         }
 
         private bool UsersExists(int id)

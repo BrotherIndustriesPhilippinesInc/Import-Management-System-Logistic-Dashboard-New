@@ -7,7 +7,7 @@
 <h1>Administrator</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="user-control" asp-action="Create">Create New</a>
 </p>
 
 <table class="table" id="users-table">
@@ -63,7 +63,7 @@
                     orderable: false,
                     render: function (data, type, row) {
                         return `
-                                <a href="/Users/Delete?portalId=${row.id}&employeeNumber=${row.employeeNumber}" asp-user-id="${row.employeeNumber}" class="btn btn-danger">Delete</a>
+                                <a href="/Users/Delete?portalId=${row.id}&employeeNumber=${row.employeeNumber}" asp-user-id="${row.employeeNumber}" class="user-control btn btn-danger">Delete</a>
                         `;
                     },
                     className: "text-center" // optional: center the buttons

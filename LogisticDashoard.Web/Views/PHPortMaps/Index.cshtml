@@ -7,7 +7,7 @@
 <h1>PH Port Map</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Add Port</a>
+    <a id="phportmap-create" class="btn btn-primary" asp-action="Create">Add Port</a>
 </p>
 
 <div>
@@ -75,7 +75,7 @@ crossorigin=""></script>
                                 <p>${port.description}</p>
                                 <p><strong>Distance:</strong> ${distance} km</p>
                                 <p><strong>Estimated Time:</strong> ${duration} min</p>
-                                <a class="btn btn-primary btn-sm mt-1" href="/PHPortMaps/Edit/${port.id}">Edit</a>
+                                <a class="phPortMap-edit btn btn-primary btn-sm mt-1" href="/PHPortMaps/Edit/${port.id}">Edit</a>
                             </div>`;
 
                         const marker = L.marker(origin).addTo(map);

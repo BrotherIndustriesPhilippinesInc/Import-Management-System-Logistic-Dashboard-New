@@ -51,6 +51,7 @@
             this.WebViewPanel.TabIndex = 0;
             this.WebViewPanel.ZoomFactor = 1D;
             this.WebViewPanel.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.WebViewPanel_CoreWebView2InitializationCompleted);
+            this.WebViewPanel.NavigationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2NavigationCompletedEventArgs>(this.WebViewPanel_NavigationCompleted);
             this.WebViewPanel.WebMessageReceived += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2WebMessageReceivedEventArgs>(this.WebViewPanel_WebMessageReceived);
             // 
             // panel1
