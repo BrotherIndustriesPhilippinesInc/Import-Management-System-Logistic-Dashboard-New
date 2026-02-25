@@ -19,7 +19,7 @@ $(async function () {
         .then((response) => response.json()).then((data) => { userInfo = data; });
 
 
-    if (userInfo["isAdmin"]) {
+    if (!userInfo["isAdmin"]) {
 
         // 1. Wrap YOUR exact code in a reusable function
         function lockEverythingDown() {

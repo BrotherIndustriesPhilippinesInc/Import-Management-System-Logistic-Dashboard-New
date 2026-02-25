@@ -96,9 +96,9 @@ $(async function () {
             { data: 'voyNo', title: 'Voy No' },
             { data: 'origin', title: 'Origin' },
             { data: 'originalETD', title: 'Original ETD' },
-            { data: 'originalETAMNL', title: 'Original ETA MNL' },
+            { data: 'originalETAMNL'/*, title: 'Original ETA MNL'*/ },
             { data: 'latestETD', title: 'Latest ETD' },
-            { data: 'latestETAMNL', title: 'Latest ETA MNL' },
+            { data: 'latestETAMNL'/*, title: 'Latest ETA MNL'*/ },
             { data: 'transitDays', title: 'Transit Days' },
             { data: 'delayDeparture', title: 'Departure' },
             { data: 'delayArrival', title: 'Arrival' },
@@ -194,6 +194,9 @@ $(async function () {
         //Select 1st option
         selectYear.val(route.years[0]);
         $("#year").trigger("change");
+
+
+        dynamicPortNameChange(selectedRoute);
     });
 
     routes = await getRouteYear();
@@ -447,6 +450,24 @@ $(async function () {
             };
             check();
         });
+    }
+
+    function dynamicPortNameChange(selectedPort) {
+        let $originalETAPortName = $(".dynamic-port.original");
+        let $latestETAPortName = $(".dynamic-port.latest");
+
+        // 1. Check if it exists AND contains 'batangas' (case-insensitive)
+        if (selectedPort?.toLowerCase().includes("batangas")) {
+            // 2. Change the text to Batangas
+            $originalETAPortName.text("ETA BATS");
+            $latestETAPortName.text("ETA BATS");
+        } else {
+            // 3. What happens if it's NOT Batangas? You need a fallback!
+            // Assuming you want it to default to the selected port or Manila
+            let fallbackName = selectedPort || "Manila North";
+            $originalETAPortName.text("ETA MNL");
+            $latestETAPortName.text("ETA MNL");
+        }
     }
 
 });

@@ -6,30 +6,50 @@ export async function GetPortStatuses() {
 }
 
 $("#savePortStatus").on("click", async function () {
-    // 1. Define the ports we expect to scrape. 
-    // Ideally, this comes from a config or the server, but we'll map IDs manually here based on your requirement.
+    let payload = [];
+
+    // 1. Process the actual ports (IDs 1 & 2)
     const targetPorts = [
         { id: 1, name: "Manila North (MICT)" },
         { id: 2, name: "Batangas (POB)" }
     ];
 
-    let payload = [];
-
-    // 2. Iterate through each port and find its status in the table
     targetPorts.forEach(port => {
-        let portData = {
+        payload.push({
             Id: port.id,
             Name: port.name,
-            // Get the status text (e.g., "Normal") for this port + type combo
             PortUtilizationStatus: getStatusFromTable(port.name, "PortUtilizationStatus"),
             BerthingStatus: getStatusFromTable(port.name, "BerthingStatus")
-        };
-        payload.push(portData);
+        });
     });
 
-    console.table(payload); // Debugging: Check the console to see the clean object
+    // Aiko's helper to read your global checkboxes
+    function getGlobalStatus(checkboxClass) {
+        let status = "Unknown";
+        let $checked = $(`.${checkboxClass}:checked`);
+        if ($checked.length > 0) {
+            status = $checked.next('label').text().trim();
+        }
+        return status;
+    }
 
-    // 3. Send to Backend
+    // 2. Process the fake ports (IDs 3 & 4)
+    // Shoving the global statuses into the 'PortUtilizationStatus' property
+    payload.push({
+        Id: 3,
+        Name: "Vessel Updates",
+        PortUtilizationStatus: getGlobalStatus("vessel_Updates"),
+        BerthingStatus: "Normal" // Dummy data because the column exists
+    });
+
+    payload.push({
+        Id: 4,
+        Name: "Import Delivery",
+        PortUtilizationStatus: getGlobalStatus("importDelivery_Updates"),
+        BerthingStatus: "Normal" // Dummy data
+    });
+
+    console.table(payload);
     await UpdatePortStatuses(payload);
 });
 
@@ -91,6 +111,7 @@ async function UpdatePortStatuses(payload) {
         console.error("Failed to update:", error);
     }
 }
+
 $(".berthStatus, .portUtil").on("click", async function () {
     let data = [];
 
@@ -117,22 +138,26 @@ async function LoadPortStatuses() {
 
         // Iterate through the data from the DB
         data.forEach(port => {
-            // Update Port Utilization Column
-            setCheckboxState(port.name, "PortUtilizationStatus", port.portUtilizationStatus);
-            //Trigger change event
-            
-
-            // Update Berthing Status Column
-            setCheckboxState(port.name, "BerthingStatus", port.berthingStatus);
-            //Trigger change event
-            
+            // Check if it's a REAL port (IDs 1 & 2)
+            if (port.id === 1 || port.id === 2) {
+                setCheckboxState(port.name, "PortUtilizationStatus", port.portUtilizationStatus);
+                setCheckboxState(port.name, "BerthingStatus", port.berthingStatus);
+            }
+            // Intercept your "Dummy Data" ports
+            else if (port.id === 3) {
+                // ID 3 is Vessel Updates. The data is hiding in PortUtilizationStatus.
+                setGlobalCheckboxState("vessel_Updates", port.portUtilizationStatus);
+            }
+            else if (port.id === 4) {
+                // ID 4 is Import Delivery.
+                setGlobalCheckboxState("importDelivery_Updates", port.portUtilizationStatus);
+            }
         });
 
     } catch (error) {
         console.error("Error loading statuses:", error);
     }
 }
-
 /**
  * Finds the correct checkbox in your table grid and checks it.
  * @param {string} portName - e.g., "Manila North (MICT)"
@@ -172,4 +197,35 @@ function setCheckboxState(portName, statusType, targetValue) {
             }
         }
     });
+}
+
+/**
+ * Aiko's helper to set and trigger your global column checkboxes.
+ * @param {string} checkboxClass - e.g., "vessel_Updates"
+ * @param {string} targetValue - e.g., "Critical" (The value coming from DB)
+ */
+function setGlobalCheckboxState(checkboxClass, targetValue) {
+    // 1. Uncheck ALL checkboxes with this class first
+    $(`.${checkboxClass}`).prop('checked', false);
+
+    // 2. Loop through them to find the one matching the database value
+    $(`.${checkboxClass}`).each(function () {
+        let labelText = $(this).next('label').text().trim();
+
+        if (labelText === targetValue) {
+            // Check it and trigger the change event to fire your filters!
+            $(this).prop('checked', true).trigger('change');
+            return false; // Break the loop once found
+        }
+    });
+}
+// Aiko's helper for your global columns
+function getGlobalStatusByClass(checkboxClass) {
+    let status = "Unknown";
+    // Find the checked checkbox with this class and grab its label's text
+    let $checkedBox = $(`.${checkboxClass}:checked`);
+    if ($checkedBox.length > 0) {
+        status = $checkedBox.next('label').text().trim();
+    }
+    return status;
 }
