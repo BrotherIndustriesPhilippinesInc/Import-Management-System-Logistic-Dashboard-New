@@ -1,73 +1,65 @@
 ﻿@model LogisticDashboard.Core.ImportPICInformation
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create PIC Info";
 }
 
-<h1>Create</h1>
+<div class="container mt-4">
+    <div class="card shadow-sm border-0" style="max-width: 600px; margin: auto;">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-person-plus"></i> Add Import PIC Information</h4>
+        </div>
+        <div class="card-body p-4">
+            <form asp-controller="ImportPICInformations" asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-<h4>ImportPICInformation</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ModeOfShipment" class="control-label"></label>
-                <input asp-for="ModeOfShipment" class="form-control" />
-                <span asp-validation-for="ModeOfShipment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Supplier" class="control-label"></label>
-                <input asp-for="Supplier" class="form-control" />
-                <span asp-validation-for="Supplier" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShippingMainPICStaff" class="control-label"></label>
-                <input asp-for="ShippingMainPICStaff" class="form-control" />
-                <span asp-validation-for="ShippingMainPICStaff" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShippingSubPICStaff" class="control-label"></label>
-                <input asp-for="ShippingSubPICStaff" class="form-control" />
-                <span asp-validation-for="ShippingSubPICStaff" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Supervisor" class="control-label"></label>
-                <input asp-for="Supervisor" class="form-control" />
-                <span asp-validation-for="Supervisor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
-                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedDate" class="control-label"></label>
-                <input asp-for="UpdatedDate" class="form-control" />
-                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="mb-3">
+                    <label asp-for="ModeOfShipment" class="form-label fw-bold">Mode of Shipment</label>
+                    <select asp-for="ModeOfShipment" class="form-select">
+                        <option value="">-- Select Mode --</option>
+                        <option value="Sea">Sea</option>
+                        <option value="Air">Air</option>
+                        <option value="Courier">Courier</option>
+                    </select>
+                    <span asp-validation-for="ModeOfShipment" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Supplier" class="form-label fw-bold">Supplier</label>
+                    <input asp-for="Supplier" class="form-control" placeholder="Enter supplier name" />
+                    <span asp-validation-for="Supplier" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ShippingMainPICStaff" class="form-label fw-bold">Main PIC Staff</label>
+                        <input asp-for="ShippingMainPICStaff" class="form-control" placeholder="Main contact" />
+                        <span asp-validation-for="ShippingMainPICStaff" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ShippingSubPICStaff" class="form-label fw-bold">Sub PIC Staff</label>
+                        <input asp-for="ShippingSubPICStaff" class="form-control" placeholder="Backup contact" />
+                        <span asp-validation-for="ShippingSubPICStaff" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Supervisor" class="form-label fw-bold">Supervisor</label>
+                    <input asp-for="Supervisor" class="form-control" placeholder="Supervisor name" />
+                    <span asp-validation-for="Supervisor" class="text-danger small"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4">Save Information</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

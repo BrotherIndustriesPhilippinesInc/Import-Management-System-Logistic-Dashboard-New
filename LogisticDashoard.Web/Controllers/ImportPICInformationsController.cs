@@ -58,17 +58,25 @@ namespace LogisticDashboard.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ImportPICInformation importPICInformation)
+        public async Task<IActionResult> Create(ImportPICInformation model)
         {
             if (ModelState.IsValid)
             {
-                importPICInformation.CreatedDate = DateTime.UtcNow; // ✅ Set UTC for creation
-                                                                    // UpdatedDate stays null on creation
-                _context.Add(importPICInformation);
+                // 1. Set audit fields server-side!
+                model.CreatedDate = DateTime.UtcNow; // Always use UTC for databases
+
+                // 2. Get the currently logged-in user (assuming you have authentication setup)
+                model.CreatedBy = User.Identity?.Name ?? "System";
+
+                // 3. Ensure update fields are completely clear on creation
+                model.UpdatedDate = null;
+                model.UpdatedBy = null;
+
+                _context.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(importPICInformation);
+            return View(model);
         }
 
 
