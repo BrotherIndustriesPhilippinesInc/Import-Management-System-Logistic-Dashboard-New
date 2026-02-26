@@ -12,13 +12,13 @@
         <div class="card-body p-4">
             <form asp-controller="ImportPICInformations" asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-
+                <input type="hidden" id="CreatedBy" name="CreatedBy" value="" />
                 <div class="mb-3">
                     <label asp-for="ModeOfShipment" class="form-label fw-bold">Mode of Shipment</label>
                     <select asp-for="ModeOfShipment" class="form-select">
                         <option value="">-- Select Mode --</option>
-                        <option value="Sea">Sea</option>
-                        <option value="Air">Air</option>
+                        <option value="Seafreight">Seafreight</option>
+                        <option value="Airfreight">Airfreight</option>
                         <option value="Courier">Courier</option>
                     </select>
                     <span asp-validation-for="ModeOfShipment" class="text-danger small"></span>
@@ -57,9 +57,22 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Assume you saved the user's name in localStorage as 'username'
+        const storedUser = localStorage.getItem("user");
+        let JSONstoredUser = JSON.parse(storedUser);
+        if (storedUser) {
+            document.getElementById("CreatedBy").value = JSONstoredUser.employeeNumber;
+        }
+    });
+</script>
 @section Scripts {
     @{
+        
+
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
     }
 }
