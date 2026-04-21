@@ -201,40 +201,142 @@ namespace LogisticDashboard.API.Controllers
         }
 
 
+        //[HttpGet("category_status")]
+        //public async Task<ActionResult<IEnumerable<AirFreightScheduleMonitoring>>> GetAirFreightScheduleMonitoring(
+        //[FromQuery] string item_category,
+        //[FromQuery] string actual_status)
+        //{
+        //    IQueryable<AirFreightScheduleMonitoring> query = _context.AirFreightScheduleMonitoring;
+
+        //    if (!string.IsNullOrEmpty(actual_status))
+        //    {
+        //        query = query.Where(x => x.Status.ToLower() == actual_status.ToLower());
+        //    }
+
+        //    if (!string.IsNullOrEmpty(item_category))
+        //    {
+        //        if (item_category.Equals("direct", StringComparison.OrdinalIgnoreCase))
+        //        {
+        //            query = query.Where(x => x.ItemCategory.ToLower() == "direct parts");
+        //        }
+        //        else
+        //        {
+        //            query = query.Where(x => x.ItemCategory.ToLower() != "direct parts");
+        //        }
+        //    }
+
+        //    var results = await query.ToListAsync();
+
+        //    if (!results.Any())
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return results;
+        //}
+        //new
         [HttpGet("category_status")]
         public async Task<ActionResult<IEnumerable<AirFreightScheduleMonitoring>>> GetAirFreightScheduleMonitoring(
-        [FromQuery] string item_category,
-        [FromQuery] string actual_status)
+    [FromQuery] string? item_category = null,
+    [FromQuery] string? actual_status = null,
+    [FromQuery] DateTime uploadDateTime = default,
+    [FromQuery] string? search = null)
         {
-            IQueryable<AirFreightScheduleMonitoring> query = _context.AirFreightScheduleMonitoring;
+            var start = uploadDateTime.AddMinutes(-10);
+            var end = uploadDateTime.AddMinutes(10);
 
-            if (!string.IsNullOrEmpty(actual_status))
-            {
-                query = query.Where(x => x.Status.ToLower() == actual_status.ToLower());
-            }
+            // STEP 1: SNAPSHOT (get AWB list from selected upload)
+            var snapshotQuery = _context.AirFreightScheduleMonitoring
+                .Where(x => x.DateCreated >= start && x.DateCreated < end);
 
-            if (!string.IsNullOrEmpty(item_category))
+            if (!string.IsNullOrWhiteSpace(item_category))
             {
-                if (item_category.Equals("direct", StringComparison.OrdinalIgnoreCase))
+                var category = item_category.Trim().ToLower();
+
+                if (category == "direct")
                 {
-                    query = query.Where(x => x.ItemCategory.ToLower() == "direct parts");
+                    snapshotQuery = snapshotQuery.Where(x =>
+                        x.ItemCategory != null &&
+                        x.ItemCategory.ToLower().Trim() == "direct parts");
                 }
                 else
                 {
-                    query = query.Where(x => x.ItemCategory.ToLower() != "direct parts");
+                    snapshotQuery = snapshotQuery.Where(x =>
+                        x.ItemCategory != null &&
+                        x.ItemCategory.ToLower().Trim() != "direct parts");
                 }
             }
 
-            var results = await query.ToListAsync();
+            var snapshotAWBs = await snapshotQuery
+                .Select(x => x.AWB)
+                .Where(x => x != null)
+                .Distinct()
+                .ToListAsync();
 
-            if (!results.Any())
+            if (!snapshotAWBs.Any())
+                return Ok(new List<AirFreightScheduleMonitoring>());
+
+            // STEP 2: GET ALL HISTORY (NO DATE FILTER)
+            var allData = await _context.AirFreightScheduleMonitoring
+                .Where(x => snapshotAWBs.Contains(x.AWB))
+                .ToListAsync();
+
+            // STEP 3: GET LATEST PER AWB
+            var latestRecords = allData
+                .GroupBy(x => x.AWB)
+                .Select(g => g
+                    .OrderByDescending(x => x.DateCreated)
+                    .ThenByDescending(x => x.Id)
+                    .First())
+                .ToList();
+
+            // STEP 4: APPLY CATEGORY AGAIN (IMPORTANT)
+            if (!string.IsNullOrWhiteSpace(item_category))
             {
-                return NotFound();
+                var category = item_category.Trim().ToLower();
+
+                if (category == "direct")
+                {
+                    latestRecords = latestRecords
+                        .Where(x => x.ItemCategory != null &&
+                                    x.ItemCategory.ToLower().Trim() == "direct parts")
+                        .ToList();
+                }
+                else
+                {
+                    latestRecords = latestRecords
+                        .Where(x => x.ItemCategory != null &&
+                                    x.ItemCategory.ToLower().Trim() != "direct parts")
+                        .ToList();
+                }
             }
 
-            return results;
-        }
+            // STEP 5: STATUS FILTER
+            if (!string.IsNullOrWhiteSpace(actual_status))
+            {
+                var status = actual_status.Trim().ToLower();
 
+                latestRecords = latestRecords
+                    .Where(x => x.Status != null &&
+                                x.Status.Trim().ToLower() == status)
+                    .ToList();
+            }
+
+            // STEP 6: SEARCH
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var s = search.ToLower();
+
+                latestRecords = latestRecords
+                    .Where(x =>
+                        (x.AWB != null && x.AWB.ToLower().Contains(s)) ||
+                        (x.Shipper != null && x.Shipper.ToLower().Contains(s))
+                    )
+                    .ToList();
+            }
+
+            return Ok(latestRecords);
+        }
 
         [HttpPost("uploadNew")]
         public async Task<IActionResult> UploadExcelNew(IFormFile file, string createdBy)

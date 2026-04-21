@@ -1,10 +1,10 @@
 ﻿@model LogisticDashboard.Core.ShippingInstruction
 
 @{
-    ViewData["Title"] = "Create Shipping Instruction";
+    ViewData["Title"] = "Create";/*  Shipping Instruction"; */
 }
 
-<h2>Create Shipping Instruction</h2>
+<h2>Create</h2>  @* Shipping Instruction *@
 <hr />
 
 <div class="row">
@@ -13,7 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group mb-3">
-                <label asp-for="ShippingInstructionName" class="control-label">Instruction Name</label>
+                <label asp-for="ShippingInstructionName" class="control-label">File Name</label>
                 <input asp-for="ShippingInstructionName" class="form-control" />
                 <span asp-validation-for="ShippingInstructionName" class="text-danger"></span>
             </div>
@@ -39,7 +39,7 @@
 
             <div class="form-group mb-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
+                <a @* asp-action="Index" *@ href="javascript:history.back()" class="btn btn-secondary ms-2">Back to List</a>
             </div>
         </form>
     </div>

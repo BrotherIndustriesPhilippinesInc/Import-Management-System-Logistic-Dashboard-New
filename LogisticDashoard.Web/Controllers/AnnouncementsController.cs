@@ -86,7 +86,7 @@ namespace LogisticDashboard.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedDate,CreatedBy,UpdatedDate,UpdatedBy")] Announcements announcements)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatedDate,CreatedBy,UpdatedBy")] Announcements announcements)
         {
             if (id != announcements.Id)
             {
@@ -97,25 +97,29 @@ namespace LogisticDashboard.Web.Controllers
             {
                 try
                 {
-                    _context.Update(announcements);
+                    // Set the update timestamp on the server
+                    announcements.UpdatedDate = DateTime.UtcNow;
+
+                    _context.Attach(announcements);
+                    _context.Entry(announcements).Property(x => x.Title).IsModified = true;
+                    _context.Entry(announcements).Property(x => x.Description).IsModified = true;
+                    _context.Entry(announcements).Property(x => x.UpdatedDate).IsModified = true;
+                    _context.Entry(announcements).Property(x => x.UpdatedBy).IsModified = true;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!AnnouncementsExists(announcements.Id))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(announcements);
         }
-
+        
         // GET: Announcements/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -400,8 +400,8 @@ $(async function () {
         let utilizationB = sanitizeData(tableB.column(1, { search: 'applied' }).data().toArray());
 
         chart.data.labels = weeks;
-        chart.data.datasets[0].data = utilizationA;
-        chart.data.datasets[1].data = utilizationB;
+        chart.data.datasets[1].data = utilizationA; //utilizationA;
+        chart.data.datasets[0].data = utilizationB; //utilizationB;
 
         chart.options.plugins.title.text = [
             $("#routeName").text(),

@@ -2,6 +2,9 @@
 
 $(async function () {
     let uploadDate = await getUploadDateAndTime();
+    let selectedUploadDateTime = uploadDate;
+    let currentCategory = "";
+    let currentStatus = "";
 
     const table = $('#sea-freight-table').DataTable({
         layout: {
@@ -12,7 +15,8 @@ $(async function () {
 
         },
         ajax: {
-            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${uploadDate}`,
+            //url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${uploadDate}`,
+            url: buildUrl(),
             method: "GET",
             dataSrc: '',
             error: function (xhr, status, error) {
@@ -156,20 +160,20 @@ $(async function () {
         formData.append('file', file);
 
         $.ajax({
-            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/uploadNew?createdBy=${adid}`, // 🔥 Replace with your actual API route
+            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/uploadNew?createdBy=${adid}`, //  Replace with your actual API route
             type: 'POST',
             data: formData,
             processData: false,
             contentType: false,
             success: function (response) {
                 console.log('Upload success:', response);
-                // 😎 Do your success handling here (toast, reload, etc.)
+                //  Do your success handling here (toast, reload, etc.)
                 alert('Upload success');
                 location.reload();
             },
             error: function (xhr, status, error) {
                 console.error('Upload failed:', error);
-                // 😤 Handle upload errors
+                //  Handle upload errors
             }
         });
     });
@@ -178,6 +182,7 @@ $(async function () {
         await searchButtons($(this).data("item_category"), $(this).data("status"));
     });
 
+    //OLD
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
         const min = $('#start-date').val();
         const max = $('#end-date').val();
@@ -195,19 +200,70 @@ $(async function () {
         table.draw();
     });
 
-    $("#upload-date-time").on("change", function () {
-        const selectedDateTime = $(this).val();
+    //$("#upload-date-time").on("change", function () { //old
+    //    const selectedDateTime = $(this).val();
 
-        const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${selectedDateTime}`;
-        table.ajax.url(url).load();
+    //    const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${selectedDateTime}`;
+    //    table.ajax.url(url).load();
+    //});
+
+    $("#upload-date-time").on("change", function () {
+        selectedUploadDateTime = $(this).val(); // FIX
+        currentCategory = "";
+        currentStatus = "";
+        //const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${selectedUploadDateTime}`;
+        //table.ajax.url(url).load();
+
+        table.ajax.url(buildUrl()).load(null, false);
     });
 
-    /*FUNCITONS*/
-    async function searchButtons(item_category, status) {
-        /*console.log(`CLICKED: ${item_category}, ${status}`);*/
-        const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/category_status?item_category=${item_category}&actual_status=${status}`;
-        table.ajax.url(url).load();
+    /*FUNCITONS*/ //OLD
+    //async function searchButtons(item_category, status) {
+    //    const selectedDateTime = document.getElementById('upload-date-time').value;
+    //    /*console.log(`CLICKED: ${item_category}, ${status}`);*/
+    //    const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/category_status?item_category=${item_category}&actual_status=${status}&uploadDateTime=${selectedDateTime}`;
+    //    table.ajax.url(url).load();
+    //}
+
+    function searchButtons(item_category, status) {
+
+        if (!selectedUploadDateTime) {
+            alert("Select upload date first");
+            return;
+        }
+
+        //const url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/category_status`
+        //    + `?item_category=${item_category}`
+        //    + `&actual_status=${encodeURIComponent(status)}`
+        //    + `&uploadDateTime=${encodeURIComponent(selectedUploadDateTime)}`;
+
+        //console.log("API:", url);
+        // SET GLOBAL STATE
+        currentCategory = item_category;
+        currentStatus = status;
+
+        //table.ajax.url(url).load(null, false);
+        table.ajax.url(buildUrl()).load(null, false);
+
     }
+
+    function buildUrl() {
+
+        let url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/category_status`
+            + `?uploadDateTime=${encodeURIComponent(selectedUploadDateTime)}`;
+
+        if (currentCategory) {
+            url += `&item_category=${currentCategory}`;
+        }
+
+        if (currentStatus) {
+            url += `&actual_status=${encodeURIComponent(currentStatus)}`;
+        }
+
+        return url;
+    }
+
+    //test
 
     async function getUploadDateAndTime() {
         return new Promise((resolve, reject) => {
@@ -215,7 +271,44 @@ $(async function () {
                 url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/UploadDateTime`,
                 type: 'GET',
                 success: function (response) {
+                    //OLD
+                    //const $select = $('#upload-date-time');
+                    //$select.empty();
 
+                    //if (!response || response.length === 0) {
+                    //    resolve(null);
+                    //    return;
+                    //}
+
+                    //response.forEach((item, index) => {
+                    //    let date = new Date(item.dateCreated);
+
+                    //    let display = date.toLocaleString('en-US', {
+                    //        year: 'numeric',
+                    //        month: '2-digit',
+                    //        day: '2-digit',
+                    //        hour: '2-digit',
+                    //        minute: '2-digit',
+                    //        hour12: true
+                    //    });
+
+                    //    let value = date.toISOString();
+
+                    //    $select.append(
+                    //        `<option value="${value}">${display}</option>`
+                    //    );
+                    //});
+
+                    //// select FIRST (latest) upload explicitly
+                    //const selectedValue = response[0]
+                    //    ? new Date(response[0].dateCreated).toISOString()
+                    //    : null;
+
+                    //$select.val(selectedValue);
+
+                    //resolve(selectedValue);
+
+                    //ADDED START
                     const $select = $('#upload-date-time');
                     $select.empty();
 
@@ -224,8 +317,41 @@ $(async function () {
                         return;
                     }
 
-                    response.forEach((item, index) => {
-                        let date = new Date(item.dateCreated);
+                    // Convert all dates first
+                    const dates = response.map(x => new Date(x.dateCreated));
+
+                    const now = new Date();
+
+                    const currentMonth = now.getMonth();
+                    const currentYear = now.getFullYear();
+
+                    const prev = new Date(now);
+                    prev.setMonth(now.getMonth() - 1);
+
+                    const prevMonth = prev.getMonth();
+                    const prevYear = prev.getFullYear();
+
+                    // Get latest of current month
+                    const currentMonthDates = dates
+                        .filter(d => d.getMonth() === currentMonth && d.getFullYear() === currentYear)
+                        .sort((a, b) => b - a);
+
+                    const latestCurrent = currentMonthDates[0];
+
+                    // Get last of previous month
+                    const prevMonthDates = dates
+                        .filter(d => d.getMonth() === prevMonth && d.getFullYear() === prevYear)
+                        .sort((a, b) => b - a);
+
+                    const latestPrev = prevMonthDates[0];
+
+                    const finalDates = [];
+
+                    if (latestCurrent) finalDates.push(latestCurrent);
+                    if (latestPrev) finalDates.push(latestPrev);
+
+                    // Populate dropdown
+                    finalDates.forEach(date => {
 
                         let display = date.toLocaleString('en-US', {
                             year: 'numeric',
@@ -238,19 +364,20 @@ $(async function () {
 
                         let value = date.toISOString();
 
-                        $select.append(
-                            `<option value="${value}">${display}</option>`
-                        );
+                        $select.append(`<option value="${value}">${display}</option>`);
                     });
 
-                    // ✅ select FIRST (latest) upload explicitly
-                    const selectedValue = response[0]
-                        ? new Date(response[0].dateCreated).toISOString()
+                    // auto select latest current
+                    const selectedValue = latestCurrent
+                        ? latestCurrent.toISOString()
                         : null;
 
                     $select.val(selectedValue);
 
                     resolve(selectedValue);
+
+                    //END ADDED
+                   
                 },
                 error: reject
             });

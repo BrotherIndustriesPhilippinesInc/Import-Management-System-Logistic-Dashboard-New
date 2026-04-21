@@ -190,22 +190,36 @@ namespace LogisticDashboard.API.Controllers
                             break;
                         }
 
-                        string totalUSD = worksheet.Cells[row, endColIndex].Text.Trim();
-                        //Remove any words from the totalUSD string
-                        totalUSD = Regex.Replace(totalUSD, @"[^\d\.]", "", RegexOptions.IgnoreCase);
 
+                        //string totalPhp = Convert.ToDecimal(worksheet.Cells[row, 7].Value);
+                        string totalPhpText = worksheet.Cells[row, startColIndex + 6].Text;
+                        //remove any string
+                        totalPhpText = Regex.Replace(totalPhpText, @"[^\d\.]", "");
+                        decimal.TryParse(totalPhpText, out decimal totalPhp);
+
+
+                        //string totalUSD = worksheet.Cells[row, endColIndex].Text.Trim();
+                        ////Remove any words from the totalUSD string
+                        //totalUSD = Regex.Replace(totalUSD, @"[^\d\.]", "", RegexOptions.IgnoreCase);
                         try
                         {
                             // 8. Create a new LogisticCost object
                             var logisticCost = new LogisticCost
                             {
                                 KGS = Convert.ToString(kgs),
-                                TotalUSD = Convert.ToDecimal(totalUSD),
-                                Origin = originItem.OriginName
+                                TotalPHP = Convert.ToDecimal(totalPhp),
+                                Origin = originItem.OriginName,
+                                //Freight = Convert.ToDecimal(freight),
+                                //Local = Convert.ToDecimal(local),
+                                //GoGreen = Convert.ToDecimal(goGreen),
+                                //DS = Convert.ToDecimal(ds),
+                                //FS = Convert.ToDecimal(fs)
+
                             };
 
+
                             // 9. Add the LogisticCost object to the context
-                        
+
                             _context.LogisticCost.Add(logisticCost);
                         }
                         catch (Exception ex)
@@ -215,18 +229,18 @@ namespace LogisticDashboard.API.Controllers
                             //show the variable before error
                             Console.WriteLine($"Origin: {originItem.OriginName}");
                             Console.WriteLine($"KGS: {kgs}");
-                            Console.WriteLine($"TotalUSD: {totalUSD}");
+                            Console.WriteLine($"TotalPHP: {totalPhp}");
 
                             throw;
                         }
-                        
+
                     }
 
                     // --- END OF NEW LOGIC ---
                 }
 
                 //Truncate table before saving
-                await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"LogisticCost\"");
+                await _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE \"LogisticCost\" RESTART IDENTITY;");
 
                 // 10. Save all changes to the database AFTER processing all sheets
                 await _context.SaveChangesAsync();
@@ -246,6 +260,12 @@ namespace LogisticDashboard.API.Controllers
             // Notice we compare the parsedWeight directly to the converted DB column
             var result = await _context.LogisticCost
                 .FirstOrDefaultAsync(l => l.Origin == origin && Convert.ToDecimal(l.KGS) == parsedWeight);
+
+            //var result = await _context.LogisticCost
+            //    .FirstOrDefaultAsync(l =>
+            //        EF.Functions.Like(origin, l.Origin + "%") &&
+            //        Convert.ToDecimal(l.KGS) == parsedWeight
+            //    );
 
             return result == null ? NotFound() : Ok(result);
         }

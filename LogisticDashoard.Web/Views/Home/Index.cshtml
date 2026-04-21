@@ -608,7 +608,7 @@
             </tr>
 
             <tr>
-                <td class="serious-background text-light">Critical Condition</td>
+                <td class="critical-background text-light">Critical Condition</td>
                 <td>3 - 6 days delay based on average Vessel transit LT</td>
                 <td>
                     <ol class="m-0">
@@ -634,7 +634,7 @@
             </tr>
 
             <tr>
-                <td class="critical-background text-light">Critical Condition</td>
+                <td class="serious-background text-light">Serious Condition</td>
                 <td>7 days delay</td>
                 <td>
                     Production line will stop even above MID action already implemented
@@ -653,6 +653,29 @@
     </table>
 </div>
 
+@* modal for announcement experimental *@
+<div class="modal fade" id="announcementModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <small class="text-muted" id="modalDate"></small>
+
+                <hr>
+
+                <div style="white-space: pre-line;">
+                    <p id="modalDescription"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script type="module" src="~/js/page-scripts/ImportModule/Loader.js"></script>
@@ -685,15 +708,42 @@
                 let title = item.title;
                 let description = item.description;
 
-                let html = `
+                // let html = `
                 
-                    <div class="card border-primary mb-2" style="width: 100%;">
-                        <div class="d-flex justify-content-between card-header"><p class="card-text"><small class="text-muted">${date}</small></p></div>
-                        <div class="card-body">
-                            <p>${title} </p>
+                //     <div class="card border-primary mb-2" style="width: 100%;">
+                //         <div class="d-flex justify-content-between card-header"><p class="card-text"><small class="text-muted">${date}</small></p></div>
+                //         <div class="card-body">
+                //             <p>${title} </p>
+                            
+                //             <div style="white-space: pre-line;">
+                //                 <span>${description}</span>
+                //             </div>
+                //         </div>
+                //     </div>`;
+                let html = `
+                <div class="card border-primary mb-2" style="width: 100%;">
+                    <div class="d-flex justify-content-between card-header">
+                        <p class="card-text">
+                            <small class="text-muted">${date}</small>
+                        </p>
+
+                        <button class="btn btn-sm btn-primary viewAnnouncement"
+                                data-title="${title}"
+                                data-date="${date}"
+                                data-description="${description}">
+                            View
+                        </button>
+                    </div>
+
+                    <div class="card-body">
+                        <p>${title}</p>
+
+                        <div style="white-space: pre-line;">
                             <span>${description}</span>
                         </div>
-                    </div>`;
+                    </div>
+                </div>
+                `;
 
                 $('#announcement-container').append(html);
             });
@@ -724,5 +774,19 @@
             }
 
         }
+
+        $(document).on("click", ".viewAnnouncement", function () {
+
+            const title = $(this).data("title");
+            const date = $(this).data("date");
+            const description = $(this).data("description");
+
+            $("#modalTitle").text(title);
+            $("#modalDate").text(date);
+            $("#modalDescription").text(description);
+
+            const modal = new bootstrap.Modal(document.getElementById("announcementModal"));
+            modal.show();
+        });
     </script>
 }

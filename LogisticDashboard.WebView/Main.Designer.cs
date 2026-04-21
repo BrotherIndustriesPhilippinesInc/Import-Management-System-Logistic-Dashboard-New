@@ -47,7 +47,7 @@
             this.WebViewPanel.Location = new System.Drawing.Point(0, 30);
             this.WebViewPanel.Name = "WebViewPanel";
             this.WebViewPanel.Size = new System.Drawing.Size(1280, 690);
-            this.WebViewPanel.Source = new System.Uri("http://apbiphbpswb01:1116/", System.UriKind.Absolute);
+            this.WebViewPanel.Source = new System.Uri("http://localhost:5235/", System.UriKind.Absolute);
             this.WebViewPanel.TabIndex = 0;
             this.WebViewPanel.ZoomFactor = 1D;
             this.WebViewPanel.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.WebViewPanel_CoreWebView2InitializationCompleted);

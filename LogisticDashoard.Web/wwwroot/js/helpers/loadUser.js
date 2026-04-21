@@ -19,6 +19,7 @@ $(async function () {
         .then((response) => response.json()).then((data) => { userInfo = data; });
 
 
+
     if (!userInfo["isAdmin"]) {
 
         // 1. Wrap YOUR exact code in a reusable function
@@ -61,8 +62,45 @@ $(async function () {
             $("#berthListB-table tbody td").attr("contenteditable", "false");
             $("#berthListB-table tbody :input").prop("disabled", true);
 
+            // IMPORT PIC INFORMATION TABLE
+            $("#pic-create").removeClass("d-flex").addClass("d-none");
+            // Hide actions column
+            $("table th:last-child, table td:last-child").hide();
+
             //Delivery Leadtime
             //Got included with sailing schedule
+
+            // ===== FLOWCHART CANVAS LOCK =====
+
+            // hide palette (no new shapes)
+            $("#palette").removeClass("d-flex").hide();
+
+            // hide save button
+            $("#saveChart").hide();
+
+            // disable editing text
+            $("#canvas .editable").attr("contenteditable", "false");
+
+            // disable resizing handles
+            $("#canvas .ui-resizable-handle").hide();
+
+            // prevent dragging shapes
+            if (window.instance) {
+                jsPlumb.selectEndpoints().setEnabled(false);
+                jsPlumb.selectConnections().setDetachable(false);
+            }
+
+            // remove pointer interaction
+            $("#canvas .shape").css({
+                "cursor": "default",
+                "pointer-events": "none"
+            });
+
+            document.querySelectorAll(".jtk-endpoint").forEach(el => {
+                el.style.pointerEvents = "none";
+            });
+
+            // ===== FLOWCHART CANVAS LOCK =====
 
             //Incoterms
             //disable select

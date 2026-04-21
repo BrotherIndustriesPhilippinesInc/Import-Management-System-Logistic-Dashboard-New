@@ -20,29 +20,45 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                @* <input asp-for="Description" class="form-control" /> *@
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+
+             
             <div class="form-group">
                 <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
+                <input asp-for="CreatedDate" class="form-control" readonly/>
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
+                <input asp-for="CreatedBy" class="form-control" readonly/>
                 <span asp-validation-for="CreatedBy" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @* <div class="form-group">
                 <label asp-for="UpdatedDate" class="control-label"></label>
-                <input asp-for="UpdatedDate" class="form-control" />
+                <input asp-for="UpdatedDate"
+                       type="text"
+                       class="form-control"
+                       value="@(DateTime.UtcNow.ToLocalTime().ToString("MM/dd/yyyy hh:mm:ss tt"))"
+                       readonly />
                 <span asp-validation-for="UpdatedDate" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="UpdatedBy" class="control-label"></label>
+                <input id="UpdatedBy" asp-for="UpdatedBy" class="form-control" readonly />
+                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
+            </div>
+           
+            @*<div class="form-group">
+                <label asp-for="UpdatedDate" class="control-label"></label>
+                <input id="UpdatedDate" class="form-control" readonly />  
             </div>
             <div class="form-group">
                 <label asp-for="UpdatedBy" class="control-label"></label>
-                <input asp-for="UpdatedBy" class="form-control" />
-                <span asp-validation-for="UpdatedBy" class="text-danger"></span>
-            </div>
+                <input id="UpdatedBy" class="form-control" readonly /> 
+            </div> *@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -56,4 +72,17 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
 }
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Assume you saved the user's name in localStorage as 'username'
+        const storedUser = localStorage.getItem("user");
+        let JSONstoredUser = JSON.parse(storedUser);
+        if (storedUser) {
+            document.getElementById("UpdatedBy").value = JSONstoredUser.employeeNumber;
+        }
+    });
+
+
+</script>

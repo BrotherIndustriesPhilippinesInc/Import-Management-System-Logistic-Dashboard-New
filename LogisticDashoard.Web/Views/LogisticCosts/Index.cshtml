@@ -32,7 +32,7 @@
             <small class="text-danger fw-bold">PLEASE INPUT CURRENT EXCHANGE <br /> RATE</small>
             <div class="d-flex">
                 <div><input type="number" id="exchangeRate" style="width: 60px;" /></div>
-                <div><button style="background-color: #000040" class="text-light fw-bold">Calculate</button></div>
+                <div><button id="courierCalculateBtn" style="background-color: #000040" class="text-light fw-bold">Calculate</button></div>
             </div>
         </div>
 
@@ -162,15 +162,177 @@
     <script>
         $(() => {
 
-            function bindCalculator(weightSelector, originSelector, resultSelector) {
+            // function bindCalculator(weightSelector, originSelector, resultSelector) {
 
-                $(weightSelector + ", " + originSelector).on("change", async function () {
+            //     $(weightSelector + ", " + originSelector).on("change", async function () {
 
-                    let weight = $(weightSelector).val();
-                    let origin = $(originSelector).val();
+            //         let weight = $(weightSelector).val();
+            //         let origin = $(originSelector).val();
 
-                    if (weight && origin) {
+            //         if (weight && origin) {
+            //             try {
+            //                 const result = await $.ajax({
+            //                     url: `${API_BASE_URL}/api/LogisticCosts/CalculateCost`,
+            //                     method: "GET",
+            //                     data: {
+            //                         weight: weight,
+            //                         origin: origin
+            //                     }
+            //                 });
+
+            //                 $(resultSelector).val(`USD: ${result.totalUSD}`);
+            //             }
+            //             catch (err) {
+            //                 console.error("Error:", err);
+            //                 alert("Invalid Weight")
+            //             }
+            //         }
+            //     });
+            // }
+
+
+
+            // $('#uploadInput').on('change', function () {
+            //     const file = this.files[0];
+
+            //     if (!file) {
+            //         console.warn('No file selected.');
+            //         return;
+            //     }
+
+            //     const formData = new FormData();
+            //     formData.append('file', file);
+
+            //     $.ajax({
+            //         url: `${API_BASE_URL}/api/LogisticCosts/Upload`, // 🔥 Replace with your actual API route
+            //         type: 'POST',
+            //         data: formData,
+            //         processData: false,
+            //         contentType: false,
+            //         success: function (response) {
+            //             console.log('Upload success:', response);
+            //             // 😎 Do your success handling here (toast, reload, etc.)
+            //             alert('Upload success');
+            //             location.reload();
+            //         },
+            //         error: function (xhr, status, error) {
+            //             console.error('Upload failed:', error);
+            //             // 😤 Handle upload errors
+            //         }
+            //     });
+            // });
+
+
+
+            // Use the SAME function for both
+            // bindCalculator("#courierWeight", "#courierOrigin", "#courierResult");
+            // bindCalculator("#afWeight", "#afOrigin", "#afResult");
+
+
+                $('#uploadInput').on('change', function () {
+
+                    const file = this.files[0];
+
+                    if (!file) {
+                        console.warn('No file selected.');
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    Swal.fire({
+                        title: "Uploading...",
+                        text: "Please wait while the file is processed",
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    $.ajax({
+                        url: `${API_BASE_URL}/api/LogisticCosts/Upload`,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+
+                        success: function (response) {
+
+                            Swal.fire({
+                                icon: "success",
+                                title: "Upload Successful",
+                                text: "The file has been processed.",
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1500);
+
+                        },
+
+                        error: function (xhr, status, error) {
+
+                            console.error('Upload failed:', error);
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Upload Failed",
+                                text: "Something went wrong while uploading the file."
+                            });
+
+                        }
+                    });
+
+                });
+
+                function bindCalculator(buttonSelector, weightSelector, originSelector, resultSelector) {
+
+                    $(buttonSelector).on("click", async function () {
+
+                        let courierWeight = $("#courierWeight").val();
+                        let afWeight = $("#afWeight").val();
+                        let exchangeRate = $("#exchangeRate").val();
+
+                        if (!courierWeight && !afWeight) {
+                            alert("Please enter at least one weight.");
+                            return;
+                        }
+
+                        if (!exchangeRate) {
+                            alert("Exchange rate is required.");
+                            return;
+                        }
+
+                        exchangeRate = parseFloat(exchangeRate);
+
+                        if (isNaN(exchangeRate) || exchangeRate <= 0) {
+                            alert("Invalid exchange rate.");
+                            return;
+                        }
+
+                        let weight = $(weightSelector).val();
+                        let origin = $(originSelector).val();
+
+                        if (!weight || !origin) {
+                            return; // silently skip if this calculator has no value
+                        }
+
                         try {
+
+                            Swal.fire({
+                                title: "Calculating...",
+                                text: "Please wait",
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+
                             const result = await $.ajax({
                                 url: `${API_BASE_URL}/api/LogisticCosts/CalculateCost`,
                                 method: "GET",
@@ -180,50 +342,28 @@
                                 }
                             });
 
-                            $(resultSelector).val(`USD: ${result.totalUSD}`);
-                        }
-                        catch (err) {
+                            Swal.close(); // stop loading
+
+
+                            const totalPhp = result.totalPHP;
+                            const totalUsd = totalPhp / exchangeRate;
+
+                            $(resultSelector).val(`USD: ${totalUsd.toFixed(2)}`);
+
+                        } catch (err) {
+                            Swal.close(); // stop loading
+
                             console.error("Error:", err);
-                            alert("Invalid Weight")
+                            alert("Invalid weight or origin.");
                         }
-                    }
-                });
-            }
 
-            $('#uploadInput').on('change', function () {
-                const file = this.files[0];
-
-                if (!file) {
-                    console.warn('No file selected.');
-                    return;
+                    });
                 }
 
-                const formData = new FormData();
-                formData.append('file', file);
 
-                $.ajax({
-                    url: `${API_BASE_URL}/api/LogisticCosts/Upload`, // 🔥 Replace with your actual API route
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        console.log('Upload success:', response);
-                        // 😎 Do your success handling here (toast, reload, etc.)
-                        alert('Upload success');
-                        location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Upload failed:', error);
-                        // 😤 Handle upload errors
-                    }
-                });
-            });
-
-            // Use the SAME function for both
-            bindCalculator("#courierWeight", "#courierOrigin", "#courierResult");
-            bindCalculator("#afWeight", "#afOrigin", "#afResult");
-
+            bindCalculator("#courierCalculateBtn", "#courierWeight", "#courierOrigin", "#courierResult");
+            bindCalculator("#courierCalculateBtn", "#afWeight", "#afOrigin", "#afResult");
+            console.log("test");
         });
     </script>
 }

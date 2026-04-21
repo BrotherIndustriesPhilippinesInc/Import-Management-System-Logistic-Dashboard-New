@@ -423,23 +423,116 @@ namespace LogisticDashboard.API.Controllers
             return _context.SeaFreightScheduleMonitoring.Any(e => e.Id == id);
         }
 
+        //[HttpGet("category_status")]
+        //public async Task<ActionResult<IEnumerable<SeaFreightScheduleMonitoring>>> GetSeaFreightScheduleMonitoring(
+        //[FromQuery] string item_category,
+        //[FromQuery] string actual_status)
+        //{
+        //    var results = await _context.SeaFreightScheduleMonitoring
+        //        .Where(x => x.ItemCategory.ToLower() == item_category.ToLower()
+        //                 && x.Actual_Status.ToLower() == actual_status.ToLower())
+        //        .ToListAsync();
+
+        //    if (!results.Any())
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return results;
+        //}
         [HttpGet("category_status")]
         public async Task<ActionResult<IEnumerable<SeaFreightScheduleMonitoring>>> GetSeaFreightScheduleMonitoring(
-        [FromQuery] string item_category,
-        [FromQuery] string actual_status)
+            [FromQuery] string? item_category = null,
+            [FromQuery] string? actual_status = null,
+            [FromQuery] DateTime uploadDateTime = default,
+            [FromQuery] string? search = null)
         {
-            var results = await _context.SeaFreightScheduleMonitoring
-                .Where(x => x.ItemCategory.ToLower() == item_category.ToLower()
-                         && x.Actual_Status.ToLower() == actual_status.ToLower())
-                .ToListAsync();
+            var start = uploadDateTime.AddMinutes(-10);
+            var end = uploadDateTime.AddMinutes(10);
 
-            if (!results.Any())
+            // STEP 1: get containers from selected upload ONLY
+            //var snapshotContainers = await _context.SeaFreightScheduleMonitoring
+            //    .Where(x => x.DateCreated >= start && x.DateCreated < end)
+            //    .Where(x => x.ItemCategory.ToLower() == item_category.ToLower())
+            //    .Select(x => new { x.BL, x.Container_No })
+            //    .Distinct()
+            //    .ToListAsync();
+
+            //if (!snapshotContainers.Any())
+            //    return Ok(new List<SeaFreightScheduleMonitoring>());
+
+            // STEP 1 (FIXED)
+            var snapshotQuery = _context.SeaFreightScheduleMonitoring
+                .Where(x => x.DateCreated >= start && x.DateCreated < end);
+
+            if (!string.IsNullOrWhiteSpace(item_category))
             {
-                return NotFound();
+                var category = item_category.Trim().ToLower();
+
+                snapshotQuery = snapshotQuery.Where(x =>
+                    x.ItemCategory != null &&
+                    x.ItemCategory.ToLower().Trim() == category);
             }
 
-            return results;
+            var snapshotContainers = await snapshotQuery
+                .Select(x => new { x.BL, x.Container_No })
+                .Distinct()
+                .ToListAsync();
+
+            if (!snapshotContainers.Any())
+                return Ok(new List<SeaFreightScheduleMonitoring>());
+
+            // IMPORTANT: NO DATE FILTER HERE ANYMORE
+            // STEP 2: get ALL history of those containers
+            //var data = await _context.SeaFreightScheduleMonitoring
+            //    .Where(x => snapshotContainers
+            //        .Select(s => s.BL + "|" + s.Container_No)
+            //        .Contains(x.BL + "|" + x.Container_No))
+            //    .ToListAsync();
+            // STEP 2 (FIXED)
+            var allData = await _context.SeaFreightScheduleMonitoring
+                .ToListAsync();
+
+            var data = allData
+                .Where(x => snapshotContainers.Any(s =>
+                    s.BL == x.BL && s.Container_No == x.Container_No))
+                .ToList();
+
+
+            // STEP 3: get GLOBAL latest record per container
+            var latestRecords = data
+                .GroupBy(x => new { x.BL, x.Container_No })
+                .Select(g => g
+                    .OrderByDescending(x => x.DateCreated)
+                    .ThenByDescending(x => x.Id)
+                    .First())
+                .ToList();
+
+            // STEP 4: apply status ONLY if provided
+            if (!string.IsNullOrWhiteSpace(actual_status))
+            {
+                var status = actual_status.Trim().ToLower();
+
+                latestRecords = latestRecords
+                    .Where(x => x.Actual_Status != null &&
+                                x.Actual_Status.Trim().ToLower() == status)
+                    .ToList();
+            }
+
+            // STEP 5: search
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var s = search.ToLower();
+
+                latestRecords = latestRecords.Where(x =>
+                    (x.BL != null && x.BL.ToLower().Contains(s)) ||
+                    (x.Container_No != null && x.Container_No.ToLower().Contains(s))
+                ).ToList();
+            }
+
+            return Ok(latestRecords);
         }
+        //test
 
         [HttpGet("ImportInfo")]
         public async Task<IActionResult> ImportInfo()
@@ -621,7 +714,7 @@ namespace LogisticDashboard.API.Controllers
                     DelayPct = g.Count() == 0 ? 0 : Math.Round(g.Count(x => x.VesselStatus == "DELAY") * 100.0 / g.Count(), 2),
                     OnTimePct = g.Count() == 0 ? 0 : Math.Round(g.Count(x => x.VesselStatus == "ON-TIME") * 100.0 / g.Count(), 2),
 
-                    // 🔥 CHANGED: Return as a List (JSON Array) instead of a string
+                    // CHANGED: Return as a List (JSON Array) instead of a string
                     VesselRemarks = g.Select(x => x.VesselRemarks)
                                      .Where(r => !string.IsNullOrWhiteSpace(r))
                                      .Distinct()

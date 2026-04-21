@@ -43,13 +43,13 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
+                @(item.CreatedDate?.ToLocalTime())
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
+                @(item.UpdatedDate?.ToLocalTime())
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UpdatedBy)

@@ -4,6 +4,7 @@ using LogisticDashboard.API.Data;
 using LogisticDashboard.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LogisticDashboard.API.Migrations
 {
     [DbContext(typeof(LogisticDashboardAPIContext))]
-    partial class LogisticDashboardAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20260304040150_AddColumnForlogisticCostTable")]
+    partial class AddColumnForlogisticCostTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -847,15 +850,30 @@ namespace LogisticDashboard.API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("DS")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("FS")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Freight")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("GoGreen")
+                        .HasColumnType("numeric");
+
                     b.Property<string>("KGS")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<decimal>("Local")
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Origin")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal>("TotalPHP")
+                    b.Property<decimal>("TotalUSD")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");

@@ -149,8 +149,8 @@ namespace LogisticDashboard
             Dictionary<string, string> post = new Dictionary<string, string> {
                 { "id_number", UserIdNumber.ToString() }
             };
-
             JObject data = await apiHandler.APIGetCall($"http://apbiphbpswb01:80/PortalAPI/api/SystemApproverLists/SearchEmployee?employeeNumber={UserIdNumber.ToString()}&systemID=77");
+
 
 
             await webViewFunctions.ExecuteJavascript($"localStorage.setItem(\"user\", JSON.stringify({data}));");
@@ -161,8 +161,8 @@ namespace LogisticDashboard
             Dictionary<string, string> post = new Dictionary<string, string> {
                 { "id_number", UserIdNumber.ToString() }
             };
-
             JObject data = await apiHandler.APIGetCall($"http://apbiphbpswb01:80/PortalAPI/api/SystemApproverLists/SearchEmployee?employeeNumber={UserIdNumber.ToString()}&systemID=77");
+
 
 
             await webViewFunctions.ExecuteJavascript($"localStorage.setItem(\"user\", JSON.stringify({data}));");

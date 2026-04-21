@@ -103,7 +103,7 @@ namespace LogisticDashboard.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ModeOfShipment,Supplier,ShippingMainPICStaff,ShippingSubPICStaff,Supervisor,CreatedBy,CreatedDate,UpdatedBy,UpdatedDate")] ImportPICInformation importPICInformation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ModeOfShipment,Supplier,ShippingMainPICStaff,ShippingSubPICStaff,Supervisor,CreatedBy,CreatedDate,UpdatedBy")] ImportPICInformation importPICInformation)
         {
             if (id != importPICInformation.Id)
             {
@@ -114,6 +114,7 @@ namespace LogisticDashboard.Web.Controllers
             {
                 try
                 {
+                    importPICInformation.UpdatedDate = DateTime.UtcNow;
                     _context.Update(importPICInformation);
                     await _context.SaveChangesAsync();
                 }
