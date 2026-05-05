@@ -148,4 +148,3 @@ $(async function () {
         setInterval(lockEverythingDown, 500);
     }
 });
-        

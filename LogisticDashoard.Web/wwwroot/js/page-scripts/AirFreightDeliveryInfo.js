@@ -98,7 +98,7 @@ $(async function () {
             { data: 'actual_Del', title: 'Actual Del' },
             { data: 'status', title: 'Status' },
             { data: 'import_Remarks', title: 'Import Remarks', visible: false },
-            { data: 'system_Update', title: 'System Update', visible: false }
+            { data: 'system_Update', title: 'System Update' }
         ]
     });
 
@@ -161,7 +161,8 @@ $(async function () {
     });
 
     $("#upload-date-time").on("change", function () {
-        const selectedDateTime = $(this).val();
+        //const selectedDateTime = $(this).val();
+        selectedUploadDateTime = $(this).val();
         currentCategory = "";
         currentStatus = "";
 

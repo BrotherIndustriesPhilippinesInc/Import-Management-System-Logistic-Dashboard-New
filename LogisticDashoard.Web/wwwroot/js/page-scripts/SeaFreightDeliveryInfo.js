@@ -115,7 +115,7 @@ $(async function () {
             { data: 'step_4', title: 'Step 4', visible: false },
             { data: 'step_5', title: 'Step 5', visible: false },
             { data: 'step_6', title: 'Step 6', visible: false },
-            { data: 'actual_Status', title: 'Actual Status', visible: false },
+            { data: 'actual_Status', title: 'Actual Status'},
             { data: 'shipment_Processing_Remarks', title: 'Shipment Processing Remarks', visible: false },
 
             // BOBTAIL / DETENTION
@@ -133,8 +133,8 @@ $(async function () {
             { data: 'request_to_Unload_AM_or_PM', title: 'Request to Unload AM/PM', visible: false },
 
             // OTHER
-            { data: 'random_Boolean', title: 'Random Boolean', visible: false },
-            { data: 'final_Remarks', title: 'Final Remarks', visible: false }
+            { data: 'final_Remarks', title: 'Final Remarks', visible: false },
+            { data: 'random_Boolean', title: 'Random Boolean' }
         ],
         
     });

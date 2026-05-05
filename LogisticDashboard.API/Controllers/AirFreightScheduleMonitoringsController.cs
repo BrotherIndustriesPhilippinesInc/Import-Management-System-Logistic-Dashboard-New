@@ -289,6 +289,16 @@ namespace LogisticDashboard.API.Controllers
                     .ThenByDescending(x => x.Id)
                     .First())
                 .ToList();
+            //var latestRecords = allData
+            //    .GroupBy(x => x.AWB)
+            //    .Select(g =>
+            //        g.OrderByDescending(x => x.DateCreated)
+            //         .ThenByDescending(x => x.Id)
+            //         .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Status))
+            //        ?? g.OrderByDescending(x => x.DateCreated)
+            //             .ThenByDescending(x => x.Id)
+            //             .First())
+            //        .ToList();
 
             // STEP 4: APPLY CATEGORY AGAIN (IMPORTANT)
             if (!string.IsNullOrWhiteSpace(item_category))

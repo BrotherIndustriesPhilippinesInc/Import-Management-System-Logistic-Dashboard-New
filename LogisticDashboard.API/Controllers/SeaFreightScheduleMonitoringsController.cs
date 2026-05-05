@@ -500,13 +500,23 @@ namespace LogisticDashboard.API.Controllers
 
 
             // STEP 3: get GLOBAL latest record per container
+            //var latestRecords = data
+            //    .GroupBy(x => new { x.BL, x.Container_No })
+            //    .Select(g => g
+            //        .OrderByDescending(x => x.DateCreated)
+            //        .ThenByDescending(x => x.Id)
+            //        .First())
+            //    .ToList();
             var latestRecords = data
                 .GroupBy(x => new { x.BL, x.Container_No })
-                .Select(g => g
-                    .OrderByDescending(x => x.DateCreated)
-                    .ThenByDescending(x => x.Id)
-                    .First())
-                .ToList();
+                .Select(g =>
+                    g.OrderByDescending(x => x.DateCreated)
+                     .ThenByDescending(x => x.Id)
+                     .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Actual_Status))
+                    ?? g.OrderByDescending(x => x.DateCreated)
+                         .ThenByDescending(x => x.Id)
+                         .First())
+                    .ToList();
 
             // STEP 4: apply status ONLY if provided
             if (!string.IsNullOrWhiteSpace(actual_status))
