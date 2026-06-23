@@ -6,17 +6,53 @@ $(async function () {
     let currentCategory = "";
     let currentStatus = "";
 
+    //const table = $('#sea-freight-table').DataTable({
+    //    layout: {
+    //        topStart: {
+    //            buttons: ['colvis']
+    //        },
+    //        topEnd: ['search', 'pageLength'],
+
+    //    },
+    //    ajax: {
+    //        //url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${uploadDate}`,
+    //        url: buildUrl(),
+    //        method: "GET",
+    //        dataSrc: '',
+    //        error: function (xhr, status, error) {
+    //            if (xhr.status === 404) {
+    //                table.clear().draw();
+    //                alert("No Data Found (404)");
+    //            } else {
+    //                alert("Error: " + xhr.status + " " + thrown);
+    //            }
+    //        }
+    //    },
+
+    // ✅ Define buildUrl BEFORE DataTable so it's available
+    function buildUrl() {
+        let url = `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/category_status`
+            + `?uploadDateTime=${encodeURIComponent(selectedUploadDateTime)}`;
+
+        if (currentCategory) {
+            url += `&item_category=${currentCategory}`;
+        }
+
+        if (currentStatus) {
+            url += `&actual_status=${encodeURIComponent(currentStatus)}`;
+        }
+
+        return url;
+    }
+
+    // ✅ Now safe — selectedUploadDateTime is already set, buildUrl is defined
     const table = $('#sea-freight-table').DataTable({
         layout: {
-            topStart: {
-                buttons: ['colvis']
-            },
+            topStart: { buttons: ['colvis'] },
             topEnd: ['search', 'pageLength'],
-
         },
         ajax: {
-            //url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings?createdDateTime=${uploadDate}`,
-            url: buildUrl(),
+            url: buildUrl(),   // ✅ called after everything is ready
             method: "GET",
             dataSrc: '',
             error: function (xhr, status, error) {
@@ -24,7 +60,7 @@ $(async function () {
                     table.clear().draw();
                     alert("No Data Found (404)");
                 } else {
-                    alert("Error: " + xhr.status + " " + thrown);
+                    alert("Error: " + xhr.status + " " + error);  // also fixed: was 'thrown'
                 }
             }
         },
@@ -144,6 +180,40 @@ $(async function () {
     var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
     /*EVENTS*/
+    //$('#uploadInput').on('change', function () {
+    //    const file = this.files[0];
+
+    //    let user = localStorage.getItem('user');
+    //    user = JSON.parse(user);
+    //    let adid = user.EmpNo;
+
+    //    if (!file) {
+    //        console.warn('No file selected.');
+    //        return;
+    //    }
+
+    //    const formData = new FormData();
+    //    formData.append('file', file);
+
+    //    $.ajax({
+    //        url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/uploadNew?createdBy=${adid}`, //  Replace with your actual API route
+    //        type: 'POST',
+    //        data: formData,
+    //        processData: false,
+    //        contentType: false,
+    //        success: function (response) {
+    //            console.log('Upload success:', response);
+    //            //  Do your success handling here (toast, reload, etc.)
+    //            alert('Upload success');
+    //            location.reload();
+    //        },
+    //        error: function (xhr, status, error) {
+    //            console.error('Upload failed:', error);
+    //            //  Handle upload errors
+    //        }
+    //    });
+    //});
+
     $('#uploadInput').on('change', function () {
         const file = this.files[0];
 
@@ -160,20 +230,31 @@ $(async function () {
         formData.append('file', file);
 
         $.ajax({
-            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/uploadNew?createdBy=${adid}`, //  Replace with your actual API route
+            url: `${API_BASE_URL}/api/SeaFreightScheduleMonitorings/uploadNew?createdBy=${adid}`,
             type: 'POST',
             data: formData,
             processData: false,
             contentType: false,
-            success: function (response) {
+            success: async function (response) {
                 console.log('Upload success:', response);
-                //  Do your success handling here (toast, reload, etc.)
-                alert('Upload success');
-                location.reload();
+
+                // Reset filters
+                currentCategory = "";
+                currentStatus = "";
+
+                // Re-fetch dropdown and auto-select new upload, then reload table
+                const newDate = await getUploadDateAndTime();
+                selectedUploadDateTime = newDate;
+                table.ajax.url(buildUrl()).load(null, false);
+
+                alert('Upload successful! Table updated to latest data.');
+
+                // Reset file input so same file can be re-uploaded if needed
+                $('#uploadInput').val('');
             },
             error: function (xhr, status, error) {
                 console.error('Upload failed:', error);
-                //  Handle upload errors
+                alert('Upload failed: ' + xhr.responseText);
             }
         });
     });

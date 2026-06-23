@@ -252,10 +252,42 @@ namespace LogisticDashboard.API.Controllers
             if (worksheet == null)
                 return BadRequest("No worksheet found in Excel.");
 
-            int startRow = 11;
             int startCol = 2;
             int rowCount = worksheet.Dimension.Rows;
+            // TEMPORARY DEBUG - remove after fixing
+//var debugRows = new List<object>();
+//for (int r = 1; r <= Math.Min(15, rowCount); r++)
+//{
+//    debugRows.Add(new {
+//        row = r,
+//        colA = worksheet.Cells[r, 1].Text,
+//        colB = worksheet.Cells[r, 2].Text,
+//        colC = worksheet.Cells[r, 3].Text
+//    });
+//}
+//return Ok(debugRows); // ← temporary, remove after
+            // ✅ Replace the startRow finder with this:
+            int startRow = -1;
+            for (int row = 1; row <= rowCount; row++)
+            {
+                // Check col A, B, or C for a number (row No.)
+                for (int checkCol = 1; checkCol <= 3; checkCol++)
+                {
+                    var cellText = worksheet.Cells[row, checkCol].Text?.Trim();
+                    if (int.TryParse(cellText, out int rowNo) && rowNo > 0)
+                    {
+                        startRow = row;
+                        break;
+                    }
+                }
+                if (startRow != -1) break;
+            }
 
+            if (startRow == -1)
+            {
+                // Fallback to hardcoded row 11 if detection fails
+                startRow = 11;
+            }
             // 3. Loop through rows and build the list
             for (int row = startRow; row <= rowCount; row++)
             {
