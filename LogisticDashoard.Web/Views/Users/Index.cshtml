@@ -27,11 +27,39 @@
     </tbody>
 </table>
 
+<div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminModalLabel">Change User Authority</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>User: <strong id="adminModalUserName"></strong></p>
+                <div class="form-group">
+                    <label for="adminStatusSelect" class="form-label fw-bold">Authority</label>
+                    <select class="form-select" id="adminStatusSelect">
+                        <option value="true">Admin</option>
+                        <option value="false">Not Admin</option>
+                    </select>
+                </div>
+                <input type="hidden" id="adminModalId" />
+                <input type="hidden" id="adminModalPortalId" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSaveAdminStatus">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
             let table = $("#users-table").DataTable({
         ajax: {
             url: 'http://apbiphbpswb01:1117/api/Users/GetDataTableUsers',
+            // url: 'https://localhost:7019/api/Users/GetDataTableUsers',
             type: 'POST',
             contentType: 'application/json',
             data: function (d) {
@@ -47,17 +75,22 @@
                 { data: "position" },
                 { data: "employeeNumber" },
                 { data: "adid" },
-                { 
-                    data: "isAdmin",
-                    render: function (data) {
-                        if(data) {
-                            return '<i class="fas fa-check-circle text-success"></i>'; // green check
-                        } else {
-                            return '<i class="fas fa-times-circle text-danger"></i>'; // red cross
-                        }
-                    },
-                    className: "text-center" // optional: center the icon
-                },
+                                       {
+            data: "isAdmin",
+            render: function (data, type, row) {
+                const localId = row.localId ?? "";
+                const iconClass = data ? "fa-check-circle text-success" : "fa-times-circle text-danger";
+
+                return `<button type="button" class="btn btn-link p-0 admin-toggle-btn"
+                            data-id="${localId}"
+                            data-portal-id="${row.id}"
+                            data-full-name="${row.fullName}"
+                            data-is-admin="${data}">
+                            <i class="fas ${iconClass}"></i>
+                        </button>`;
+            },
+            className: "text-center"
+        },
                 {
                     data: null,
                     orderable: false,
@@ -74,4 +107,5 @@
     
     
     </script>
+    <script type="module" src="~/js/page-scripts/Users.js"></script>
 }

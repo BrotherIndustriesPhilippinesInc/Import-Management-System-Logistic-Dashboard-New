@@ -48,6 +48,7 @@ namespace LogisticDashboard.API.Controllers
         public class PortalUserWithAdmin
         {
             public int Id { get; set; }
+            public int? LocalId { get; set; }   // ADD THIS
             public string FullName { get; set; }
             public string EmailAddress { get; set; }
             public string Section { get; set; }
@@ -57,6 +58,11 @@ namespace LogisticDashboard.API.Controllers
             public bool IsAdmin { get; set; } // comes from local db
         }
 
+        public class CreateLocalUserRequest
+        {
+            public int PortalId { get; set; }
+            public bool IsAdmin { get; set; }
+        }
 
         public UsersController(LogisticDashboardAPIContext context, HttpClient httpClient)
         {
@@ -75,20 +81,26 @@ namespace LogisticDashboard.API.Controllers
         [HttpPost("GetDataTableUsers")]
         public async Task<IActionResult> GetDataTableUsers([FromBody] DataTableRequest request)
         {
+            Console.WriteLine("TEST MARKER: NEW CODE IS RUNNING - " + DateTime.Now);
             var portalResponse = await GetPortalUsersForDataTableAsync(77, request);
 
             // Merge with local IsAdmin info
             var localUsers = await _context.Users.ToListAsync();
-            var mergedData = portalResponse.Data.Select(p => new PortalUserWithAdmin
+            var mergedData = portalResponse.Data.Select(p =>
             {
-                Id = p.Id,
-                FullName = p.FullName,
-                EmailAddress = p.EmailAddress,
-                Section = p.Section,
-                Position = p.Position,
-                ADID = p.Adid,
-                EmployeeNumber = p.EmployeeNumber,
-                IsAdmin = localUsers.Any(u => u.PortalId == p.Id && u.IsAdmin)
+                var localMatch = localUsers.FirstOrDefault(u => u.PortalId == p.Id);
+                return new PortalUserWithAdmin
+                {
+                    Id = p.Id,
+                    LocalId = localMatch?.Id,       // ADD THIS
+                    FullName = p.FullName,
+                    EmailAddress = p.EmailAddress,
+                    Section = p.Section,
+                    Position = p.Position,
+                    ADID = p.Adid,
+                    EmployeeNumber = p.EmployeeNumber,
+                    IsAdmin = localMatch?.IsAdmin ?? false   // CHANGED from .Any(...)
+                };
             }).ToList();
 
             var result = new DataTableResponse<PortalUserWithAdmin>
@@ -355,6 +367,25 @@ namespace LogisticDashboard.API.Controllers
         private bool UsersExists(int id)
         {
             return _context.Users.Any(e => e.Id == id);
+        }
+
+        [HttpPost("CreateLocalRecord")]
+        public async Task<IActionResult> CreateLocalRecord([FromBody] CreateLocalUserRequest request)
+        {
+            var existing = await _context.Users.FirstOrDefaultAsync(u => u.PortalId == request.PortalId);
+            if (existing != null)
+                return Conflict(new { message = "Local record already exists for this user." });
+
+            var newUser = new Users
+            {
+                PortalId = request.PortalId,
+                IsAdmin = request.IsAdmin
+            };
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+
+            return Ok(newUser);
         }
     }
 }

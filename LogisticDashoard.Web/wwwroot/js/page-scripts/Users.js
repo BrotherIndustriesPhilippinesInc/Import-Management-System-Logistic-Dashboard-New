@@ -28,8 +28,8 @@ $(function () {
             if (response.ok) { // Check response.ok (status 200-299)
                 Swal.fire({
                     icon: "success",
-                    title: "Update successful!",
-                    text: "User updated successfully",
+                    title: "User created!",
+                    text: "User created successfully",
                     showConfirmButton: false,
                     timer: 1000
                 }).then(() => {
@@ -37,12 +37,10 @@ $(function () {
                     window.location.href = "/Users";
                 });
 
-                
-
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Update failed!",
+                    title: "Creation failed!",
                     text: data.message || "Something went wrong", // Show server error if available
                     showConfirmButton: false,
                     timer: 1000
@@ -96,6 +94,95 @@ $(function () {
                     icon: "error",
                     title: "Delete failed!",
                     text: data.message || "Something went wrong", // Show server error if available
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: "error",
+                title: "Network Error",
+                text: "Could not reach the server.",
+            });
+        }
+    });
+
+    // Open modal when Is Admin icon/button is clicked
+    $(document).on("click", ".admin-toggle-btn", function () {
+        const id = $(this).data("id");            // local Users.Id
+        const portalId = $(this).data("portal-id"); // PortalId
+        const fullName = $(this).data("full-name");
+        const isAdmin = $(this).data("is-admin");
+
+        $("#adminModalUserName").text(fullName);
+        $("#adminModalId").val(id);
+        $("#adminModalPortalId").val(portalId);
+        $("#adminStatusSelect").val(isAdmin.toString());
+
+        const adminModal = new bootstrap.Modal(document.getElementById("adminModal"));
+        adminModal.show();
+    });
+
+    // Save the new admin status
+    $(document).on("click", "#btnSaveAdminStatus", async function () {
+        const id = $("#adminModalId").val();
+        const portalId = $("#adminModalPortalId").val();
+        const newIsAdmin = $("#adminStatusSelect").val() === "true";
+
+        console.log("raw portalId from input:", portalId, typeof portalId);
+        console.log("parsed:", parseInt(portalId));
+
+        const bodyPayload = id
+            ? { id: parseInt(id), portalId: parseInt(portalId), isAdmin: newIsAdmin }
+            : { portalId: parseInt(portalId), isAdmin: newIsAdmin };
+
+        console.log("body being sent:", JSON.stringify(bodyPayload)); // TEMPORARY
+
+        try {
+            let response;
+
+            if (id) {
+                // May local record na -> UPDATE
+                response = await fetch(`${API_BASE_URL}/api/Users/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: parseInt(id),
+                        portalId: parseInt(portalId),
+                        isAdmin: newIsAdmin
+                    })
+                });
+            } else {
+                // Walang local record pa -> AUTO-CREATE
+                response = await fetch(`${API_BASE_URL}/api/Users/CreateLocalRecord`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        portalId: parseInt(portalId),
+                        isAdmin: newIsAdmin
+                    })
+                });
+            }
+
+            bootstrap.Modal.getInstance(document.getElementById("adminModal")).hide();
+
+            if (response.ok) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Authority updated!",
+                    text: "User authority updated successfully",
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(() => {
+                    $("#users-table").DataTable().ajax.reload(null, false);
+                });
+            } else {
+                const data = await response.json().catch(() => ({}));
+                Swal.fire({
+                    icon: "error",
+                    title: "Update failed!",
+                    text: data.message || "Something went wrong",
                     showConfirmButton: false,
                     timer: 1000
                 });
