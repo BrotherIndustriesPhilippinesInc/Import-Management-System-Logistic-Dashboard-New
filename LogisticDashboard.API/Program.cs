@@ -42,11 +42,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("AllowLocalhost");
-
+app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
+
+app.UseCors("AllowLocalhost");   // ✅ dito na ilagay, pagkatapos ng UseRouting, bago ang MapControllers
 
 if (app.Environment.IsDevelopment())
 {
@@ -54,8 +54,5 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 app.MapControllers();
-
 app.Run();
