@@ -387,5 +387,23 @@ namespace LogisticDashboard.API.Controllers
 
             return Ok(newUser);
         }
+
+        // POST: api/Users/UpdateAdmin
+        [HttpPost("UpdateAdmin")]
+        public async Task<IActionResult> UpdateAdmin([FromBody] Users users)
+        {
+            var existingUser = await _context.Users.FindAsync(users.Id);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            existingUser.PortalId = users.PortalId;
+            existingUser.IsAdmin = users.IsAdmin;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(existingUser);
+        }
     }
 }

@@ -143,9 +143,9 @@ $(function () {
             let response;
 
             if (id) {
-                // May local record na -> UPDATE
-                response = await fetch(`${API_BASE_URL}/api/Users/${id}`, {
-                    method: 'PUT',
+                // May local record na -> UPDATE (POST, hindi PUT, para maiwasan ang WebDAV block)
+                response = await fetch(`${API_BASE_URL}/api/Users/UpdateAdmin`, {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         id: parseInt(id),
@@ -154,7 +154,7 @@ $(function () {
                     })
                 });
             } else {
-                // Walang local record pa -> AUTO-CREATE
+                // Walang local record pa -> AUTO-CREATE (same as before)
                 response = await fetch(`${API_BASE_URL}/api/Users/CreateLocalRecord`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
