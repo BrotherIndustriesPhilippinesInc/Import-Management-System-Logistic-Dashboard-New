@@ -1,5 +1,4 @@
-﻿
-//Authorization
+﻿//Authorization
 $(async function () {
 
 
@@ -12,13 +11,14 @@ $(async function () {
 
     $("#userName").text(username);
     $("#userDepartment").text(department);
-    $("#userSection").text(section); 
+    $("#userSection").text(section);
 
 
     await fetch(`http://apbiphbpswb01:1117/api/Users/GetPortalUserCredentials?employeeNumber=${user["employeeNumber"]}`, { method: "GET" })
         .then((response) => response.json()).then((data) => { userInfo = data; });
 
-
+    // Expose globally para magamit ng ibang scripts (e.g. Users.js)
+    window.isCurrentUserAdmin = userInfo["isAdmin"];
 
     if (!userInfo["isAdmin"]) {
 
@@ -132,7 +132,9 @@ $(async function () {
 
             //Administrators
             $(".user-control").removeClass("d-flex").addClass("d-none");
-            
+
+            // Is Admin toggle buttons - disable lang, huwag itago (para makita pa rin ang status)
+            $(".admin-toggle-btn").prop("disabled", true).css({ "cursor": "not-allowed" });
 
         }
 

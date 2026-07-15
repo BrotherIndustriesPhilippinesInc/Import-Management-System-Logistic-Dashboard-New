@@ -1,5 +1,4 @@
-﻿
-$(function () {
+﻿$(function () {
     // 1. You MUST add the 'async' keyword here
     $("#btnSave").on("click", async function (e) {
         e.preventDefault(); // Stop the form from submitting normally
@@ -110,6 +109,11 @@ $(function () {
 
     // Open modal when Is Admin icon/button is clicked
     $(document).on("click", ".admin-toggle-btn", function () {
+        // Extra guard - block kahit ma-late ang disable ng loadUser.js
+        if (window.isCurrentUserAdmin === false) {
+            return;
+        }
+
         const id = $(this).data("id");            // local Users.Id
         const portalId = $(this).data("portal-id"); // PortalId
         const fullName = $(this).data("full-name");
@@ -130,14 +134,9 @@ $(function () {
         const portalId = $("#adminModalPortalId").val();
         const newIsAdmin = $("#adminStatusSelect").val() === "true";
 
-        console.log("raw portalId from input:", portalId, typeof portalId);
-        console.log("parsed:", parseInt(portalId));
-
         const bodyPayload = id
             ? { id: parseInt(id), portalId: parseInt(portalId), isAdmin: newIsAdmin }
             : { portalId: parseInt(portalId), isAdmin: newIsAdmin };
-
-        console.log("body being sent:", JSON.stringify(bodyPayload)); // TEMPORARY
 
         try {
             let response;
