@@ -16,15 +16,14 @@ $(async function () {
         const startVal = $("#startDate").val();
         const endVal = $("#endDate").val();
 
-        // Now you just pass the table instance
-        startEndDateSearch(tableA, startVal, endVal, [1, 2]);
-        startEndDateSearch(tableB, startVal, endVal, [1, 2]);
+        startEndDateSearch(tableA, startVal, endVal, [0]);
+        startEndDateSearch(tableB, startVal, endVal, [0]);
 
         lineChartBerthUtilizationUpdate(chart, tableA, tableB);
     });
 
     $("#saveBerth").on("click", function (e) {
-        addBerth($("#saveBerth").val(), $("#cyear").val());
+        addBerth($("#saveBerth").val(), $("#cyear").val());ss
     });
 
 

@@ -10,7 +10,6 @@
         const min = startDateInput ? new Date(startDateInput) : null;
         const max = endDateInput ? new Date(endDateInput) : null;
 
-        // ✅ If both are empty → show all
         if (!min && !max) return true;
 
         const columns = Array.isArray(indexedDateColumns) ? indexedDateColumns : [indexedDateColumns];
@@ -19,17 +18,15 @@
             let dateStr = data[colIndex];
             if (!dateStr) continue;
 
-            // 🔹 Normalize: allow formats like "Sep 22", "Sept-22", "2025-09-22T00:00:00Z"
-            dateStr = dateStr.replace(/-/g, " "); // handle Sept-22 → "Sept 22"
             const date = new Date(dateStr);
 
             if (!isNaN(date)) {
                 if ((!min || date >= min) && (!max || date <= max)) {
-                    return true; // ✅ at least one match
+                    return true;
                 }
             }
         }
-        return false; // ❌ nothing matched
+        return false;
     };
 
     filterFn._tableId = table.table().node().id;
